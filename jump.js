@@ -21,15 +21,13 @@
 			canvas.height = canvas.width/2;
 		}
 		else{
-			var t = window.innerWidth;
-			while(t/2 > window.innerHeight) { 
-				t--;
+			var width = window.innerWidth;
+			while(width/2 > window.innerHeight) { 
+				width--;
 			}
-			canvas.width = t*.95;
+			canvas.width = width*.95;
 			canvas.height = canvas.width/2;
 		}
-		canvas = document.getElementById("myCanvas");
-		ctx = canvas.getContext("2d");
 	}
 	//end of canvas resizing
 	
