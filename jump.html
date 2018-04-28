@@ -25,7 +25,6 @@
 				display: block; 
 				margin-left: auto;
 				margin-right: auto;
-				margin-top: 20px;
 			}
 			
 			body { 
@@ -75,38 +74,7 @@ an end to all unnecessary water usage along the way.
 	<img src = "images/water.gif">
 </div>
 
-<script>
-
-	var canvas = document.getElementById("myCanvas");
-  var ctx = canvas.getContext("2d");
-		
-  var start = new Image(); 
-	start.src ="images/start.png";
-	start.onload = function() { 
-		ctx.drawImage(start, 360, 190); 
-	}
-	start.onmouseover = function() { 
-		ctx.drawImage(start, 200, 40); 
-	}
-	
-	var logo = new Image(); 
-	logo.src = "images/logo.png"; 
-	logo.onload = function() { 
-		var width = 1418; 
-		var height = 720;
-		ctx.drawImage(logo, 180, 0, width*.3, height*.3); 
-	}
-
-	var waterBot = new Image(); 
-	waterBot.src = "images/WaterBot.png"; 
-	waterBot.onload = function() { 
-		ctx.drawImage(waterBot, 400, 250); 
-	}
-	
-
-
-	
-</script>
+<script src = "jump.js"></script>
 
 </body>
 </html>

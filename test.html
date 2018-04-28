@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H2No</title>
+    <style>
+		</style>
+</head>
+<body>
+
+<canvas id="myCanvas" width = "800px" height="400px"></canvas>
+<script>
+	var canvas = document.getElementById("myCanvas"); 
+	var ctx = canvas.getContext("2d"); 
+	
+	window.addEventListener("resize", resizeCanvas, false); 
+	window.addEventListener("orientationchange", resizeCanvas, false);  
+	resizeCanvas();
+	
+	function resizeCanvas() { 
+		canvas.width = window.innerWidth*.9; 
+		canvas.height = window.innerHeight * .8;
+		ctx.fillStyle = "blue"; 
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		square();
+	}
+	
+	function square() { 
+		var size = canvas.width*.05;
+		ctx.fillStyle = "red"; 
+		ctx.fillRect(canvas.width*.5-(size/2), canvas.height*.5-(size/2), size, size);
+	}
+	
+	square();
+
+	
+</script> 
+</body>
+</html>
