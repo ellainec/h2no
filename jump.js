@@ -7,13 +7,46 @@
 	var start = new Image(); 
 	start.src ="images/start.png";
 	
-	var waterBot = new Image(); 
-	waterBot.src = "images/WaterBot.png"; 
+	var robot = new Image(); 
+	robot.src = "images/WaterBot.png"; 
+	var robotHeight;
+	var robotWidth;
+	var robotX = 0;
+	var robotY;
+	
+	var rightPressed = false; 
+	var leftPressed = false; 
+	var upPressed = false;
+	var falling = false;
 	
 	//canvas resizing
 	window.addEventListener("resize", resizeCanvas, false); 
 	window.addEventListener("orientationchange", resizeCanvas, false);  
 	resizeCanvas();
+	
+	document.addEventListener("keydown", keyDownHandler, false); 
+	document.addEventListener("keyup", keyUpHandler, false); 
+	
+	function keyDownHandler(e) { 
+		if(e.keyCode == 39) { 
+			rightPressed = true; 
+		}
+		if(e.keyCode == 37) { 
+			leftPressed = true;
+		}
+		if(e.keyCode == 38) { 
+			upPressed = true; 
+		}
+	}
+
+	function keyUpHandler(e) { 
+		if (e.keyCode == 39) { 
+			rightPressed = false; 
+		}
+		if (e.keyCode == 37) { 
+			leftPressed = false;
+		}
+	}
 	
 	function resizeCanvas() { 
 		if (window.innerWidth/2 < window.innerHeight) { 
@@ -45,19 +78,53 @@
 	}
 	
 	var drawRobot = function() { 
-		var margin = (canvas.width-waterBot.width)/2; 
-		ctx.drawImage(waterBot, margin, canvas.height-waterBot.height); 
-	};
+		robotHeight = canvas.height*.2;
+	  robotWidth = robotHeight*(robot.width/robot.height);
+		ctx.drawImage(robot, robotX, robotY, robotWidth, robotHeight); 
+	}
 	
 	logo.onload = drawLogo;
-	start.onload = drawStart(); 
-	waterBot.onload = drawRobot();
+	start.onload = drawStart;
+	robot.onload = drawRobot;
 	
+	function jump() { 
+		if (!falling) { 
+			robotY -= 5; 
+			if (robotY <= canvas.height *.6) { 
+				falling = true; 
+			}
+		}
+		
+		if (falling) { 
+			robotY += 5; 
+			if (robotY >= canvas.height - robotHeight) { 
+				falling = false; 
+				upPressed = false; 
+			}
+		}
+	}
 	function drawHome() { 
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawLogo();
 		drawStart();
+		if(!upPressed) { 
+			robotY = canvas.height - robotHeight;
+		} 
+		
+		if (upPressed) { 
+			jump(); 
+		}
+			
 		drawRobot();
+		if(rightPressed) { 
+			robotX += canvas.width*.005; 
+		}
+		
+		if(leftPressed) { 
+			robotX -= canvas.width*.005;
+		}
 	}
+	
 	
 	setInterval(drawHome, 10);
 
