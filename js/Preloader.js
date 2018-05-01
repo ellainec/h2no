@@ -23,12 +23,14 @@ Game.Preloader.prototype = {
         this.load.image('buttonJump', 'assets/buttons/arrowUp.png');
         this.load.image('buttonRight', 'assets/buttons/arrowRight.png');
         
+        this.load.image('logo', 'assets/logo.png');
+        
         
         
     },
     
     create:function() {
-        this.state.start('Level1');
+        this.state.start('MainMenu');
     }
     
     
