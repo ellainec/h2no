@@ -29,6 +29,7 @@ var cursors;
 var playerSpeed = 450;
 var jumpTimer = 0;
 var jumpTrue = false;
+var joystick;
 
 
 
@@ -75,9 +76,7 @@ Game.Level1.prototype = {
             jumpButton.events.onInputDown.add(function () { jumpTrue = true });
             jumpButton.events.onInputUp.add(function () { jumpTrue = false });
 
-            ///////////////////////////////////////////////////////
-            ///// Virtual Joystick (src="virtualjoystick.js") /////
-            var joystick = new VirtualJoystick({
+            joystick = new VirtualJoystick({
                 mouseSupport: true,
                 stationaryBase: true,
                 baseX: 200,
@@ -85,8 +84,6 @@ Game.Level1.prototype = {
                 limitStickTravel: true,
                 stickRadius: 50
             });
-            ///////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////
 
         }
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
@@ -107,10 +104,10 @@ Game.Level1.prototype = {
             jumpNow();
         }
 
-        if (cursors.left.isDown || joystick.left()) {
+        if (cursors.left.isDown) {
             moveLeft();
         }
-        if (cursors.right.isDown || joystick.right()) {
+        if (cursors.right.isDown) {
             moveRight();
         }
 
