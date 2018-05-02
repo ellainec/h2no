@@ -31,7 +31,7 @@ var jumpTimer = 0;
 
 Game.Level1.prototype = {
     
-    create:function() {
+    create:function(game) {
         this.stage.backgroundColor = '#3598db'
         
         this.physics.startSystem(Phaser.Physics.ARCADE); 
@@ -49,7 +49,7 @@ Game.Level1.prototype = {
         map.setTileIndexCallback(9, this.resetPlayer, this);
         
         // Set up player
-        player = this.add.sprite(100, 1200,  'WaterBot');
+        player = this.add.sprite(100, 1200, 'WaterBot');
         player.anchor.setTo(0.5, 0.5);
         // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
         // Enable physics on player
@@ -63,17 +63,11 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
-        
+
         if (!game.device.desktop) {
-            this.createButton(game, 'buttonJump', 
-                              game.width, this.height, 
-                              100, 100, 
-                             function() {}
-                             )
         
         }
-        
-        enemy1 = new EnemyRobot(0, game, player.x + 400, play.y - 200);
+        enemy1 = new EnemyRobot(0, game, player.x+400, player.y-200);
         
         
 
@@ -97,6 +91,10 @@ Game.Level1.prototype = {
         }
         if(cursors.right.isDown) {
             moveRight();
+        }
+        
+        if(checkOverlap(player, enemy1.robot)) {
+            this.resetPlayer();
         }
         
     },
@@ -129,4 +127,11 @@ function moveLeft() {
 
 function moveRight() {
     player.body.velocity.x += playerSpeed;
+}
+
+function checkOverlap(spriteA, spriteB) {
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+    
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
