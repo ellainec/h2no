@@ -1,15 +1,22 @@
-EnemyBird = function(index, game, x, y) {
-    this.bird = game.add.sprite(x, y, 'bird');
+EnemyRobot = function(index, game, x, y) {
+    this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
     
-    this.bird.anchor.setTo(0.5, 0.5);
-    this.bird.name = index.toString();
-    game.physics.enable(this.bird, Phaser.Physics.ARCADE);
-    this.bird.body.immovable = true;
-    this.bird.body.allowGravity = false;
-    this.bird.body.collideWorldBounds = true;
+    this.robot.anchor.setTo(0.5, 0.5);
+    this.robot.name = index.toString();
+    game.physics.enable(this.robot, Phaser.Physics.ARCADE);
+    this.robot.body.immovable = true;
+    this.robot.body.allowGravity = false;
+    this.robot.body.collideWorldBounds = true;
+    
+    // tween
+    this.robotTween = game.add.tween(this.robot).to({
+        x: this.robot.x + 25
+    }, 2000, 'Linear', true, 0, 100, true);
     
 }
+
+var enemy1;
 
 Game.Level1 = function(game){};
 
@@ -24,7 +31,7 @@ var jumpTimer = 0;
 
 Game.Level1.prototype = {
     
-    create:function() {
+    create:function(game) {
         this.stage.backgroundColor = '#3598db'
         
         this.physics.startSystem(Phaser.Physics.ARCADE); 
@@ -42,7 +49,7 @@ Game.Level1.prototype = {
         map.setTileIndexCallback(9, this.resetPlayer, this);
         
         // Set up player
-        player = this.add.sprite(100, 1200,  'WaterBot');
+        player = this.add.sprite(100, 1200, 'WaterBot');
         player.anchor.setTo(0.5, 0.5);
         // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
         // Enable physics on player
@@ -58,12 +65,12 @@ Game.Level1.prototype = {
         cursors = this.input.keyboard.createCursorKeys();
         
         
-        
+        // add arrows here
         if (!game.device.desktop) {
         
         }
         
-        
+        enemy1 = new EnemyRobot(0, game, player.x+400, player.y-200);
 
     },
     
@@ -88,6 +95,10 @@ Game.Level1.prototype = {
             moveRight();
         }
         
+        if(checkOverlap(player, enemy1.robot)) {
+            this.resetPlayer();
+        }
+        
     },
     
     resetPlayer:function() {
@@ -105,4 +116,11 @@ function moveLeft() {
 
 function moveRight() {
     player.body.velocity.x += playerSpeed;
+}
+
+function checkOverlap(spriteA, spriteB) {
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+    
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
