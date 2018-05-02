@@ -1,15 +1,22 @@
-EnemyBird = function(index, game, x, y) {
-    this.bird = game.add.sprite(x, y, 'bird');
+EnemyRobot = function(index, game, x, y) {
+    this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
     
-    this.bird.anchor.setTo(0.5, 0.5);
-    this.bird.name = index.toString();
-    game.physics.enable(this.bird, Phaser.Physics.ARCADE);
-    this.bird.body.immovable = true;
-    this.bird.body.allowGravity = false;
-    this.bird.body.collideWorldBounds = true;
+    this.robot.anchor.setTo(0.5, 0.5);
+    this.robot.name = index.toString();
+    game.physics.enable(this.robot, Phaser.Physics.ARCADE);
+    this.robot.body.immovable = true;
+    this.robot.body.allowGravity = false;
+    this.robot.body.collideWorldBounds = true;
+    
+    // tween
+    this.robotTween = game.add.tween(this.robot).to({
+        x: this.robot.x + 25
+    }, 2000, 'Linear', true, 0, 100, true);
     
 }
+
+var enemy1;
 
 Game.Level1 = function(game){};
 
@@ -57,11 +64,16 @@ Game.Level1.prototype = {
         };
         cursors = this.input.keyboard.createCursorKeys();
         
-        
-        
         if (!game.device.desktop) {
+            this.createButton(game, 'buttonJump', 
+                              game.width, this.height, 
+                              100, 100, 
+                             function() {}
+                             )
         
         }
+        
+        enemy1 = new EnemyRobot(0, game, player.x + 400, play.y - 200);
         
         
 
@@ -77,8 +89,7 @@ Game.Level1.prototype = {
         if(controls.up.isDown 
            && (player.body.onFloor() || player.body.touching.down) 
            && this.time.now > jumpTimer) {
-            player.body.velocity.y -= 600;
-            jumpTimer = this.time.now + 750;
+            this.jump;
         } 
         
         if(cursors.left.isDown) {
@@ -89,11 +100,24 @@ Game.Level1.prototype = {
         }
         
     },
+    jump:function() {
+        player.body.velocity.y -= 600;
+        jumpTimer = this.time.now + 750;
+    },
     
     resetPlayer:function() {
         player.reset(100, 1200);
-    }
+    },
     // for checkpoint create checkx/y
+    
+    // creating buttons
+    createButton:function(game, imgString, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
+        
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+    }
 
     
 };        
