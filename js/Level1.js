@@ -28,6 +28,7 @@ var controls = {};
 var cursors;
 var playerSpeed = 450;
 var jumpTimer = 0;
+var jumpTrue = false;
 
 Game.Level1.prototype = {
     
@@ -63,14 +64,23 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
-        
-        
-        // add arrows here
+
         if (!game.device.desktop) {
+            // jump Button only appears for mobile devices
+            jumpButton = game.add.button(game.canvas.width - 125, game.canvas.height - 120, 'buttonJump', null, this, 0, 1, 0, 1);
+            jumpButton.fixedToCamera = true;
+            jumpButton.scale.setTo(0.5,0.5);
+            jumpButton.events.onInputDown.add(function() {jumpTrue=true});
+            jumpButton.events.onInputUp.add(function() {jumpTrue=false});
+            // joy stick??
+            
+            
+            
         
         }
-        
         enemy1 = new EnemyRobot(0, game, player.x+400, player.y-200);
+        
+        
 
     },
     
@@ -81,11 +91,9 @@ Game.Level1.prototype = {
         player.body.velocity.x = 0;
         
         
-        if(controls.up.isDown 
-           && (player.body.onFloor() || player.body.touching.down) 
-           && this.time.now > jumpTimer) {
-            player.body.velocity.y -= 600;
-            jumpTimer = this.time.now + 750;
+        if((controls.up.isDown || jumpTrue)
+           && (player.body.onFloor() || player.body.touching.down)) {
+            jumpNow();
         } 
         
         if(cursors.left.isDown) {
@@ -100,11 +108,19 @@ Game.Level1.prototype = {
         }
         
     },
-    
     resetPlayer:function() {
         player.reset(100, 1200);
-    }
+    },
     // for checkpoint create checkx/y
+    
+    // creating buttons
+    createButton:function(game, imgString, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
+        
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+    }
 
     
 };        
@@ -123,4 +139,11 @@ function checkOverlap(spriteA, spriteB) {
     var boundsB = spriteB.getBounds();
     
     return Phaser.Rectangle.intersects(boundsA, boundsB);
+}
+
+function jumpNow() {
+    if (game.time.now > jumpTimer) {
+        player.body.velocity.y -= 600;
+        jumpTimer = game.time.now + 750;
+    }
 }
