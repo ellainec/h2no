@@ -63,14 +63,13 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
-        
-        
-        // add arrows here
+
         if (!game.device.desktop) {
         
         }
-        
         enemy1 = new EnemyRobot(0, game, player.x+400, player.y-200);
+        
+        
 
     },
     
@@ -84,8 +83,7 @@ Game.Level1.prototype = {
         if(controls.up.isDown 
            && (player.body.onFloor() || player.body.touching.down) 
            && this.time.now > jumpTimer) {
-            player.body.velocity.y -= 600;
-            jumpTimer = this.time.now + 750;
+            this.jump;
         } 
         
         if(cursors.left.isDown) {
@@ -100,11 +98,24 @@ Game.Level1.prototype = {
         }
         
     },
+    jump:function() {
+        player.body.velocity.y -= 600;
+        jumpTimer = this.time.now + 750;
+    },
     
     resetPlayer:function() {
         player.reset(100, 1200);
-    }
+    },
     // for checkpoint create checkx/y
+    
+    // creating buttons
+    createButton:function(game, imgString, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
+        
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+    }
 
     
 };        
