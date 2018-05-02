@@ -29,8 +29,8 @@ var cursors;
 var playerSpeed = 450;
 var jumpTimer = 0;
 var jumpTrue = false;
-
-
+var leftTrue = false;
+var rightTrue = false;
 
 Game.Level1.prototype = {
 
@@ -66,28 +66,42 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
+        
 
         if (!game.device.desktop) {
             // jump Button only appears for mobile devices
-            jumpButton = game.add.button(game.canvas.width - 125, game.canvas.height - 120, 'buttonJump', null, this, 0, 1, 0, 1);
+            jumpButton = game.add.button(game.canvas.width - 75, 
+                                         game.canvas.height - 75, 
+                                         'buttonJump', null, this, 0, 1, 0, 1);
             jumpButton.fixedToCamera = true;
-            jumpButton.scale.setTo(0.5, 0.5);
+            jumpButton.scale.setTo(0.25, 0.25);
             jumpButton.events.onInputDown.add(function () { jumpTrue = true });
             jumpButton.events.onInputUp.add(function () { jumpTrue = false });
+            
+            // left Button only appears for mobile devices
+            leftButton = game.add.button(game.canvas.width - 790, 
+                                         game.canvas.height - 75, 
+                                         'buttonLeft', null, this, 0, 1, 0, 1);
+            leftButton.fixedToCamera = true;
+            leftButton.scale.setTo(0.25, 0.25);
+            leftButton.events.onInputDown.add(function () { leftTrue = true });
+            leftButton.events.onInputUp.add(function () { leftTrue = false });
+            leftButton.events.onInputOver.add(function() {leftTrue = true});
+            leftButton.events.onInputOut.add(function() {leftTrue = false});
 
-            ///////////////////////////////////////////////////////
-            ///// Virtual Joystick (src="virtualjoystick.js") /////
-            var joystick = new VirtualJoystick({
-                mouseSupport: true,
-                stationaryBase: true,
-                baseX: 200,
-                baseY: 600,
-                limitStickTravel: true,
-                stickRadius: 50
-            });
-            ///////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////
+            // right Button only appears for mobile devices
+            rightButton = game.add.button(game.canvas.width - 720, 
+                                          game.canvas.height - 75, 
+                                          'buttonRight', null, this, 0, 1, 0, 1);
+            rightButton.fixedToCamera = true;
+            rightButton.scale.setTo(0.25, 0.25);
+            rightButton.events.onInputDown.add(function () { rightTrue = true });
+            rightButton.events.onInputUp.add(function () { rightTrue = false });
+            rightButton.events.onInputOver.add(function() {rightTrue = true});
+            rightButton.events.onInputOut.add(function() {rightTrue = false});
 
+
+            
         }
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
 
@@ -107,13 +121,14 @@ Game.Level1.prototype = {
             jumpNow();
         }
 
-        if (cursors.left.isDown || joystick.left()) {
+        if (cursors.left.isDown || leftTrue) {
             moveLeft();
         }
-        if (cursors.right.isDown || joystick.right()) {
+
+        if (cursors.right.isDown || rightTrue) {
             moveRight();
         }
-
+        
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
