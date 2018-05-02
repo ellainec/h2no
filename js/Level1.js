@@ -30,7 +30,11 @@ var playerSpeed = 450;
 var jumpTimer = 0;
 var jumpTrue = false;
 
-
+///////////////////////////////////////////////////////
+///// Virtual Joystick (src="virtualjoystick.js") /////
+var joystick;
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 
 Game.Level1.prototype = {
 
@@ -67,6 +71,16 @@ Game.Level1.prototype = {
         };
         cursors = this.input.keyboard.createCursorKeys();
 
+        joystick = new VirtualJoystick({
+            mouseSupport: true,
+            stationaryBase: true,
+            baseX: 200,
+            baseY: 600,
+            limitStickTravel: true,
+            stickRadius: 50,
+        });
+        
+
         if (!game.device.desktop) {
             // jump Button only appears for mobile devices
             jumpButton = game.add.button(game.canvas.width - 125, game.canvas.height - 120, 'buttonJump', null, this, 0, 1, 0, 1);
@@ -75,18 +89,7 @@ Game.Level1.prototype = {
             jumpButton.events.onInputDown.add(function () { jumpTrue = true });
             jumpButton.events.onInputUp.add(function () { jumpTrue = false });
 
-            ///////////////////////////////////////////////////////
-            ///// Virtual Joystick (src="virtualjoystick.js") /////
-            var joystick = new VirtualJoystick({
-                mouseSupport: true,
-                stationaryBase: true,
-                baseX: 200,
-                baseY: 600,
-                limitStickTravel: true,
-                stickRadius: 50
-            });
-            ///////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////
+            
 
         }
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
@@ -107,13 +110,23 @@ Game.Level1.prototype = {
             jumpNow();
         }
 
-        if (cursors.left.isDown || joystick.left()) {
+        if (cursors.left.isDown) {
             moveLeft();
         }
-        if (cursors.right.isDown || joystick.right()) {
+
+        if (cursors.right.isDown) {
+            moveRight();
+        }
+        
+        if (joystick.left()) {
+            moveLeft();
+        }
+
+        if (joystick.right()) {
             moveRight();
         }
 
+        
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
