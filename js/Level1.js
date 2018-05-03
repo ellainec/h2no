@@ -16,7 +16,24 @@ EnemyRobot = function (index, game, x, y) {
 
 }
 
+NPC = function (index, game, x, y) {
+    this.npc = game.add.sprite(x, y, 'baddie');
+    // this is a global variable
+
+    this.npc.anchor.setTo(0.5, 0.5);
+    this.npc.name = index.toString();
+    game.physics.enable(this.npc, Phaser.Physics.ARCADE);
+    this.npc.body.immovable = false;
+    this.npc.body.allowGravity = true;
+    this.npc.body.collideWorldBounds = true;
+
+    this.npc.animations.add('left', [0, 1], 10, true);
+    this.npc.animations.add('right', [2, 3], 10, true);
+
+}
+
 var enemy1;
+var npc1;
 
 Game.Level1 = function (game) { };
 
@@ -31,6 +48,7 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+
 
 Game.Level1.prototype = {
 
@@ -68,43 +86,8 @@ Game.Level1.prototype = {
         cursors = this.input.keyboard.createCursorKeys();
         
 
-        if (!game.device.desktop) {
-            // jump Button only appears for mobile devices
-            jumpButton = game.add.button(game.canvas.width - 75, 
-                                         game.canvas.height - 75, 
-                                         'buttonJump', null, this, 0, 1, 0, 1);
-            jumpButton.fixedToCamera = true;
-            jumpButton.scale.setTo(0.25, 0.25);
-            jumpButton.events.onInputDown.add(function () { jumpTrue = true });
-            jumpButton.events.onInputUp.add(function () { jumpTrue = false });
-            
-            // left Button only appears for mobile devices
-            leftButton = game.add.button(game.canvas.width - 790, 
-                                         game.canvas.height - 75, 
-                                         'buttonLeft', null, this, 0, 1, 0, 1);
-            leftButton.fixedToCamera = true;
-            leftButton.scale.setTo(0.25, 0.25);
-            leftButton.events.onInputDown.add(function () { leftTrue = true });
-            leftButton.events.onInputUp.add(function () { leftTrue = false });
-            leftButton.events.onInputOver.add(function() {leftTrue = true});
-            leftButton.events.onInputOut.add(function() {leftTrue = false});
-
-            // right Button only appears for mobile devices
-            rightButton = game.add.button(game.canvas.width - 720, 
-                                          game.canvas.height - 75, 
-                                          'buttonRight', null, this, 0, 1, 0, 1);
-            rightButton.fixedToCamera = true;
-            rightButton.scale.setTo(0.25, 0.25);
-            rightButton.events.onInputDown.add(function () { rightTrue = true });
-            rightButton.events.onInputUp.add(function () { rightTrue = false });
-            rightButton.events.onInputOver.add(function() {rightTrue = true});
-            rightButton.events.onInputOut.add(function() {rightTrue = false});
-
-
-            
-        }
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
-
+        npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
 
     },
@@ -114,6 +97,27 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, layer);
 
         player.body.velocity.x = 0;
+        npc1.npc.body.velocity.x = 0;
+
+        
+        // NPC will jump if player stands on it
+        if (checkOverlap(player, npc1.npc)) {
+            npcJump();
+        }
+
+        // NPC will face the direction of the player
+        if (!checkOverlap(player, npc1.npc)) {
+
+            if (player.world.x > npc1.npc.world.x) {
+                npc1.npc.frame = 2;
+            } else {
+                npc1.npc.frame = 1;
+            }
+        }
+
+
+
+
 
 
         if ((controls.up.isDown || jumpTrue)
@@ -171,5 +175,23 @@ function jumpNow() {
     if (game.time.now > jumpTimer) {
         player.body.velocity.y -= 600;
         jumpTimer = game.time.now + 750;
+    }
+}
+
+
+
+
+// Makes the NPC jump
+function npcJump() {
+    if (npc1.npc.body.blocked.down) {
+        npc1.npc.body.velocity.y = -300;
+        
+        let face;
+        if (player.world.x < npc1.npc.world.x) {
+            face = 'left';
+        } else {
+            face = 'right';
+        }
+        npc1.npc.animations.play(face);
     }
 }
