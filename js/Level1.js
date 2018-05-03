@@ -66,7 +66,14 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
-        
+
+        ///////////////////////////////////Phaser-Plugin-Virtual-Gamepad///////////////////////////////////
+
+        this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+        this.joystick = this.gamepad.addJoystick(100, 300, 0.8, 'gamepad');
+        this.button = this.gamepad.addButton(700, 300, 0.6, 'gamepad');
+
+        ///////////////////////////////////Phaser-Plugin-Virtual-Gamepad///////////////////////////////////
 
         if (!game.device.desktop) {
             // jump Button only appears for mobile devices
@@ -132,6 +139,21 @@ Game.Level1.prototype = {
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
+
+        ///////////////////////////////////Phaser-Plugin-Virtual-Gamepad///////////////////////////////////
+        if (this.joystick.properties.right) {
+            moveRight();
+        }
+
+        if (this.joystick.properties.left) {
+            moveLeft();
+        }
+
+        if (this.button.isDown) {
+            jumpNow();
+        }
+        ///////////////////////////////////Phaser-Plugin-Virtual-Gamepad///////////////////////////////////
+
 
     },
     resetPlayer: function () {

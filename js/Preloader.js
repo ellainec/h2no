@@ -24,6 +24,8 @@ Game.Preloader.prototype = {
         this.load.image('buttonRight', '../assets/buttons/arrowRight.png');
         
         this.load.image('logo', '../assets/logo.png');
+
+        this.load.spritesheet('gamepad', '../assets/gamepad/gamepad_spritesheet.png', 100, 100);
         
         
         
