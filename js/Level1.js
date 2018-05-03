@@ -32,6 +32,10 @@ var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 
+//Sprinkler Vars
+var emitter;
+var sprinkler;
+
 Game.Level1.prototype = {
 
     create: function (game) {
@@ -61,6 +65,11 @@ Game.Level1.prototype = {
         player.body.collideWorldBounds = true;
         player.body.maxVelocity.y = 800;
         this.camera.follow(player);
+
+        //ADD SPRINKLER STUFF HERE **
+
+
+
 
         controls = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
