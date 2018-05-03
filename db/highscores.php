@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "h2no4thewin";
     $dbname = "h2no";
 
     $methodType = $_SERVER['REQUEST_METHOD'];
@@ -16,7 +16,7 @@ if ($methodType === 'POST') {
         //set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 /*
-            $sql = "INSERT INTO leadership (name, score, datePlayed) VALUES (:name, :score, curdate() )";
+            $sql = "INSERT INTO highscore (name, score, datePlayed) VALUES (:name, :score, curdate() )";
             $statement = $conn->prepare($sql);
             $statement->bindParam(':name', $name);
             $statement->bindParam(':score', $score);
@@ -24,7 +24,7 @@ if ($methodType === 'POST') {
             $score = $_POST['score'];
             $statement->execute();
 */
-            $sql="SELECT * FROM leadership ORDER BY score DESC";
+            $sql="SELECT * FROM highscore ORDER BY score DESC";
         $statement = $conn->query($sql);
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
