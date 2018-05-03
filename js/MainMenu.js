@@ -12,7 +12,7 @@ Game.MainMenu.prototype = {
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
 											180, 50,
-											function() {this.state.start('LeaderBoard');});
+											function() {this.state.start('Leaderboard');});
 
 		this.createPlayButton(game, "Play", 
 											game.world.centerX, 
