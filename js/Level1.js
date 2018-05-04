@@ -31,6 +31,7 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var mobile = false;
 
 Game.Level1.prototype = {
 
@@ -66,43 +67,19 @@ Game.Level1.prototype = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
         cursors = this.input.keyboard.createCursorKeys();
-        
+			
+			
+			if (!game.device.desktop) {
+				mobile = true;
+				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+        this.joystick = this.gamepad.addJoystick(50, 350, 0.8, 'gamepad');
+        this.button = this.gamepad.addButton(750, 350, 0.6, 'gamepad');
 
-        if (!game.device.desktop) {
-            // jump Button only appears for mobile devices
-            jumpButton = game.add.button(game.canvas.width - 75, 
-                                         game.canvas.height - 75, 
-                                         'buttonJump', null, this, 0, 1, 0, 1);
-            jumpButton.fixedToCamera = true;
-            jumpButton.scale.setTo(0.25, 0.25);
-            jumpButton.events.onInputDown.add(function () { jumpTrue = true });
-            jumpButton.events.onInputUp.add(function () { jumpTrue = false });
-            
-            // left Button only appears for mobile devices
-            leftButton = game.add.button(game.canvas.width - 790, 
-                                         game.canvas.height - 75, 
-                                         'buttonLeft', null, this, 0, 1, 0, 1);
-            leftButton.fixedToCamera = true;
-            leftButton.scale.setTo(0.25, 0.25);
-            leftButton.events.onInputDown.add(function () { leftTrue = true });
-            leftButton.events.onInputUp.add(function () { leftTrue = false });
-            leftButton.events.onInputOver.add(function() {leftTrue = true});
-            leftButton.events.onInputOut.add(function() {leftTrue = false});
-
-            // right Button only appears for mobile devices
-            rightButton = game.add.button(game.canvas.width - 720, 
-                                          game.canvas.height - 75, 
-                                          'buttonRight', null, this, 0, 1, 0, 1);
-            rightButton.fixedToCamera = true;
-            rightButton.scale.setTo(0.25, 0.25);
-            rightButton.events.onInputDown.add(function () { rightTrue = true });
-            rightButton.events.onInputUp.add(function () { rightTrue = false });
-            rightButton.events.onInputOver.add(function() {rightTrue = true});
-            rightButton.events.onInputOut.add(function() {rightTrue = false});
+				
+			}
 
 
-            
-        }
+          
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
 
 
@@ -132,6 +109,22 @@ Game.Level1.prototype = {
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
+			
+			if (mobile) {
+        if (this.joystick.properties.right) {
+            moveRight();
+        }
+
+        if (this.joystick.properties.left) {
+            moveLeft();
+        }
+
+        if (this.button.isDown) {
+            jumpNow();
+        }
+
+				
+			}
 
     },
     resetPlayer: function () {
