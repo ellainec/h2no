@@ -29,12 +29,14 @@ body {
 	background-color: #293441;
 	margin: 10px 0px;
 	padding-left: 10%;
+	position: fixed;
+	margin-top: -22%;
 }
 
 #logo {
 	width: 25%;
-	padding-top: 3%;
-	padding-bottom: 3%;
+	padding-top: 5%;
+	padding-bottom: 5%;
 	height: auto;
 }
 
@@ -43,8 +45,8 @@ ul {
   overflow: hidden;
 	margin: 0;
   padding-left: 30%;
-	margin-top: -15%;
-	margin-bottom: 9%;
+	margin-top: -18%;
+	margin-bottom: 0;
 	width: 70%;
 	float: right;
 	
@@ -62,7 +64,7 @@ a {
 	color: white;
 	text-decoration: none;
 	line-height: 150%;
-	font-size: 90%;
+	font-size: 80%;
 }
 
 li:hover {
@@ -71,4 +73,36 @@ li:hover {
 
 .active {
 	background-color: #1f2731;
+}
+
+#entry {
+	margin-top: 22%;
+}
+
+.outer {
+	padding: 2%;
+	background-color: #1f2731;
+	margin: 1%;
+	border-radius: 5%;
+}
+
+.innerPhoto {
+	display: inline;
+	border-radius: 5%;
+	margin: 0;
+	padding: 0;
+}
+
+.photo {
+	display: inline;
+	width: 50%;
+	height: auto;
+	border-radius: 5%;
+}
+
+.inner {
+	width: 46%;
+	float: right;
+	padding: 2%;
+	font-size: 70%;
 }

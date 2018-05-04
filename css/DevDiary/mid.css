@@ -27,14 +27,16 @@ body {
 
 #top {
 	background-color: #293441;
-	margin: 10px 0px;
+	margin: 0px;
+	margin-top: -22%;
 	padding-left: 10%;
+	position: fixed;
 }
 
 #logo {
 	width: 25%;
-	padding-top: 3%;
-	padding-bottom: 3%;
+	padding-top: 5%;
+	padding-bottom: 5%;
 	height: auto;
 }
 
@@ -43,8 +45,8 @@ ul {
   overflow: hidden;
 	margin: 0;
   padding-left: 30%;
-	margin-top: -15%;
-	margin-bottom: 9%;
+	margin-top: -18%;
+	margin-bottom: 0;
 	width: 70%;
 	float: right;
 	
@@ -62,7 +64,7 @@ a {
 	color: white;
 	text-decoration: none;
 	line-height: 150%;
-	font-size: 90%;
+	font-size: 80%;
 }
 
 li:hover {
@@ -71,4 +73,32 @@ li:hover {
 
 .active {
 	background-color: #1f2731;
+}
+
+#entry {
+	margin-top: 22%;
+}
+
+.outer {
+	background-color: #293441;
+	padding: 1em;
+	margin: 1em;
+	border-radius: 5%;
+}
+
+.inner {
+	line-height: 2em;
+}
+
+#WaterBot {
+	float: left;
+	padding-right: 1em;
+}
+
+#Vancouver1 {
+	float:left;
+	text-align: center;
+	width: 95%;
+	border-radius: 20%;
+	margin-bottom: 1em;
 }
