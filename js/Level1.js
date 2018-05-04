@@ -183,7 +183,7 @@ Game.Level1.prototype = {
 
 
 
-        if ((controls.up.isDown || jumpTrue)
+        if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
         }
