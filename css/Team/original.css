@@ -67,3 +67,53 @@ li:hover {
 .active {
 	background-color: #1f2731;
 }
+
+#Names {
+	text-align: center;
+}
+
+
+#circPhotos {
+	text-align: center;
+}
+
+.circlePhotos {
+	display: inline-block;
+	width: 17%;
+	height: 19%;
+	padding: 0;
+	margin: 0 auto;
+	border-radius : 50%;
+	
+}
+
+#entry {
+	margin-top: 1%;
+}
+
+.outer {
+	padding: 2%;
+	background-color: #1f2731;
+	margin: 1%;
+	border-radius: 5%;
+}
+
+.innerPhoto {
+	display: inline;
+	border-radius: 5%;
+	margin: 0;
+	padding: 0;
+}
+
+.photo {
+	display: inline;
+	width: 50%;
+	height: auto;
+	border-radius: 5%;
+}
+
+.inner {
+	width: 46%;
+	float: right;
+	padding: 2%;
+}
