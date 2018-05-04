@@ -50,7 +50,24 @@ SprinklerEmitter = function(index, game, x, y) {
 
 };
 
+NPC = function (index, game, x, y) {
+    this.npc = game.add.sprite(x, y, 'baddie');
+    // this is a global variable
+
+    this.npc.anchor.setTo(0.5, 0.5);
+    this.npc.name = index.toString();
+    game.physics.enable(this.npc, Phaser.Physics.ARCADE);
+    this.npc.body.immovable = false;
+    this.npc.body.allowGravity = true;
+    this.npc.body.collideWorldBounds = true;
+
+    this.npc.animations.add('left', [0, 1], 10, true);
+    this.npc.animations.add('right', [2, 3], 10, true);
+
+}
+
 var enemy1;
+var npc1;
 
 //Sprinkler Vars
 var emitter1;
@@ -70,6 +87,7 @@ var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 var hitSprinkler = false;
+
 
 
 
@@ -112,9 +130,11 @@ Game.Level1.prototype = {
         
 
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+			
         sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
         emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
 
+        npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
 
     },
@@ -135,6 +155,27 @@ Game.Level1.prototype = {
        }
 
         player.body.velocity.x = 0;
+        npc1.npc.body.velocity.x = 0;
+
+        
+        // NPC will jump if player stands on it
+        if (checkOverlap(player, npc1.npc)) {
+            npcJump();
+        }
+
+        // NPC will face the direction of the player
+        if (!checkOverlap(player, npc1.npc)) {
+
+            if (player.world.x > npc1.npc.world.x) {
+                npc1.npc.frame = 2;
+            } else {
+                npc1.npc.frame = 1;
+            }
+        }
+
+
+
+
 
 
 
@@ -205,5 +246,23 @@ function jumpNow() {
     if (game.time.now > jumpTimer) {
         player.body.velocity.y -= 600;
         jumpTimer = game.time.now + 750;
+    }
+}
+
+
+
+
+// Makes the NPC jump
+function npcJump() {
+    if (npc1.npc.body.blocked.down) {
+        npc1.npc.body.velocity.y = -300;
+        
+        let face;
+        if (player.world.x < npc1.npc.world.x) {
+            face = 'left';
+        } else {
+            face = 'right';
+        }
+        npc1.npc.animations.play(face);
     }
 }
