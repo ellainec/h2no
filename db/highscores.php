@@ -24,7 +24,7 @@ if ($methodType === 'POST') {
             $score = $_POST['score'];
             $statement->execute();
 */
-            $sql="SELECT * FROM highscore ORDER BY score DESC";
+            $sql="SELECT * FROM highscores ORDER BY score DESC";
         $statement = $conn->query($sql);
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
