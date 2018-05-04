@@ -29,6 +29,8 @@ body {
 	background-color: #293441;
 	margin: 10px 0px;
 	padding-left: 10%;
+	position: fixed;
+	margin-top: -1%;
 }
 
 #logo {
@@ -57,7 +59,7 @@ li {
 	width: 35%;
 }
 
-a {
+li a {
 	display: block;
 	color: white;
 	text-decoration: none;
@@ -71,4 +73,49 @@ li:hover {
 
 .active {
 	background-color: #1f2731;
+}
+
+#Names {
+	text-align: center;
+}
+#circPhotos {
+	text-align: center;
+}
+.circlePhotos {
+	display: inline-block;
+	width: 15%;
+	height: auto;
+	padding: 0;
+	border-radius : 50%;
+}
+
+#entry {
+	padding-top: 25%;
+}
+
+.outer {
+	padding: 2%;
+	background-color: #1f2731;
+	margin: 1%;
+	border-radius: 5%;
+}
+
+.innerPhoto {
+	display: inline;
+	border-radius: 5%;
+	margin: 0;
+	padding: 0;
+}
+
+.photo {
+	display: inline;
+	width: 50%;
+	height: auto;
+	border-radius: 5%;
+}
+
+.inner {
+	width: 46%;
+	float: right;
+	padding: 2%;
 }

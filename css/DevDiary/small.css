@@ -29,6 +29,8 @@ body {
 	background-color: #293441;
 	margin: 10px 0px;
 	padding: 2%;
+	position: fixed;
+	margin-top: -5em;
 }
 
 #logo {
@@ -70,4 +72,38 @@ li:hover {
 
 .active {
 	background-color: #1f2731;
+}
+
+.inner {
+	line-height: 2em;
+}
+
+
+#entry {
+	margin-top: 7em;
+	font-size: 70%;
+}
+
+.outer {
+	background-color: #293441;
+	padding: 1em;
+	margin: 1em;
+	border-radius: 5%;
+}
+
+.inner {
+	line-height: 2em;
+}
+
+#WaterBot {
+	float: left;
+	padding-right: 1em;
+}
+
+#Vancouver1 {
+	float:left;
+	text-align: center;
+	width: 95%;
+	border-radius: 20%;
+	margin-bottom: 1em;
 }
