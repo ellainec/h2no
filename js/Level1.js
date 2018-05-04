@@ -130,8 +130,8 @@ Game.Level1.prototype = {
 			if (!game.device.desktop) {
 				mobile = true;
 				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-        this.joystick = this.gamepad.addJoystick(50, 350, 0.8, 'gamepad');
-        this.button = this.gamepad.addButton(750, 350, 0.6, 'gamepad');
+        this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+        this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
 
 				
 			}
