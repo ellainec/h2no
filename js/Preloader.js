@@ -25,7 +25,8 @@ Game.Preloader.prototype = {
         
         this.load.image('logo', '../assets/logo.png');
         
-        
+        this.load.image('sprinkler', '../assets/sprinkler.png');
+        this.load.image('diamond', '../assets/diamond.png');
         
     },
     
