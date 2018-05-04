@@ -10,11 +10,45 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.body.collideWorldBounds = true;
 
     // tween
-    this.robotTween = game.add.tween(this.robot).to({
-        x: this.robot.x + 25
-    }, 2000, 'Linear', true, 0, 100, true);
+     this.robotTween = game.add.tween(this.robot).to({
+         x: this.robot.x + 25
+     }, 2000, 'Linear', true, 0, 100, true);
 
-}
+};
+
+EnemySprinkler = function (index, game, x, y) {
+    this.sprinkler = game.add.sprite(x, y, 'sprinkler');
+    // adding sprite
+    
+    //Sprinkler Physics
+    this.sprinkler.anchor.setTo(0.5, 0.5);
+    this.sprinkler.name = index.toString();
+    game.physics.enable(this.sprinkler, Phaser.Physics.ARCADE);
+    this.sprinkler.body.immovable = true;
+    this.sprinkler.body.setSize(5, 20, 5, 2);
+    this.sprinkler.body.allowGravity = false;
+    this.sprinkler.body.collideWorldBounds = true;
+
+};
+
+SprinklerEmitter = function(index, game, x, y) {
+  this.emitter = game.add.emitter(x, y);
+
+	this.emitter.makeParticles('diamond', 0, 45, true);
+	this.emitter.start(false, 45, 5);
+
+
+	this.emitter.minParticleScale = 0.15;
+	this.emitter.maxParticleScale = 0.3;
+	this.emitter.lifespan = 3200;
+
+	this.emitter.setYSpeed(-600, -550);
+  this.emitter.setXSpeed(-75, 75);
+  this.emitter.gravity = 900;
+	this.emitter.name = index.toString();
+	this.emitter.enableBody = true;
+
+};
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
@@ -35,6 +69,10 @@ NPC = function (index, game, x, y) {
 var enemy1;
 var npc1;
 
+//Sprinkler Vars
+var emitter1;
+var sprinkler;
+
 Game.Level1 = function (game) { };
 
 var map;
@@ -48,12 +86,15 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var hitSprinkler = false;
+
+
 
 
 Game.Level1.prototype = {
 
     create: function (game) {
-        this.stage.backgroundColor = '#3598db'
+        this.stage.backgroundColor = '#3598db';
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.physics.arcade.gravity.y = 1600;
@@ -80,13 +121,19 @@ Game.Level1.prototype = {
         player.body.maxVelocity.y = 800;
         this.camera.follow(player);
 
+
         controls = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
+			
         cursors = this.input.keyboard.createCursorKeys();
         
 
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+			
+        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
+        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
+
         npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
 
@@ -94,7 +141,18 @@ Game.Level1.prototype = {
 
     update: function () {
 
-        this.physics.arcade.collide(player, layer);
+
+         //Collide Player with Sprinkler
+       this.physics.arcade.collide(player, sprinkler.sprinkler);
+       this.physics.arcade.collide(player, layer);
+			
+        // //Collide Player with Sprinkler
+       hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
+
+        //emitter physics
+       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+         this.resetPlayer();
+       }
 
         player.body.velocity.x = 0;
         npc1.npc.body.velocity.x = 0;
@@ -120,6 +178,7 @@ Game.Level1.prototype = {
 
 
 
+
         if ((controls.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
@@ -136,6 +195,18 @@ Game.Level1.prototype = {
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
+			
+			if (emitter1.emitter.exists) {
+				if (hitSprinkler) {
+				emitter1.emitter.destroy();
+				}	
+			}
+			
+			
+			
+        
+
+
 
     },
     resetPlayer: function () {
