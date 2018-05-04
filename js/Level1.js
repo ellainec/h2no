@@ -10,13 +10,68 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.body.collideWorldBounds = true;
 
     // tween
-    this.robotTween = game.add.tween(this.robot).to({
-        x: this.robot.x + 25
-    }, 2000, 'Linear', true, 0, 100, true);
+     this.robotTween = game.add.tween(this.robot).to({
+         x: this.robot.x + 25
+     }, 2000, 'Linear', true, 0, 100, true);
+
+};
+
+EnemySprinkler = function (index, game, x, y) {
+    this.sprinkler = game.add.sprite(x, y, 'sprinkler');
+    // adding sprite
+    
+    //Sprinkler Physics
+    this.sprinkler.anchor.setTo(0.5, 0.5);
+    this.sprinkler.name = index.toString();
+    game.physics.enable(this.sprinkler, Phaser.Physics.ARCADE);
+    this.sprinkler.body.immovable = true;
+    this.sprinkler.body.setSize(5, 20, 5, 2);
+    this.sprinkler.body.allowGravity = false;
+    this.sprinkler.body.collideWorldBounds = true;
+
+};
+
+SprinklerEmitter = function(index, game, x, y) {
+  this.emitter = game.add.emitter(x, y);
+
+	this.emitter.makeParticles('diamond', 0, 45, true);
+	this.emitter.start(false, 45, 5);
+
+
+	this.emitter.minParticleScale = 0.15;
+	this.emitter.maxParticleScale = 0.3;
+	this.emitter.lifespan = 3200;
+
+	this.emitter.setYSpeed(-600, -550);
+  this.emitter.setXSpeed(-75, 75);
+  this.emitter.gravity = 900;
+	this.emitter.name = index.toString();
+	this.emitter.enableBody = true;
+
+};
+
+NPC = function (index, game, x, y) {
+    this.npc = game.add.sprite(x, y, 'baddie');
+    // this is a global variable
+
+    this.npc.anchor.setTo(0.5, 0.5);
+    this.npc.name = index.toString();
+    game.physics.enable(this.npc, Phaser.Physics.ARCADE);
+    this.npc.body.immovable = false;
+    this.npc.body.allowGravity = true;
+    this.npc.body.collideWorldBounds = true;
+
+    this.npc.animations.add('left', [0, 1], 10, true);
+    this.npc.animations.add('right', [2, 3], 10, true);
 
 }
 
 var enemy1;
+var npc1;
+
+//Sprinkler Vars
+var emitter1;
+var sprinkler;
 
 Game.Level1 = function (game) { };
 
@@ -31,11 +86,13 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var hitSprinkler = false;
+var mobile = false;
 
 Game.Level1.prototype = {
 
     create: function (game) {
-        this.stage.backgroundColor = '#3598db'
+        this.stage.backgroundColor = '#3598db';
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.physics.arcade.gravity.y = 1600;
@@ -62,58 +119,68 @@ Game.Level1.prototype = {
         player.body.maxVelocity.y = 800;
         this.camera.follow(player);
 
+
         controls = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
+			
         cursors = this.input.keyboard.createCursorKeys();
-        
+			
+			
+			if (!game.device.desktop) {
+				mobile = true;
+				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+        this.joystick = this.gamepad.addJoystick(50, 350, 0.8, 'gamepad');
+        this.button = this.gamepad.addButton(750, 350, 0.6, 'gamepad');
 
-        if (!game.device.desktop) {
-            // jump Button only appears for mobile devices
-            jumpButton = game.add.button(game.canvas.width - 75, 
-                                         game.canvas.height - 75, 
-                                         'buttonJump', null, this, 0, 1, 0, 1);
-            jumpButton.fixedToCamera = true;
-            jumpButton.scale.setTo(0.25, 0.25);
-            jumpButton.events.onInputDown.add(function () { jumpTrue = true });
-            jumpButton.events.onInputUp.add(function () { jumpTrue = false });
-            
-            // left Button only appears for mobile devices
-            leftButton = game.add.button(game.canvas.width - 790, 
-                                         game.canvas.height - 75, 
-                                         'buttonLeft', null, this, 0, 1, 0, 1);
-            leftButton.fixedToCamera = true;
-            leftButton.scale.setTo(0.25, 0.25);
-            leftButton.events.onInputDown.add(function () { leftTrue = true });
-            leftButton.events.onInputUp.add(function () { leftTrue = false });
-            leftButton.events.onInputOver.add(function() {leftTrue = true});
-            leftButton.events.onInputOut.add(function() {leftTrue = false});
-
-            // right Button only appears for mobile devices
-            rightButton = game.add.button(game.canvas.width - 720, 
-                                          game.canvas.height - 75, 
-                                          'buttonRight', null, this, 0, 1, 0, 1);
-            rightButton.fixedToCamera = true;
-            rightButton.scale.setTo(0.25, 0.25);
-            rightButton.events.onInputDown.add(function () { rightTrue = true });
-            rightButton.events.onInputUp.add(function () { rightTrue = false });
-            rightButton.events.onInputOver.add(function() {rightTrue = true});
-            rightButton.events.onInputOut.add(function() {rightTrue = false});
+				
+			}
 
 
-            
-        }
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+			
+        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
+        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
 
+        npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
 
     },
 
     update: function () {
 
-        this.physics.arcade.collide(player, layer);
+
+         //Collide Player with Sprinkler
+       this.physics.arcade.collide(player, sprinkler.sprinkler);
+       this.physics.arcade.collide(player, layer);
+			
+        // //Collide Player with Sprinkler
+       hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
+
+        //emitter physics
+       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+         this.resetPlayer();
+       }
 
         player.body.velocity.x = 0;
+        npc1.npc.body.velocity.x = 0;
+
+        
+        // NPC will jump if player stands on it
+        if (checkOverlap(player, npc1.npc)) {
+            npcJump();
+        }
+
+        // NPC will face the direction of the player
+        if (!checkOverlap(player, npc1.npc)) {
+
+            if (player.world.x > npc1.npc.world.x) {
+                npc1.npc.frame = 2;
+            } else {
+                npc1.npc.frame = 1;
+            }
+        }
+
 
 
         if ((controls.up.isDown || jumpTrue)
@@ -132,6 +199,32 @@ Game.Level1.prototype = {
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
+			
+			if (emitter1.emitter.exists) {
+				if (hitSprinkler) {
+				emitter1.emitter.destroy();
+				}	
+			}
+			
+			
+			
+        
+
+			if (mobile) {
+        if (this.joystick.properties.right) {
+            moveRight();
+        }
+
+        if (this.joystick.properties.left) {
+            moveLeft();
+        }
+
+        if (this.button.isDown) {
+            jumpNow();
+        }
+
+				
+			}
 
     },
     resetPlayer: function () {
@@ -171,5 +264,23 @@ function jumpNow() {
     if (game.time.now > jumpTimer) {
         player.body.velocity.y -= 600;
         jumpTimer = game.time.now + 750;
+    }
+}
+
+
+
+
+// Makes the NPC jump
+function npcJump() {
+    if (npc1.npc.body.blocked.down) {
+        npc1.npc.body.velocity.y = -300;
+        
+        let face;
+        if (player.world.x < npc1.npc.world.x) {
+            face = 'left';
+        } else {
+            face = 'right';
+        }
+        npc1.npc.animations.play(face);
     }
 }

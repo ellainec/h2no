@@ -24,8 +24,12 @@ Game.Preloader.prototype = {
         this.load.image('buttonRight', '../assets/buttons/arrowRight.png');
         
         this.load.image('logo', '../assets/logo.png');
+
+        this.load.spritesheet('baddie', '../assets/baddie.png', 32, 32, 4);
+        this.load.spritesheet('gamepad', '../assets/gamepad/gamepad_spritesheet.png', 100, 100);
         
-        
+        this.load.image('sprinkler', '../assets/sprinkler.png');
+        this.load.image('diamond', '../assets/diamond.png');
         
     },
     
