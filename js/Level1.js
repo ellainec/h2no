@@ -32,28 +32,28 @@ EnemySprinkler = function (index, game, x, y) {
 };
 
 SprinklerEmitter = function(index, game, x, y) {
-     this.emitter = game.add.emitter(x, y);
+  this.emitter = game.add.emitter(x, y);
 
-     this.emitter.makeParticles('diamond');
-     this.emitter.start(false, 45, 5);
+	this.emitter.makeParticles('diamond', 0, 45, true);
+	this.emitter.start(false, 45, 5);
 
- 
-    this.emitter.minParticleScale = 0.15;
-    this.emitter.maxParticleScale = 0.3;
-    this.emitter.lifespan = 3200;
-     
-     this.emitter.setYSpeed(-600, -550);
-     this.emitter.setXSpeed(-75, 75);
-     this.emitter.gravity = 900;
-     this.emitter.name = index.toString();
-     this.emitter.enableBody = true;
+
+	this.emitter.minParticleScale = 0.15;
+	this.emitter.maxParticleScale = 0.3;
+	this.emitter.lifespan = 3200;
+
+	this.emitter.setYSpeed(-600, -550);
+  this.emitter.setXSpeed(-75, 75);
+  this.emitter.gravity = 900;
+	this.emitter.name = index.toString();
+	this.emitter.enableBody = true;
 
 };
 
 var enemy1;
 
 //Sprinkler Vars
-var emitter;
+var emitter1;
 var sprinkler;
 
 Game.Level1 = function (game) { };
@@ -104,18 +104,16 @@ Game.Level1.prototype = {
         this.camera.follow(player);
 
 
-
-
-
         controls = {
             up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
         };
+			
         cursors = this.input.keyboard.createCursorKeys();
         
 
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
         sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
-        emitter = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
+        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
 
 
 
@@ -125,24 +123,16 @@ Game.Level1.prototype = {
 
 
          //Collide Player with Sprinkler
-        this.physics.arcade.collide(player, sprinkler.sprinkler);
-        this.physics.arcade.collide(player, layer);
-
+       this.physics.arcade.collide(player, sprinkler.sprinkler);
+       this.physics.arcade.collide(player, layer);
+			
         // //Collide Player with Sprinkler
-        hitSprinkler = this.physics.arcade.collide(player, sprinkler.sprinkler);
+       hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
 
         //emitter physics
-    //    if(game.physics.arcade.overlap(player, emitter.emitter)) {
-    //     this.resetPlayer();
-    //   }
-
-        //Kill Emitter
-        if (hitSprinkler) {
-            emitter.emitter.destroy(true);
-        }
-
-        // END OF EMITTER STUFF
-
+       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+         this.resetPlayer();
+       }
 
         player.body.velocity.x = 0;
 
@@ -164,8 +154,15 @@ Game.Level1.prototype = {
         if (checkOverlap(player, enemy1.robot)) {
             this.resetPlayer();
         }
-        
-
+			
+			if (emitter1.emitter.exists) {
+				if (hitSprinkler) {
+				emitter1.emitter.destroy();
+				}	
+			}
+			
+			
+			
         
 
 
