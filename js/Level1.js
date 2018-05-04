@@ -87,9 +87,7 @@ var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 var hitSprinkler = false;
-
-
-
+var mobile = false;
 
 Game.Level1.prototype = {
 
@@ -127,7 +125,17 @@ Game.Level1.prototype = {
         };
 			
         cursors = this.input.keyboard.createCursorKeys();
-        
+			
+			
+			if (!game.device.desktop) {
+				mobile = true;
+				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+        this.joystick = this.gamepad.addJoystick(50, 350, 0.8, 'gamepad');
+        this.button = this.gamepad.addButton(750, 350, 0.6, 'gamepad');
+
+				
+			}
+
 
         enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
 			
@@ -175,10 +183,6 @@ Game.Level1.prototype = {
 
 
 
-
-
-
-
         if ((controls.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
@@ -206,7 +210,21 @@ Game.Level1.prototype = {
 			
         
 
+			if (mobile) {
+        if (this.joystick.properties.right) {
+            moveRight();
+        }
 
+        if (this.joystick.properties.left) {
+            moveLeft();
+        }
+
+        if (this.button.isDown) {
+            jumpNow();
+        }
+
+				
+			}
 
     },
     resetPlayer: function () {
