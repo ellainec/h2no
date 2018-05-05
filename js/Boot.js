@@ -1,23 +1,2 @@
-var Game = {};
 
-Game.Boot = function(game) {
-    
-};
-
-Game.Boot.prototype = {
-    init:function() {
-        // touch screen input
-        this.input.maxPointers = 2;
-        
-    },
-    
-    preload:function() {
-        // this.load.image(); insert a loading bar
-    },
-    create:function() {
-        this.state.start('Preloader');
-        
-    }
-    
-    
-}
+var _0x5343=['input','maxPointers','state','start','Preloader'];(function(_0x14e084,_0x54a591){var _0x5f2408=function(_0x5594dd){while(--_0x5594dd){_0x14e084['push'](_0x14e084['shift']());}};_0x5f2408(++_0x54a591);}(_0x5343,0x1db));var _0x5b61=function(_0x15af67,_0x26db21){_0x15af67=_0x15af67-0x0;var _0x44a20c=_0x5343[_0x15af67];return _0x44a20c;};var Game={};Game['Boot']=function(_0x1995a7){};Game['Boot']['prototype']={'init':function(){this[_0x5b61('0x0')][_0x5b61('0x1')]=0x2;},'preload':function(){},'create':function(){this[_0x5b61('0x2')][_0x5b61('0x3')](_0x5b61('0x4'));}};
