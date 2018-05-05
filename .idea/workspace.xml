@@ -36,7 +36,7 @@
         <entry file="file://$PROJECT_DIR$/js/Leaderboard.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="529">
-              <caret line="23" selection-start-line="23" selection-end-line="63" selection-end-column="1" />
+              <caret line="23" column="2021" lean-forward="true" selection-start-line="23" selection-start-column="2021" selection-end-line="23" selection-end-column="2021" />
             </state>
           </provider>
         </entry>
@@ -123,13 +123,13 @@
         <option value="$PROJECT_DIR$/db/getHighScores.js" />
         <option value="$PROJECT_DIR$/html/AboutTheCharacters.html" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/Leaderboard.js" />
         <option value="$PROJECT_DIR$/db/highscores.php" />
         <option value="$PROJECT_DIR$/js/SetUp.js" />
         <option value="$PROJECT_DIR$/js/Preloader.js" />
         <option value="$PROJECT_DIR$/js/MainMenu.js" />
         <option value="$PROJECT_DIR$/js/Level1.js" />
         <option value="$PROJECT_DIR$/js/Boot.js" />
+        <option value="$PROJECT_DIR$/js/Leaderboard.js" />
       </list>
     </option>
   </component>
@@ -142,7 +142,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="2015" />
     <option name="y" value="39" />
     <option name="width" value="1515" />
@@ -235,18 +235,17 @@
       <workItem from="1525476492411" duration="430000" />
       <workItem from="1525477176113" duration="17000" />
       <workItem from="1525478975510" duration="608000" />
-      <workItem from="1525550758847" duration="1261000" />
+      <workItem from="1525550758847" duration="1729000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23313000" />
+    <option name="totallyTimeSpent" value="23781000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2015" y="39" width="1515" height="1040" extended-state="0" />
-    <editor active="true" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28218812" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2203125" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -566,7 +565,7 @@
     <entry file="file://$PROJECT_DIR$/js/Leaderboard.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="529">
-          <caret line="23" selection-start-line="23" selection-end-line="63" selection-end-column="1" />
+          <caret line="23" column="2021" lean-forward="true" selection-start-line="23" selection-start-column="2021" selection-end-line="23" selection-end-column="2021" />
         </state>
       </provider>
     </entry>
