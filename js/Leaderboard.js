@@ -21,44 +21,4 @@ $(document).ready(function() {
 
 });
 
-Game.Leaderboard = function(game) {
-};
-
-Game.Leaderboard.prototype = {
-	create:function() {
-        this.createMainButton(game, "MainMenu",
-            game.world.centerX + 300,
-            game.world.centerY - 175,
-            180, 50,
-            function () {
-                this.state.start('MainMenu');
-            });
-        scoreText= game.add.text(16, 40, "Rank:", { fontSize: '12px', fill: '#FFFFFF' });
-        scoreText= game.add.text(80, 40, "Name:", { fontSize: '12px', fill: '#FFFFFF' });
-        scoreText= game.add.text(300, 40, "Score:", { fontSize: '12px', fill: '#FFFFFF' });
-        for (var i = 0, y = 40; i <10; i++, y+= 30) {
-            scoreText = game.add.text(16, 40+y, i+1, { fontSize: '12px', fill: '#FFFFFF' });
-            scoreText = game.add.text(80, 40+y, highScore[i]['name'], { fontSize: '12px', fill: '#FFFFFF' });
-            scoreText = game.add.text(300, 40+y, highScore[i]['score'], { fontSize: '12px', fill: '#FFFFFF' });
-        }
-    },
-
-	update:function() {
-		
-	},
-
-	createMainButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
-        button1.anchor.setTo(0.5, 0.5);
-        button1.width = w;
-        button1.height = h;
-        
-        var txt = game.add.text(button1.x, button1.y, string, {
-            font: "10pt press_start_2pregular", 
-            fill: "#fff", 
-            align: "center"
-        });
-        
-        txt.anchor.setTo(0.5, 0.5);
-    }
-}
+var _0x5ae1=['setTo','#fff','center','Leaderboard','MainMenu','world','centerX','centerY','state','start','add','text','Rank:','12px','#FFFFFF','Name:','Score:','name','score','logo','anchor'];(function(_0x2e0bfd,_0x235fc5){var _0x38463d=function(_0x38eda6){while(--_0x38eda6){_0x2e0bfd['push'](_0x2e0bfd['shift']());}};_0x38463d(++_0x235fc5);}(_0x5ae1,0x168));var _0x1553=function(_0x4f389c,_0x2ff549){_0x4f389c=_0x4f389c-0x0;var _0x59eb65=_0x5ae1[_0x4f389c];return _0x59eb65;};Game[_0x1553('0x0')]=function(_0x1d5ad6){};Game[_0x1553('0x0')]['prototype']={'create':function(){this['createMainButton'](game,_0x1553('0x1'),game[_0x1553('0x2')][_0x1553('0x3')]+0x12c,game[_0x1553('0x2')][_0x1553('0x4')]-0xaf,0xb4,0x32,function(){this[_0x1553('0x5')][_0x1553('0x6')]('MainMenu');});scoreText=game[_0x1553('0x7')][_0x1553('0x8')](0x10,0x28,_0x1553('0x9'),{'fontSize':_0x1553('0xa'),'fill':_0x1553('0xb')});scoreText=game[_0x1553('0x7')][_0x1553('0x8')](0x50,0x28,_0x1553('0xc'),{'fontSize':_0x1553('0xa'),'fill':_0x1553('0xb')});scoreText=game['add'][_0x1553('0x8')](0x12c,0x28,_0x1553('0xd'),{'fontSize':'12px','fill':'#FFFFFF'});for(var _0x445a6a=0x0,_0xdfc235=0x28;_0x445a6a<0xa;_0x445a6a++,_0xdfc235+=0x1e){scoreText=game[_0x1553('0x7')][_0x1553('0x8')](0x10,0x28+_0xdfc235,_0x445a6a+0x1,{'fontSize':_0x1553('0xa'),'fill':_0x1553('0xb')});scoreText=game[_0x1553('0x7')][_0x1553('0x8')](0x50,0x28+_0xdfc235,highScore[_0x445a6a][_0x1553('0xe')],{'fontSize':'12px','fill':_0x1553('0xb')});scoreText=game['add'][_0x1553('0x8')](0x12c,0x28+_0xdfc235,highScore[_0x445a6a][_0x1553('0xf')],{'fontSize':'12px','fill':_0x1553('0xb')});}},'update':function(){},'createMainButton':function(_0x59c58d,_0x4b54bd,_0xcc095f,_0x43aa8f,_0x57985c,_0x373ce2,_0x23e81d){var _0x4dc02b=_0x59c58d[_0x1553('0x7')]['button'](_0xcc095f,_0x43aa8f,_0x1553('0x10'),_0x23e81d,this,0x2,0x1,0x0);_0x4dc02b[_0x1553('0x11')][_0x1553('0x12')](0.5,0.5);_0x4dc02b['width']=_0x57985c;_0x4dc02b['height']=_0x373ce2;var _0x4581fe=_0x59c58d['add'][_0x1553('0x8')](_0x4dc02b['x'],_0x4dc02b['y'],_0x4b54bd,{'font':'10pt\x20press_start_2pregular','fill':_0x1553('0x13'),'align':_0x1553('0x14')});_0x4581fe['anchor'][_0x1553('0x12')](0.5,0.5);}};
