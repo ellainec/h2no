@@ -8,7 +8,7 @@ var scoreText;
 
 $(document).ready(function() {
     $.ajax({
-        url: "../db/highscores.php",
+        url: "db/highscores.php",
         dataType: "json",
         type: "POST",
         success: function(data) {
