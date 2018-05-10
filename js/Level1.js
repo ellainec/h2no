@@ -1,3 +1,7 @@
+// ==================================
+// GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
+// ==================================
+
 EnemyRobot = function (index, game, x, y) {
     this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
@@ -6,7 +10,7 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.name = index.toString();
     game.physics.enable(this.robot, Phaser.Physics.ARCADE);
     this.robot.body.immovable = true;
-    this.robot.body.allowGravity = false;
+    this.robot.body.allowGravity = true;
     this.robot.body.collideWorldBounds = true;
 
     // tween
@@ -52,7 +56,7 @@ SprinklerEmitter = function(index, game, x, y) {
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
-    // this is a global variable
+    // this isa global variable
 
     this.npc.anchor.setTo(0.5, 0.5);
     this.npc.name = index.toString();
@@ -66,6 +70,11 @@ NPC = function (index, game, x, y) {
 
 }
 
+
+// ==================================
+// VARIABLES BELOW
+// ==================================
+
 var enemy1;
 var npc1;
 
@@ -77,6 +86,7 @@ Game.Level1 = function (game) { };
 
 var map;
 var layer;
+var frontLayer;
 
 var player;
 var controls = {};
@@ -89,27 +99,50 @@ var rightTrue = false;
 var hitSprinkler = false;
 var mobile = false;
 
+
+// ==================================
+// CREATE FUNCTION BELOW
+// ==================================
+
 Game.Level1.prototype = {
 
     create: function (game) {
         this.stage.backgroundColor = '#3598db';
+			//this.stage.backgroundColor = '#000000';
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.physics.arcade.gravity.y = 1600;
+        this.physics.arcade.gravity.y = 1400;
 
-        // add map with 'map id, tileheight/width'
-        map = this.add.tilemap('map', 64, 64);
-        map.addTilesetImage('tileset');
-        layer = map.createLayer(0);
+        // add map with 'map id'
+        map = this.add.tilemap('map');
+			// add tileset with 'tileset id', 'key'
+        map.addTilesetImage('Tileset', 'tiles');
+		
+        layer = map.createLayer('Layer1');
+			frontLayer = map.createLayer('layer2');
+			  // uncomment to check layer collision boxes
+			  // layer.debug = true;
         layer.resizeWorld();
-        map.setCollisionBetween(0, 5);
-        //map.setTileIndexCallback(6, this.resetPlayer, this);
-        map.setTileIndexCallback(7, this.resetPlayer, this);
-        map.setTileIndexCallback(8, this.resetPlayer, this);
-        map.setTileIndexCallback(9, this.resetPlayer, this);
+			
+			
+			  map.setCollisionBetween(0, 3, true, 'Layer1');
+			  map.setCollisionBetween(32, 35, true, 'Layer1');
+			
+        map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
+			
+        map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
+			
 
         // Set up player
-        player = this.add.sprite(100, 1200, 'WaterBot');
+        player = this.add.sprite(100, 400, 'WaterBot');
         player.anchor.setTo(0.5, 0.5);
         // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
         // Enable physics on player
@@ -136,16 +169,21 @@ Game.Level1.prototype = {
 				
 			}
 
-
-        enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+			// This is a test to add an extra enemy sprite into game
+        // enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
 			
-        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
-        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
+        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
 
-        npc1 = new NPC(3, game, player.x + 128, player.y -25);
-
+        npc1 = new NPC(3, game, player.x + 128, player.y);
+			
 
     },
+	
+	
+// ==================================
+// UPDATE FUNCTION BELOW
+// ==================================
 
     update: function () {
 
@@ -153,6 +191,10 @@ Game.Level1.prototype = {
          //Collide Player with Sprinkler
        this.physics.arcade.collide(player, sprinkler.sprinkler);
        this.physics.arcade.collide(player, layer);
+			this.physics.arcade.collide(player, frontLayer);
+			// this will add physics to enemy 
+			// this.physics.arcade.collide(enemy1.robot, layer);
+			 this.physics.arcade.collide(npc1.npc, layer);
 			
         // //Collide Player with Sprinkler
        hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
@@ -196,9 +238,11 @@ Game.Level1.prototype = {
             moveRight();
         }
         
-        if (checkOverlap(player, enemy1.robot)) {
-            this.resetPlayer();
-        }
+			
+			// this line will check if player overlaps with enemy
+//        if (checkOverlap(player, enemy1.robot)) {
+//            this.resetPlayer();
+//        }
 			
 			if (emitter1.emitter.exists) {
 				if (hitSprinkler) {
@@ -228,7 +272,7 @@ Game.Level1.prototype = {
 
     },
     resetPlayer: function () {
-        player.reset(100, 1200);
+        player.reset(100, 400);
     },
     // for checkpoint create checkx/y
 
@@ -243,6 +287,11 @@ Game.Level1.prototype = {
 
 
 };
+
+
+// ==================================
+// GENERAL FUNCTIONS TO BE CALLED
+// ==================================
 
 
 function moveLeft() {
