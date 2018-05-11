@@ -87,6 +87,7 @@ Game.Level1 = function (game) { };
 var map;
 var layer;
 var frontLayer;
+var backlayer;
 
 var player;
 var controls = {};
@@ -117,9 +118,12 @@ Game.Level1.prototype = {
         map = this.add.tilemap('map');
 			// add tileset with 'tileset id', 'key'
         map.addTilesetImage('Tileset', 'tiles');
-		
+			
+			backlayer = map.createLayer('BG');
+			backlayer.alpha = 0.5;
         layer = map.createLayer('Layer1');
 			frontLayer = map.createLayer('layer2');
+			frontLayer.alpha = 0.7;
 			  // uncomment to check layer collision boxes
 			  // layer.debug = true;
         layer.resizeWorld();
