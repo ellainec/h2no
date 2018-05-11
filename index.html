@@ -30,7 +30,7 @@
         <li><a href="html/AboutTheTeam.html">About Us</a></li>
       </ul>
 		
-		</div>   
+		</div>
 		<div id="Setup">
 				<script text= "text/javascript" src="js/SetUp.js"></script>
 		</div>
@@ -44,6 +44,17 @@
 			in the children of Vancouver about water waste! Your job is to help H2-NO turn off the 
 			major water wasting appliances around the city of Vancouver!
 		</div>
+		<script>
+			$(document).ready(resize());
+			$(window).resize(resize());
+			function resize() {
+                if ($(window).width() > 2* $(window).height()) {
+                    $("#Setup").addClass("widescreen");
+                } else {
+                    $("#Setup").removeClass("widescreen");
+                }
+			}
+		</script>
         
   </body>
 

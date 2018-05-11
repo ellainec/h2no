@@ -12,7 +12,17 @@
 	font-family: 'press_start_2pregular';
 	color: white;
 }
+.widescreen {
+	height: 95vh;
+	width: calc(95vh * 2);
+	margin-left: auto;
+	margin-right: auto;
+}
 
+.fullscreen{
+	width: 95vw;
+	height: calc(95vw / 2);
+}
 body { 
 	background-color: #344152; 
 }
