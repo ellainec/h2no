@@ -6,6 +6,9 @@ Game.MainMenu = function(game) {
 //var titleScreen;
 
 Game.MainMenu.prototype = {
+    preload:function(){
+        postScores();
+    },
 	create:function(game) {
 
 		this.createLeaderButton(game, "Leaderboard", 

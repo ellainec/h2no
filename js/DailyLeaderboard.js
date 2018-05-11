@@ -1,5 +1,3 @@
-$(document).ready(getScores());
-
 Game.DailyLeaderboard = function(game) {
 };
 
@@ -20,7 +18,10 @@ Game.DailyLeaderboard.prototype = {
         var count = 0;
 
         if(!jQuery.isEmptyObject(daily)) {
+            console.log("not empty!");
             count = Object.keys(daily).length;
+        } else {
+            console.log("empty!");
         }
             for (var i = 0, y = 110; i < 10; i++, y += 25) {
                 scoreText = game.add.text(250, y, i + 1, {fontSize: '12px', fill: '#FFFFFF'});

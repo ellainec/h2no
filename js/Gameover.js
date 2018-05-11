@@ -35,23 +35,6 @@ Game.Gameover.prototype = {
     },
 }
 
-function postScores() {
-    $.ajax({
-        url: "db/postScore.php",
-        //dataType: "json",
-        data: {score: total, name: playerName},
-        type: "POST",
-        success: function () {
-            console.log("worked");
-            getScores();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("didn't work");
-            console.log(jqXHR.statusText);
-        }
-    });
-}
-
 function getScores() {
     $.ajax({
         url: "db/highscores.php",
@@ -62,36 +45,6 @@ function getScores() {
             daily = data[0];
             monthly = data[1];
             alltime = data[2];
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.statusText);
-        }
-    });
-};
-
-function getMonthlyScores() {
-    $.ajax({
-        url: "db/highscores.php",
-        dataType: "json",
-        data: {period:3},
-        type: "POST",
-        success: function(data) {
-            monthly = data;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.statusText);
-        }
-    });
-};
-
-function getAllTimeScores() {
-    $.ajax({
-        url: "db/highscores.php",
-        dataType: "json",
-        data: {period:3},
-        type: "POST",
-        success: function(data) {
-            alltime = data;
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.statusText);
