@@ -39,9 +39,18 @@
                         $score = $_POST['score'];
                         $statement->execute();
         }
+        //delete old entries from weekly table
+        $sql = "delete from weekly where date(datePlayed) < date_add(curdate(), interval 1-dayofweek(curdate()) day);";
+        $statement = $conn->query($sql);
+        //delete old entries from monthly table
+        $sql = "delete from monthly where month(datePlayed) < month(curdate())";
+        $statement = $conn->query($sql);
+        //delete the lowest score entry from alltime table
+        $sql = "delete from alltime order by score asc limit 1";
+        $statement = $conn->query($sql);
 
         //grab weekly, monthly, and all time highscores
-        $sql2 = "SELECT * FROM weekly WHERE datePlayed = CURDATE() ORDER BY score DESC";
+        $sql2 = "SELECT * FROM weekly WHERE date(datePlayed) > date_add(CURDATE(), interval 1-dayofweek(curdate()) day) ORDER BY score DESC";
         $statement2 = $conn->query($sql2);
         array_push($data, $statement2->fetchAll(PDO::FETCH_ASSOC));
 
@@ -52,6 +61,7 @@
         $sql2="SELECT * FROM alltime ORDER BY score DESC";
         $statement2 = $conn->query($sql2);
         array_push($data, $statement2->fetchAll(PDO::FETCH_ASSOC));
+
      }
 
     catch(PDOException $e)
