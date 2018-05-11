@@ -12,6 +12,10 @@
 	font-family: 'press_start_2pregular';
 	color: white;
 }
+
+#Setup {
+	padding-top: 5%;
+}
 .widescreen {
 	height: 95vh;
 	width: calc(95vh * 2);
