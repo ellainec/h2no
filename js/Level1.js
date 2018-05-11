@@ -89,11 +89,20 @@ var rightTrue = false;
 var hitSprinkler = false;
 var mobile = false;
 
+var timer;
+
+// number of seconds to start counting down from
+var total = 500;
+
+var playerName;
+
 Game.Level1.prototype = {
 
     create: function (game) {
-        this.stage.backgroundColor = '#3598db';
+        //assignment of playerName can't be outside in global scope
+        playerName = sessionStorage.getItem("playerName");
 
+        this.stage.backgroundColor = '#3598db';
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.physics.arcade.gravity.y = 1600;
 
@@ -144,7 +153,12 @@ Game.Level1.prototype = {
 
         npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
+        timer = game.time.create(false);
 
+        // this says that the updateCounter function will execute every 1000ms
+        timer.loop(1000, updateCounter, this);
+
+        timer.start();
     },
 
     update: function () {
@@ -227,15 +241,23 @@ Game.Level1.prototype = {
 			}
 
     },
-    resetPlayer: function () {
-        player.reset(100, 1200);
+
+    render: function() {
+        // the numbers are the coordinates to place the text at
+        game.debug.text('TIME: ' + total, 0, 15);
+        game.debug.text(playerName, 0, 40);
     },
+    resetPlayer: function () {
+        console.log("died");
+        this.state.start("Gameover");
+        //player.reset(100, 1200);
+    },
+
     // for checkpoint create checkx/y
 
     // creating buttons
     createButton: function (game, imgString, x, y, w, h, callBack) {
         var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
-
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
@@ -283,4 +305,8 @@ function npcJump() {
         }
         npc1.npc.animations.play(face);
     }
+}
+
+function updateCounter() {
+    total--;
 }

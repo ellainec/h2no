@@ -22,7 +22,7 @@ Game.Preloader.prototype = {
         this.load.image('buttonLeft', 'assets/buttons/arrowLeft.png');
         this.load.image('buttonJump', 'assets/buttons/arrowUp.png');
         this.load.image('buttonRight', 'assets/buttons/arrowRight.png');
-        
+        this.load.image('blueButton', 'assets/buttons/blue_button.png');
         this.load.image('logo', 'assets/logo.png');
 
         this.load.spritesheet('baddie', 'assets/baddie.png', 32, 32, 4);
