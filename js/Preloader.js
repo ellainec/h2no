@@ -8,12 +8,14 @@ Game.Preloader.prototype = {
     preload:function() {
         
         //LOAD ALL ASSETS
+        
+      this.load.image('blueButton', 'assets/buttons/blue_button.png');
 
 			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			// load player sprite
 			this.load.image('WaterBot', 'assets/WaterBot.png');
 			// load map
-			this.load.tilemap('map', 'assets/tilemaps/maps/H2NOWorld_Less.json', null, Phaser.Tilemap.TILED_JSON);        
+			this.load.tilemap('map', 'assets/tilemaps/maps/H2NOWorld_lessislands.json', null, Phaser.Tilemap.TILED_JSON);        
 			// load tiles
 			this.load.image('tiles', 'assets/tiles/Tileset.png');
 
@@ -28,6 +30,7 @@ Game.Preloader.prototype = {
 
 			this.load.image('sprinkler', 'assets/sprinkler.png');
 			this.load.image('diamond', 'assets/diamond.png');
+			this.load.image('clock', 'assets/clock.png');
         
     },
     

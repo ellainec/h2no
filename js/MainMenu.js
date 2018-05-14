@@ -6,13 +6,17 @@ Game.MainMenu = function(game) {
 //var titleScreen;
 
 Game.MainMenu.prototype = {
+    preload:function(){
+        postScores();
+    },
 	create:function(game) {
 
 		this.createLeaderButton(game, "Leaderboard", 
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
 											180, 50,
-											function() {this.state.start('Leaderboard');});
+											function() {
+			this.state.start('DailyLeaderboard');});
 
 		this.createPlayButton(game, "Play", 
 											game.world.centerX, 
