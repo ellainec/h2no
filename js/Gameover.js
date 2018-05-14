@@ -8,9 +8,8 @@ Game.Gameover.prototype = {
     create:function() {
         postScores();
         console.log(total + " " + playerName);
-        this.createButton(game, "Gameover",
-            100, 80,
-            100, 25,
+        this.createButton(game, "Game Over", 400, 200,
+            300, 80,
             function () {
                 this.state.start('DailyLeaderboard');
             });
@@ -19,7 +18,7 @@ Game.Gameover.prototype = {
 
     },
     createButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
 
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
