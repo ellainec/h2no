@@ -56,6 +56,7 @@
 			in the children of Vancouver about water waste! Your job is to help H2-NO turn off the 
 			major water wasting appliances around the city of Vancouver!
 		</div>
+    
 	<script>
 
 		var submitButton = document.getElementById("submitButton");
@@ -67,6 +68,18 @@
 
 		}
 	</script>
+    
+		<script>
+			$(document).ready(resize());
+			$(window).resize(resize());
+			function resize() {
+                if ($(window).width() > 2* $(window).height()) {
+                    $("#Setup").addClass("widescreen");
+                } else {
+                    $("#Setup").removeClass("widescreen");
+                }
+			}
+		</script>
   </body>
 
 </html>

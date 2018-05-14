@@ -1,3 +1,7 @@
+// ==================================
+// GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
+// ==================================
+
 EnemyRobot = function (index, game, x, y) {
     this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
@@ -6,7 +10,7 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.name = index.toString();
     game.physics.enable(this.robot, Phaser.Physics.ARCADE);
     this.robot.body.immovable = true;
-    this.robot.body.allowGravity = false;
+    this.robot.body.allowGravity = true;
     this.robot.body.collideWorldBounds = true;
 
     // tween
@@ -52,7 +56,7 @@ SprinklerEmitter = function(index, game, x, y) {
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
-    // this is a global variable
+    // this isa global variable
 
     this.npc.anchor.setTo(0.5, 0.5);
     this.npc.name = index.toString();
@@ -66,6 +70,11 @@ NPC = function (index, game, x, y) {
 
 }
 
+
+// ==================================
+// VARIABLES BELOW
+// ==================================
+
 var enemy1;
 var npc1;
 
@@ -77,6 +86,8 @@ Game.Level1 = function (game) { };
 
 var map;
 var layer;
+var frontLayer;
+var backlayer;
 
 var player;
 var controls = {};
@@ -95,30 +106,64 @@ var timer;
 var total = 500;
 
 var playerName;
+//TIMER//
+var timer;
+var timeLimit;
+var timeText;
+
+//CLOCKS FOR EXTRA TIME
+var clocks;
+
+// ==================================
+// CREATE FUNCTION BELOW
+// ==================================
 
 Game.Level1.prototype = {
 
     create: function (game) {
         //assignment of playerName can't be outside in global scope
         playerName = sessionStorage.getItem("playerName");
+      
+        this.stage.backgroundColor = '#3598db';
+			//this.stage.backgroundColor = '#000000';
 
         this.stage.backgroundColor = '#3598db';
         this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.physics.arcade.gravity.y = 1600;
+        this.physics.arcade.gravity.y = 1400;
 
-        // add map with 'map id, tileheight/width'
-        map = this.add.tilemap('map', 64, 64);
-        map.addTilesetImage('tileset');
-        layer = map.createLayer(0);
+        // add map with 'map id'
+        map = this.add.tilemap('map');
+			// add tileset with 'tileset id', 'key'
+        map.addTilesetImage('Tileset', 'tiles');
+			
+			backlayer = map.createLayer('BG');
+			backlayer.alpha = 0.5;
+        layer = map.createLayer('Layer1');
+			frontLayer = map.createLayer('layer2');
+			frontLayer.alpha = 0.7;
+			  // uncomment to check layer collision boxes
+			  // layer.debug = true;
         layer.resizeWorld();
-        map.setCollisionBetween(0, 5);
-        //map.setTileIndexCallback(6, this.resetPlayer, this);
-        map.setTileIndexCallback(7, this.resetPlayer, this);
-        map.setTileIndexCallback(8, this.resetPlayer, this);
-        map.setTileIndexCallback(9, this.resetPlayer, this);
+			
+			
+			  map.setCollisionBetween(0, 3, true, 'Layer1');
+			  map.setCollisionBetween(32, 35, true, 'Layer1');
+			
+        map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
+        map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
+			
+        map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
+        map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
+			
 
         // Set up player
-        player = this.add.sprite(100, 1200, 'WaterBot');
+        player = this.add.sprite(100, 400, 'WaterBot');
         player.anchor.setTo(0.5, 0.5);
         // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
         // Enable physics on player
@@ -145,8 +190,8 @@ Game.Level1.prototype = {
 				
 			}
 
-
-        enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+			// This is a test to add an extra enemy sprite into game
+        // enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
 			
         sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
         emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
@@ -159,14 +204,46 @@ Game.Level1.prototype = {
         timer.loop(1000, updateCounter, this);
 
         timer.start();
+        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+
+        npc1 = new NPC(3, game, player.x + 128, player.y);
+
+        // TIMER //
+        timer = game.time.create(false);
+        timer.loop(1000, this.countdown, this);
+        timer.start();
+        timeLimit = 5;
+        timeText = game.add.text(680, 40, "120", {
+            font: "12pt press_start_2pregular",
+            fill: "#fff",
+            align: "center"
+        });
+        timeText.fixedToCamera = true;
+
+        // CLOCKS //
+        clocks = game.add.group();
+        clocks.enableBody = true;
+        this.createClock(300, 300);
+        this.createClock(500, 300);
+        this.createClock(900, 300);
     },
+	
+	
+// ==================================
+// UPDATE FUNCTION BELOW
+// ==================================
 
     update: function () {
-
 
          //Collide Player with Sprinkler
        this.physics.arcade.collide(player, sprinkler.sprinkler);
        this.physics.arcade.collide(player, layer);
+       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+			this.physics.arcade.collide(player, frontLayer);
+			// this will add physics to enemy 
+			// this.physics.arcade.collide(enemy1.robot, layer);
+			 this.physics.arcade.collide(npc1.npc, layer);
 			
         // //Collide Player with Sprinkler
        hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
@@ -210,19 +287,17 @@ Game.Level1.prototype = {
             moveRight();
         }
         
-        if (checkOverlap(player, enemy1.robot)) {
-            this.resetPlayer();
-        }
+			
+			// this line will check if player overlaps with enemy
+//        if (checkOverlap(player, enemy1.robot)) {
+//            this.resetPlayer();
+//        }
 			
 			if (emitter1.emitter.exists) {
 				if (hitSprinkler) {
 				emitter1.emitter.destroy();
 				}	
 			}
-			
-			
-			
-        
 
 			if (mobile) {
         if (this.joystick.properties.right) {
@@ -236,9 +311,10 @@ Game.Level1.prototype = {
         if (this.button.isDown) {
             jumpNow();
         }
-
-				
 			}
+        timeText.setText(timeLimit);
+
+        this.timeUp();
 
     },
 
@@ -251,6 +327,8 @@ Game.Level1.prototype = {
         console.log("died");
         this.state.start("Gameover");
         //player.reset(100, 1200);
+        player.reset(100, 400);
+      
     },
 
     // for checkpoint create checkx/y
@@ -261,11 +339,30 @@ Game.Level1.prototype = {
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
+    },
+
+    countdown: function(){
+        timeLimit--;
+    },
+
+    timeUp: function(){
+        if (timeLimit == 0 || timeLimit < 0) {
+            //change this to something else later, like gameover or minus one life
+             timer.stop();
+        }
+    },
+    createClock: function(x, y) {
+        var clock = clocks.create(x, y, 'clock');
+        clock.body.gravity = false;
     }
 
 
 };
 
+
+// ==================================
+// GENERAL FUNCTIONS TO BE CALLED
+// ==================================
 
 function moveLeft() {
     player.body.velocity.x -= playerSpeed;
@@ -289,9 +386,6 @@ function jumpNow() {
     }
 }
 
-
-
-
 // Makes the NPC jump
 function npcJump() {
     if (npc1.npc.body.blocked.down) {
@@ -309,4 +403,8 @@ function npcJump() {
 
 function updateCounter() {
     total--;
+}
+function collectClock(player, clock){
+    timeLimit += 5;
+    clock.kill();
 }

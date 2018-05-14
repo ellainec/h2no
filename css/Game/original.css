@@ -13,6 +13,20 @@
 	color: white;
 }
 
+#Setup {
+	padding-top: 5%;
+}
+.widescreen {
+	height: 95vh;
+	width: calc(95vh * 2);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fullscreen{
+	width: 95vw;
+	height: calc(95vw / 2);
+}
 body { 
 	background-color: #344152; 
 }
