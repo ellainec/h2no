@@ -32,7 +32,7 @@ Game.MainMenu.prototype = {
 	},
     
 	createPlayButton:function(game, string, x, y, w, h, callBack) {
-			var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+			var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
 
 			button1.anchor.setTo(0.5, 0.5);
 			button1.width = w;
@@ -48,7 +48,7 @@ Game.MainMenu.prototype = {
 	},
 	
 	createLeaderButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
         
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
