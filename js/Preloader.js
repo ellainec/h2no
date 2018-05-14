@@ -30,6 +30,7 @@ Game.Preloader.prototype = {
 			this.load.spritesheet('baddie', 'assets/baddie.png', 32, 32, 4);
 			this.load.spritesheet('chris', 'assets/chris.png');
 			this.load.spritesheet('cat', 'assets/cat.png');
+			this.load.spritesheet('h2no', 'assets/characters/H2NObit.png', 32, 48);
 			this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
 			this.load.image('sprinkler', 'assets/sprinkler.png');
