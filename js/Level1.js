@@ -132,13 +132,13 @@ Game.Level1.prototype = {
         this.physics.arcade.gravity.y = 1400;
 
         // add map with 'map id'
-        map = this.add.tilemap('map');
+      map = this.add.tilemap('map');
 			// add tileset with 'tileset id', 'key'
-        map.addTilesetImage('Tileset', 'tiles');
+      map.addTilesetImage('Tileset', 'tiles');
 			
 			backlayer = map.createLayer('BG');
 			backlayer.alpha = 0.5;
-        layer = map.createLayer('Layer1');
+      layer = map.createLayer('Layer1');
 			frontLayer = map.createLayer('layer2');
 			frontLayer.alpha = 0.7;
 			  // uncomment to check layer collision boxes
@@ -191,12 +191,6 @@ Game.Level1.prototype = {
 			}
 
 			// This is a test to add an extra enemy sprite into game
-        // enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
-			
-        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y +100);
-        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y +55);
-
-        npc1 = new NPC(3, game, player.x + 128, player.y -25);
 
         timer = game.time.create(false);
 
