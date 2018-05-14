@@ -166,17 +166,17 @@ var easterEggReward = false;
 Game.Level1.prototype = {
 
     create: function (game) {
-        //assignment of playerName can't be outside in global scope
-        playerName = sessionStorage.getItem("playerName");
-      
-        this.stage.backgroundColor = '#3598db';
-			//this.stage.backgroundColor = '#000000';
+			//assignment of playerName can't be outside in global scope
+			playerName = sessionStorage.getItem("playerName");
 
-        this.stage.backgroundColor = '#3598db';
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.physics.arcade.gravity.y = 1400;
+			this.stage.backgroundColor = '#3598db';
+	  	//this.stage.backgroundColor = '#000000';
 
-        // add map with 'map id'
+			this.stage.backgroundColor = '#3598db';
+			this.physics.startSystem(Phaser.Physics.ARCADE);
+			this.physics.arcade.gravity.y = 1400;
+
+			// add map with 'map id'
       map = this.add.tilemap('map');
 			// add tileset with 'tileset id', 'key'
       map.addTilesetImage('Tileset', 'tiles');
@@ -186,105 +186,115 @@ Game.Level1.prototype = {
       layer = map.createLayer('Layer1');
 			frontLayer = map.createLayer('layer2');
 			frontLayer.alpha = 0.7;
-			  // uncomment to check layer collision boxes
-			  // layer.debug = true;
-        layer.resizeWorld();
+			// uncomment to check layer collision boxes
+			// layer.debug = true;
+      layer.resizeWorld();
 			
 			
-			  map.setCollisionBetween(0, 3, true, 'Layer1');
-			  map.setCollisionBetween(32, 35, true, 'Layer1');
-			
-        map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
-			
-        map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
-			
+			map.setCollisionBetween(0, 3, true, 'Layer1');
+			map.setCollisionBetween(32, 35, true, 'Layer1');
 
-        // Set up player
-        player = this.add.sprite(100, 400, 'WaterBot');
-        player.anchor.setTo(0.5, 0.5);
-        // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
-        // Enable physics on player
-        this.physics.enable(player, Phaser.Physics.ARCADE);
-        // Ground and edges of the world
-        player.body.collideWorldBounds = true;
-        player.body.maxVelocity.y = 800;
-        this.camera.follow(player);
+			map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
+
+			map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
 
 
-        controls = {
-            up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-        };
+			// Set up player
+			player = this.add.sprite(100, 400, 'h2no');
+			player.anchor.setTo(0.5, 0.5);
+			// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
+			// Enable physics on player
+			this.physics.enable(player, Phaser.Physics.ARCADE);
+			// Ground and edges of the world
+			player.body.collideWorldBounds = true;
+			player.body.maxVelocity.y = 800;
+			this.camera.follow(player);
 			
-        cursors = this.input.keyboard.createCursorKeys();
-			
-			
-			if (!game.device.desktop) {
-				mobile = true;
-				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-        this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-        this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+			player.animations.add('left', [0, 1, 2, 3], 10, true);
+			player.animations.add('idle', [4], 10, true);
+			player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+
+			controls = {
+					up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			};
+
+			cursors = this.input.keyboard.createCursorKeys();
+
+
+		  if (!game.device.desktop) {
+			mobile = true;
+			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
 
 				
 			}
 
 			// This is a test to add an extra enemy sprite into game
 
-        timer = game.time.create(false);
+			timer = game.time.create(false);
 
-        // this says that the updateCounter function will execute every 1000ms
-        timer.loop(1000, updateCounter, this);
+			// this says that the updateCounter function will execute every 1000ms
+			timer.loop(1000, updateCounter, this);
 
+<<<<<<< HEAD
         timer.start();
         sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
 
         
         emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+=======
+			timer.start();
+			sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+			emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+>>>>>>> e7fb93fab7adc8fbab0559456c494d25b10bdd96
 
-        npc1 = new NPC(3, game, player.x + 128, player.y);
+			npc1 = new NPC(3, game, player.x + 128, player.y);
 
-        // TIMER //
-        timer = game.time.create(false);
-        timer.loop(1000, this.countdown, this);
-        timer.start();
-        timeLimit = 5;
-        timeText = game.add.text(680, 40, "120", {
-            font: "12pt press_start_2pregular",
-            fill: "#fff",
-            align: "center"
-        });
-        timeText.fixedToCamera = true;
+			// TIMER //
+			timer = game.time.create(false);
+			timer.loop(1000, this.countdown, this);
+			timer.start();
+			timeLimit = 5;
+			timeText = game.add.text(680, 40, "120", {
+					font: "12pt press_start_2pregular",
+					fill: "#fff",
+					align: "center"
+			});
+			timeText.fixedToCamera = true;
 
-        // CLOCKS //
-        clocks = game.add.group();
-        clocks.enableBody = true;
-        this.createClock(300, 300);
-        this.createClock(500, 300);
-        this.createClock(900, 300);
+			// CLOCKS //
+			clocks = game.add.group();
+			clocks.enableBody = true;
+			this.createClock(300, 300);
+			this.createClock(500, 300);
+			this.createClock(900, 300);
 
-        chris1 = new Chris(3, game, 4950, 0);
-        chris1.chris.scale.setTo(0.2, 0.2);
+			chris1 = new Chris(3, game, 4950, 0);
+			chris1.chris.scale.setTo(0.2, 0.2);
 
-        cat1 = new Cat(3, game, 8500, 0);
-        cat1.cat.scale.setTo(0.1, 0.1);
+			cat1 = new Cat(3, game, 8500, 0);
+			cat1.cat.scale.setTo(0.1, 0.1);
 
-        cat2 = new Cat(3, game, 4950, 0);
-        cat2.cat.scale.setTo(0.1, 0.1);
-        cat2.cat.alpha = 0;
+			cat2 = new Cat(3, game, 4950, 0);
+			cat2.cat.scale.setTo(0.1, 0.1);
+			cat2.cat.alpha = 0;
 
-        // Tweens to make cat1 disappear, and cat2 appear next to Chris
-        tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
-        tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
-        tweenCatFound.chain(tweenCatReappear);
+			// Tweens to make cat1 disappear, and cat2 appear next to Chris
+			tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
+			tweenCatFound.chain(tweenCatReappear);
 
-        this.world.bringToTop(player);
+			this.world.bringToTop(player);
 
     },
 	
