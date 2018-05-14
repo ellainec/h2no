@@ -47,8 +47,8 @@ SprinklerEmitter = function(index, game, x, y) {
 	this.emitter.lifespan = 3200;
 
 	this.emitter.setYSpeed(-600, -550);
-  this.emitter.setXSpeed(-75, 75);
-  this.emitter.gravity = 900;
+    this.emitter.setXSpeed(-75, 75);
+    this.emitter.gravity = 900;
 	this.emitter.name = index.toString();
 	this.emitter.enableBody = true;
 
@@ -68,8 +68,26 @@ NPC = function (index, game, x, y) {
     this.npc.animations.add('left', [0, 1], 10, true);
     this.npc.animations.add('right', [2, 3], 10, true);
 
-}
+};
 
+Cat = function (index, game, x, y) {
+    this.cat = game.add.sprite(x, y, 'cat');
+
+    this.cat.name = index.toString();
+    game.physics.enable(this.cat, Phaser.Physics.ARCADE);
+    this.cat.body.immovable = false;
+    this.cat.body.allowGravity = true;
+    this.cat.body.collideWorldBounds = false;
+};
+
+Chris = function (index, game, x, y) {
+    this.chris = game.add.sprite(x, y, 'chris');
+    this.chris.name = index.toString();
+    game.physics.enable(this.chris, Phaser.Physics.ARCADE);
+    this.chris.body.immovable = false;
+    this.chris.body.allowGravity = true;
+    this.chris.body.collideWorldBounds = true;
+};
 
 // ==================================
 // VARIABLES BELOW
@@ -77,6 +95,9 @@ NPC = function (index, game, x, y) {
 
 var enemy1;
 var npc1;
+var cat1;
+var cat2;
+var chris1;
 
 //Sprinkler Vars
 var emitter1;
@@ -113,6 +134,8 @@ var timeText;
 
 //CLOCKS FOR EXTRA TIME
 var clocks;
+var easterEggReward = false;
+
 
 // ==================================
 // CREATE FUNCTION BELOW
@@ -221,6 +244,24 @@ Game.Level1.prototype = {
         this.createClock(300, 300);
         this.createClock(500, 300);
         this.createClock(900, 300);
+
+        chris1 = new Chris(3, game, 4950, 0);
+        chris1.chris.scale.setTo(0.2, 0.2);
+
+        cat1 = new Cat(3, game, 8500, 0);
+        cat1.cat.scale.setTo(0.1, 0.1);
+
+        cat2 = new Cat(3, game, 4950, 0);
+        cat2.cat.scale.setTo(0.1, 0.1);
+        cat2.cat.alpha = 0;
+
+        // Tweens to make cat1 disappear, and cat2 appear next to Chris
+        tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+        tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
+        tweenCatFound.chain(tweenCatReappear);
+
+        this.world.bringToTop(player);
+
     },
 	
 	
@@ -238,6 +279,9 @@ Game.Level1.prototype = {
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
 			 this.physics.arcade.collide(npc1.npc, layer);
+			 this.physics.arcade.collide(cat1.cat, layer);
+			 this.physics.arcade.collide(cat2.cat, layer);
+			 this.physics.arcade.collide(chris1.chris, layer);
 			
         // //Collide Player with Sprinkler
        hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
@@ -266,8 +310,6 @@ Game.Level1.prototype = {
             }
         }
 
-
-
         if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
@@ -287,28 +329,38 @@ Game.Level1.prototype = {
 //            this.resetPlayer();
 //        }
 			
-			if (emitter1.emitter.exists) {
-				if (hitSprinkler) {
-				emitter1.emitter.destroy();
-				}	
-			}
 
-			if (mobile) {
-        if (this.joystick.properties.right) {
-            moveRight();
+		if (emitter1.emitter.exists) {
+			if (hitSprinkler) {
+			    emitter1.emitter.destroy();
+			}	
+		}
+			
+			
+			
+
+
+		if (mobile) {
+            if (this.joystick.properties.right) {
+                moveRight();
+            }
+
+            if (this.joystick.properties.left) {
+                moveLeft();
+            }
+
+            if (this.button.isDown) {
+                jumpNow();
+            }			
         }
 
-        if (this.joystick.properties.left) {
-            moveLeft();
-        }
-
-        if (this.button.isDown) {
-            jumpNow();
-        }
-			}
         timeText.setText(timeLimit);
 
         this.timeUp();
+
+        
+        findCat();
+        easterEgg();
 
     },
 
@@ -349,7 +401,6 @@ Game.Level1.prototype = {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
-
 
 };
 
@@ -395,6 +446,7 @@ function npcJump() {
     }
 }
 
+
 function updateCounter() {
     total--;
 }
@@ -402,3 +454,17 @@ function collectClock(player, clock){
     timeLimit += 5;
     clock.kill();
 }
+
+function findCat() {
+    if (checkOverlap(player, cat1.cat)) {
+        tweenCatFound.start();
+        easterEggReward = true;
+    }
+}
+
+function easterEgg() {
+    if (checkOverlap(player, chris1.chris) && easterEggReward) {
+        player.loadTexture('WaterBotSkin');
+    }
+}
+

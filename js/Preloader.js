@@ -14,6 +14,7 @@ Game.Preloader.prototype = {
 			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			// load player sprite
 			this.load.image('WaterBot', 'assets/WaterBot.png');
+			this.load.image('WaterBotSkin', 'assets/WaterBotSkin.png');
 			// load map
 			this.load.tilemap('map', 'assets/tilemaps/maps/H2NOWorld_lessislands.json', null, Phaser.Tilemap.TILED_JSON);        
 			// load tiles
@@ -27,6 +28,8 @@ Game.Preloader.prototype = {
 			this.load.image('button', 'assets/Button.png');
 
 			this.load.spritesheet('baddie', 'assets/baddie.png', 32, 32, 4);
+			this.load.spritesheet('chris', 'assets/chris.png');
+			this.load.spritesheet('cat', 'assets/cat.png');
 			this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
 			this.load.image('sprinkler', 'assets/sprinkler.png');

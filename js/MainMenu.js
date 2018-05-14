@@ -7,7 +7,7 @@ Game.MainMenu = function(game) {
 
 Game.MainMenu.prototype = {
     preload:function(){
-        postScores();
+       postScores();
     },
 	create:function(game) {
 
