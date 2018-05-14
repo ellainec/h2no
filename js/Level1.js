@@ -152,7 +152,7 @@ Game.Level1.prototype = {
 
 			this.stage.backgroundColor = '#3598db';
 			this.physics.startSystem(Phaser.Physics.ARCADE);
-			this.physics.arcade.gravity.y = 100;
+			this.physics.arcade.gravity.y = 1400;
 
 			// add map with 'map id'
       map = this.add.tilemap('map');
