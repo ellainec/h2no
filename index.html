@@ -15,7 +15,11 @@
 		<script text= "text/javascript" src="js/Preloader.js"></script>
 		<script text= "text/javascript" src="js/MainMenu.js"></script>
 		<script text= "text/javascript" src="js/Level1.js"></script>
-		<script text= "text/javascript" src="js/Leaderboard.js"></script>
+		<script text= "text/javascript" src="js/Gameover.js"></script>
+		<script text= "text/javascript" src="js/DailyLeaderboard.js"></script>
+		<script text= "text/javascript" src="js/MonthlyLeaderboard.js"></script>
+		<script text= "text/javascript" src="js/AllTimeLeaderboard.js"></script>
+
 		<script text= "text/javascript" src="js/phaser-plugin-virtual-gamepad.js"></script>
   </head>
     
@@ -31,8 +35,16 @@
       </ul>
 		
 		</div>
+		<div id="container">
+			<div id="coverup">
+				<input type="text" id="name" placeholder="Name">
+				<input type="submit" id = "submitButton">
+				<p id="message"></p>
+			</div>
 		<div id="Setup">
 				<script text= "text/javascript" src="js/SetUp.js"></script>
+		</div>
+
 		</div>
 		<div id="description">
 				A time not to distant in the future, the era of the Great Disaster, where humans had 
@@ -44,6 +56,19 @@
 			in the children of Vancouver about water waste! Your job is to help H2-NO turn off the 
 			major water wasting appliances around the city of Vancouver!
 		</div>
+    
+	<script>
+
+		var submitButton = document.getElementById("submitButton");
+
+		submitButton.onclick = function() {
+		    var nameInput = document.getElementById("name").value;
+		    sessionStorage.setItem("playerName", nameInput);
+		    document.getElementById("coverup").classList.add("hide");
+
+		}
+	</script>
+    
 		<script>
 			$(document).ready(resize());
 			$(window).resize(resize());
@@ -55,7 +80,6 @@
                 }
 			}
 		</script>
-        
   </body>
 
 </html>
