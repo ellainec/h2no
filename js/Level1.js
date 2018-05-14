@@ -246,17 +246,10 @@ Game.Level1.prototype = {
 			// this says that the updateCounter function will execute every 1000ms
 			timer.loop(1000, updateCounter, this);
 
-<<<<<<< HEAD
-        timer.start();
-        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
 
-        
-        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
-=======
 			timer.start();
 			sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
 			emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
->>>>>>> e7fb93fab7adc8fbab0559456c494d25b10bdd96
 
 			npc1 = new NPC(3, game, player.x + 128, player.y);
 
