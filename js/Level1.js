@@ -22,24 +22,45 @@ EnemyRobot = function (index, game, x, y) {
 
 EnemySprinkler = function (index, game, x, y) {
     this.sprinkler = game.add.sprite(x, y, 'sprinkler');
-    // adding sprite
+    // Adding Sprite
     
-    //Sprinkler Physics
-    this.sprinkler.anchor.setTo(0.5, 0.5);
-    this.sprinkler.name = index.toString();
+    // Sprinkler Physics
     game.physics.enable(this.sprinkler, Phaser.Physics.ARCADE);
+    this.sprinkler.anchor.setTo(0.5, 0.6);
+    this.sprinkler.scale.setTo(0.5, 0.5);
+    this.sprinkler.name = index.toString();
     this.sprinkler.body.immovable = true;
-    this.sprinkler.body.setSize(5, 20, 5, 2);
     this.sprinkler.body.allowGravity = false;
     this.sprinkler.body.collideWorldBounds = true;
+    
+    // Sets the Collision Size
+    this.sprinkler.body.setSize(16, 8, 25, 6);
+
+    // Sprinkler Sprite Animation
+    this.sprinkler.animations.add('on', [0], 1, true);
 
 };
+
+SprinklerCollisionBox = function (index, game, x, y) {
+
+    // Sprinkler Collision Physics
+    game.physics.arcade.enable(this.sprinklerCollision, Phaser.Physics.ARCADE);
+    this.sprinklerCollision.body.immovable = true;
+    this.sprinklerCollision.anchor.setTo(0.5);
+    this.sprinklerCollision.scale.setTo(0.2, 0.1);
+    // this.sprinklerCollision.body.setSize(128, 128, 0, 6);
+
+    //Sets the Sprinkler Boundary to invisible
+    // this.sprinklerCollision.alpha = 0;
+};
+
+
 
 SprinklerEmitter = function(index, game, x, y) {
   this.emitter = game.add.emitter(x, y);
 
 	this.emitter.makeParticles('diamond', 0, 45, true);
-	this.emitter.start(false, 45, 5);
+	// this.emitter.start(false, 45, 5);
 
 
 	this.emitter.minParticleScale = 0.15;
@@ -102,6 +123,7 @@ var chris1;
 //Sprinkler Vars
 var emitter1;
 var sprinkler;
+var sprinklerCollision;
 
 Game.Level1 = function (game) { };
 
@@ -222,6 +244,8 @@ Game.Level1.prototype = {
 
         timer.start();
         sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+
+        
         emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
 
         npc1 = new NPC(3, game, player.x + 128, player.y);
@@ -368,6 +392,7 @@ Game.Level1.prototype = {
         // the numbers are the coordinates to place the text at
         game.debug.text('TIME: ' + total, 0, 15);
         game.debug.text(playerName, 0, 40);
+        game.debug.body(sprinkler.sprinkler);
     },
     resetPlayer: function () {
         console.log("died");
@@ -401,6 +426,8 @@ Game.Level1.prototype = {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
+
+
 
 };
 
