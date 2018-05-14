@@ -13,7 +13,7 @@ Game.Preloader.prototype = {
 			// load player sprite
 			this.load.image('WaterBot', 'assets/WaterBot.png');
 			// load map
-			this.load.tilemap('map', 'assets/tilemaps/maps/H2NOWorld_Less.json', null, Phaser.Tilemap.TILED_JSON);        
+			this.load.tilemap('map', 'assets/tilemaps/maps/H2NOWorld_lessislands.json', null, Phaser.Tilemap.TILED_JSON);        
 			// load tiles
 			this.load.image('tiles', 'assets/tiles/Tileset.png');
 
