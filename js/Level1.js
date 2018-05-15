@@ -59,7 +59,9 @@ SprinklerCollisionBox = function (index, game, x, y) {
 };
 
 
-
+// Sprinkler Interaction Shit
+oneHit = true;
+allowBounce = true;
 
 
 SprinklerEmitter = function(index, game, x, y) {
@@ -71,7 +73,7 @@ SprinklerEmitter = function(index, game, x, y) {
 
 	this.emitter.minParticleScale = 0.2;
 	this.emitter.maxParticleScale = 0.3;
-	this.emitter.lifespan = 3500;
+	this.emitter.lifespan = 3800;
 
     this.emitter.setYSpeed(-500, -450);
     this.emitter.setXSpeed(-75, 75);
@@ -130,8 +132,7 @@ var chris1;
 
 //Sprinkler Vars
 var emitter1;
-var sprinkler;
-var sprinklerCollision;
+
 
 Game.Level1 = function (game) { };
 
@@ -256,11 +257,19 @@ Game.Level1.prototype = {
 			timer.loop(1000, updateCounter, this);
 
 
-			timer.start();
-            emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+            timer.start();
             
+            
+            // Sprinkler & Emitter 1
+            emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
             sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
             sprinklerCollision = new SprinklerCollisionBox(1, game, player.x + 350, player.y + 70);
+            
+            
+            // Sprinkler & Emitter 2
+            emitter2 = new SprinklerEmitter(2, game, player.x + 800, player.y + 55);
+            sprinkler2 = new EnemySprinkler(1, game, player.x + 800, player.y + 70);
+            sprinklerCollision2 = new SprinklerCollisionBox(1, game, player.x + 800, player.y + 70);
 
 
 
@@ -300,7 +309,10 @@ Game.Level1.prototype = {
 			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
 			tweenCatFound.chain(tweenCatReappear);
 
-			this.world.bringToTop(player);
+            this.world.bringToTop(player);
+
+
+
 
     },
 	
@@ -311,9 +323,14 @@ Game.Level1.prototype = {
 
     update: function () {
 
-         //Collide Player with Sprinkler and SprinkerCollision
+        //Collide Player with Sprinkler and SprinkerCollision
        var hitSprinkler = this.physics.arcade.collide(player, sprinkler.sprinkler);
        var  hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
+
+       var hitSprinkler2 = this.physics.arcade.collide(player, sprinkler2.sprinkler);
+       var  hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinkler);
+
+
 
 
        this.physics.arcade.collide(player, layer);
@@ -329,9 +346,14 @@ Game.Level1.prototype = {
     
 
         //emitter physics
-       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
-         this.resetPlayer();
-       }
+        if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+          this.resetPlayer();
+        }
+        
+        if(emitter2.emitter !== null && this.physics.arcade.overlap(player, emitter2.emitter)) {
+          this.resetPlayer();
+        }
+
 
         player.body.velocity.x = 0;
         npc1.npc.body.velocity.x = 0;
@@ -371,47 +393,76 @@ Game.Level1.prototype = {
 //            this.resetPlayer();
 //        }
 			
-
-		// if (emitter1.emitter.exists) {
-		// 	if (hitSprinkler) {
-		// 	    emitter1.emitter.destroy();
-		// 	}	
-        // }
         
-        
-        // Sprinkler Interaction Shit
-        oneHit = true;
-        allowBounce = true;
 
+        // KILL EMITTERS ON SPRINKLER IMPACT *****
         if (oneHit) {
             sprinkler.sprinkler.animations.play('on');
-    
-            //Kill Emitter
+            
+            //Kill Emitter 1
             if (emitter1.emitter.exists) {
                 if (hitSprinkler) {
                     emitter1.emitter.destroy();
                     sprinkler.sprinkler.animations.stop();
                     sprinkler.sprinkler.animations.frame = 1;
                     oneHit = false;
-                    // sprinkler.sprinkler.body.setSize(20, 8, 3.5, 1);
-                    sprinklerCollision.sprinklerCollision.destroy();
-                    // playerBounce();
+                    sprinkler.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision.sprinklerCollision.kill();
+                    playerBounce();
                 } 
+            }
+        } 
+        
+        if (oneHit) {
+            sprinkler2.sprinkler.animations.play('on');
+
+            //Kill Emitter 2
+            if (emitter2.emitter.exists) {
+                if (hitSprinkler2) {
+                    emitter2.emitter.destroy();
+                    sprinkler2.sprinkler.animations.stop();
+                    sprinkler2.sprinkler.animations.frame = 1;
+                    oneHit = false;
+                    sprinkler2.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision2.sprinklerCollision.destroy();
+                    playerBounce2();
+                } 
+            }
+        }
+        
+        
+        // END OF KILL EMITTTERS ON SPRINKLER IMPACT *****
+
+
+
+        // Function for Bouncing On Sprinklers
+        function playerBounce() {
+            if (hitSprinkler && allowBounce) {
+                bounceTrigger();         
+            } else if (player.body.touching.down && hitSprinkler) {
+                    player.body.velocity.y = -400;
+            } allowBounce = true;
+        }
+
+        function playerBounce2() {
+            if (hitSprinkler2 && allowBounce) {
+                bounceTrigger();         
+            } else if (player.body.touching.down && hitSprinkler2) {
+                    player.body.velocity.y = -400;
             }
         }
 
 
-        // function playerBounce() {
-        //     if (hitSprinkler && allowBounce) {
-        
-        //         //BOUNCES PLAYER UP
-        //         player.body.velocity.y = -500;
-        //         allowBounce = false;
-        
-        //     } else if (cursors.up.isDown && player.body.touching.down && hitSprinkler) {
-        //     player.body.velocity.y = -400;
-        //     }
-        // }
+
+
+
+
+        // Function for Triggering Bounce
+        function bounceTrigger() {
+            //BOUNCES PLAYER UP
+            player.body.velocity.y = -500;
+            allowBounce = false;
+        }
 			
 			
 			
@@ -446,7 +497,9 @@ Game.Level1.prototype = {
         game.debug.text('TIME: ' + total, 0, 15);
         game.debug.text(playerName, 0, 40);
         game.debug.body(sprinkler.sprinkler);
+        game.debug.body(sprinkler2.sprinkler);
         game.debug.body(sprinklerCollision.sprinklerCollision);
+        game.debug.body(sprinklerCollision2.sprinklerCollision);
     },
     resetPlayer: function () {
         console.log("died");
