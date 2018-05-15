@@ -25,7 +25,7 @@ function postScores() {
     $.ajax({
         url: "db/postScore.php",
         dataType: "json",
-        data: {score: total, name: playerName},
+        data: {score: timeLimit, name: playerName},
         type: "POST",
         success: function (data) {
             console.log(data);
