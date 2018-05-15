@@ -297,7 +297,7 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 			timer.loop(1000, this.countdown, this);
 			timer.start();
-			timeLimit = 20;
+			timeLimit = 200;
 			timeText = game.add.text(610, 40, "500", {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
@@ -339,11 +339,11 @@ Game.Level1.prototype = {
             this.world.bringToTop(player);
 
 
-// Sprinkler Interaction Shit
-oneHit = true;
-oneHit2 = true;
-allowBounce = true;
-allowBounce2 = true;
+			// Sprinkler Interaction Shit
+			oneHit = true;
+			oneHit2 = true;
+			allowBounce = true;
+			allowBounce2 = true;
 
 
     },
