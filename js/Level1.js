@@ -165,6 +165,8 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var life;
+var lifeText;
 
 var controls = {};
 var cursors;
@@ -173,9 +175,6 @@ var hitSprinklerCollision = false;
 var mobile = false;
 
 var timer;
-
-// number of seconds to start counting down from
-var total = 500;
 
 var playerName;
 //TIMER//
@@ -299,12 +298,21 @@ Game.Level1.prototype = {
 			timer.loop(1000, this.countdown, this);
 			timer.start();
 			timeLimit = 500;
-			timeText = game.add.text(680, 40, "120", {
+			timeText = game.add.text(610, 40, "500", {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
 					align: "center"
 			});
 			timeText.fixedToCamera = true;
+			
+			// LIFE // -- Die a certain amount of times before the game over screen pops up
+			life = 3;
+			lifeText = game.add.text(40, 40, life, {
+					font: "12pt press_start_2pregular",
+					fill: "#fff",
+					align: "center"
+			});
+			lifeText.fixedToCamera = true;
 
 			// CLOCKS //
 			clocks = game.add.group();
@@ -348,7 +356,7 @@ allowBounce2 = true;
     update: function () {
 
 //<<<<<<< HEAD
-//         //Collide Player with Sprinkler
+//      //Collide Player with Sprinkler
 //      this.physics.arcade.collide(player, sprinkler.sprinkler);
 //      this.physics.arcade.collide(player, layer);
 //      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
@@ -521,7 +529,8 @@ allowBounce2 = true;
 						}		
         }
 
-        timeText.setText(timeLimit);
+        timeText.setText('Time: ' + timeLimit);
+			  lifeText.setText('Lives: ' + life);
 
         this.timeUp();
 
@@ -533,7 +542,7 @@ allowBounce2 = true;
 
     render: function() {
         // the numbers are the coordinates to place the text at
-        game.debug.text('TIME: ' + total, 0, 15);
+        game.debug.text('TIME: ' + timeLimit, 0, 15);
         game.debug.text(playerName, 0, 40);
         game.debug.body(sprinkler.sprinkler);
         game.debug.body(sprinkler2.sprinkler);
@@ -541,13 +550,14 @@ allowBounce2 = true;
         game.debug.body(sprinklerCollision2.sprinklerCollision);
     },
     resetPlayer: function () {
-        console.log("died");
-        this.state.start("Gameover");
-        //player.reset(100, 1200);
         player.reset(100, 400);
-      
-    },
+			  life--;
+				console.log("died");
+				if (life === 0) {
+					this.state.start('Gameover');
+				}
 
+    },
     // for checkpoint create checkx/y
 
     // creating buttons
@@ -572,10 +582,6 @@ allowBounce2 = true;
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
-
-
-
-
 
 };
 
@@ -621,10 +627,6 @@ function npcJump() {
     }
 }
 
-
-function updateCounter() {
-    total--;
-}
 function collectClock(player, clock){
     timeLimit += 5;
     clock.kill();
