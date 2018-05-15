@@ -5,13 +5,6 @@ Game.AllTimeLeaderboard = function(game) {
 Game.AllTimeLeaderboard.prototype = {
 	create:function() {
         var scoreText;
-          this.createMainButton(game, "Main menu",
-            game.world.centerX + 300,
-            game.world.centerY - 175,
-            180, 50,
-            function () {
-                this.state.start('MainMenu');
-            });
         scoreText= game.add.text(250, 80, "Rank", { fontSize: '14px', fill: '#FFFFFF' });
         scoreText= game.add.text(350, 80, "Name", { fontSize: '12px', fill: '#FFFFFF' });
         scoreText= game.add.text(600, 80, "Score", { fontSize: '12px', fill: '#FFFFFF' });
@@ -31,16 +24,16 @@ Game.AllTimeLeaderboard.prototype = {
 
         }
 
-     this.createButton(game, "Daily",
+        this.createButton(game, "Daily",
             100, 80,
-            100, 25,
+            140, 25,
             function () {
                 this.state.start('DailyLeaderboard');
             });
 
         this.createButton(game, "Monthly",
             100, 160,
-            100, 25,
+            140, 25,
             function () {
                 console.log("Monthlyclicked");
                 this.state.start("MonthlyLeaderboard");
@@ -48,11 +41,21 @@ Game.AllTimeLeaderboard.prototype = {
 
         this.createButton(game, "All-time",
             100, 240,
-            100, 25,
+            140, 25,
             function () {
                 console.log("alltime clicked");
                 this.state.start("AllTimeLeaderboard");
             });
+		    if (gameover) {
+					this.createMainButton(game, "Play Again", 
+															 700, 25, 180, 50,
+															 function() {this.state.start('Level1');});
+				} else {
+					this.createMainButton(game, "Main menu", 
+																700, 25, 180, 50,	
+																function () {this.state.start('MainMenu');});
+				}
+		
 
     },
 
@@ -61,7 +64,7 @@ Game.AllTimeLeaderboard.prototype = {
 	},
 
 	createMainButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
@@ -76,16 +79,17 @@ Game.AllTimeLeaderboard.prototype = {
     },
 
     createButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'blueButton', callBack, this, 2, 1, 0);
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
 
-        var txt = game.add.text(button1.x -40, button1.y - 5, string, {
+        var txt = game.add.text(button1.x, button1.y, string, {
             font: "10pt press_start_2pregular",
             fill: "#fff",
             align: "left"
         });
+        txt.anchor.setTo(0.5, 0.5);
     }
 }
 
