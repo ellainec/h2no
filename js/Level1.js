@@ -64,7 +64,7 @@ SprinklerCollisionBox = function (index, game, x, y) {
 SprinklerEmitter = function(index, game, x, y) {
   this.emitter = game.add.emitter(x, y);
 
-	this.emitter.makeParticles('diamond', 0, 120, true);
+	this.emitter.makeParticles('water', 0, 120, true);
 	this.emitter.start(false, 200, -1);
 
 
@@ -84,7 +84,7 @@ SprinklerEmitter = function(index, game, x, y) {
 SprinklerEmitter2 = function(index, game, x, y) {
     this.emitter = game.add.emitter(x, y);
   
-      this.emitter.makeParticles('diamond', 0, 120, true);
+      this.emitter.makeParticles('water', 0, 120, true);
       this.emitter.start(false, 200, -1);
   
   
