@@ -354,16 +354,10 @@ allowBounce2 = true;
 // ==================================
 
     update: function () {
-
-//<<<<<<< HEAD
-//      //Collide Player with Sprinkler
-//      this.physics.arcade.collide(player, sprinkler.sprinkler);
-//      this.physics.arcade.collide(player, layer);
-//      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-//=======
+			
         //Collide Player with Sprinkler and SprinkerCollision
        var hitSprinkler = this.physics.arcade.collide(player, sprinkler.sprinkler);
-       var  hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
+       var hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
 
        var hitSprinkler2 = this.physics.arcade.collide(player, sprinkler2.sprinkler);
        var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
@@ -373,7 +367,6 @@ allowBounce2 = true;
 
        this.physics.arcade.collide(player, layer);
        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-//>>>>>>> Testing
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
