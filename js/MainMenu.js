@@ -1,3 +1,4 @@
+var gameover;
 Game.MainMenu = function(game) {
     
     
@@ -15,8 +16,7 @@ Game.MainMenu.prototype = {
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
 											180, 50,
-											function() {
-			this.state.start('DailyLeaderboard');});
+											function() {this.state.start('DailyLeaderboard');});
 
 		this.createPlayButton(game, "Play", 
 											game.world.centerX, 
@@ -26,6 +26,7 @@ Game.MainMenu.prototype = {
 
 		//titleScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'titleScreen');
 		//titleScreen.anchor.setTo(0.5, 0.5);
+		gameover = false;
 
 	}, 
 	update:function(game) {
