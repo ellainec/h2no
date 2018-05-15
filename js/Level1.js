@@ -48,7 +48,7 @@ SprinklerCollisionBox = function (index, game, x, y) {
     game.physics.arcade.enable(this.sprinklerCollision, Phaser.Physics.ARCADE);
     this.sprinklerCollision.name = index.toString();
     this.sprinklerCollision.anchor.setTo(0.5, 0.4);
-    this.sprinklerCollision.scale.setTo(0.55, 0.4);
+    this.sprinklerCollision.scale.setTo(0.45, 0.4);
     this.sprinklerCollision.body.immovable = true;
     this.sprinklerCollision.body.allowGravity = false;
     this.sprinklerCollision.body.collideWorldBounds = true;
@@ -79,6 +79,26 @@ SprinklerEmitter = function(index, game, x, y) {
     
 
 };
+
+
+SprinklerEmitter2 = function(index, game, x, y) {
+    this.emitter = game.add.emitter(x, y);
+  
+      this.emitter.makeParticles('diamond', 0, 120, true);
+      this.emitter.start(false, 200, -1);
+  
+  
+      this.emitter.minParticleScale = 0.2;
+      this.emitter.maxParticleScale = 0.3;
+      this.emitter.lifespan = 3800;
+  
+      this.emitter.setYSpeed(-380, -375);
+    //   this.emitter.setXSpeed(-500, -450);
+      this.emitter.gravity = 600;
+      this.emitter.name = index.toString();
+      
+  
+  };
 
 
 
@@ -129,6 +149,7 @@ var chris1;
 
 //Sprinkler Vars
 var emitter1;
+var emitter2;
 
 
 Game.Level1 = function (game) { };
@@ -264,9 +285,9 @@ Game.Level1.prototype = {
             
             
             // Sprinkler & Emitter 2
-            emitter2 = new SprinklerEmitter(2, game, player.x + 800, player.y + 55);
-            sprinkler2 = new EnemySprinkler(1, game, player.x + 800, player.y + 70);
-            sprinklerCollision2 = new SprinklerCollisionBox(1, game, player.x + 800, player.y + 70);
+            emitter2 = new SprinklerEmitter2(2, game, player.x + 1800, player.y + 55);
+            sprinkler2 = new EnemySprinkler(1, game, player.x + 1800, player.y + 70);
+            sprinklerCollision2 = new SprinklerCollisionBox(1, game, player.x + 1800, player.y + 70);
 
 
 
@@ -394,6 +415,13 @@ allowBounce2 = true;
 //        if (checkOverlap(player, enemy1.robot)) {
 //            this.resetPlayer();
 //        }
+
+        //Emitter2 Re-Direction
+        if(player.position.x > sprinkler2.sprinkler.position.x) {
+            emitter2.emitter.setXSpeed(500, 450);
+        } else {
+            emitter2.emitter.setXSpeed(-500, -450);
+        }
 			
         
 
