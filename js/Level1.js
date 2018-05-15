@@ -26,9 +26,9 @@ EnemySprinkler = function (index, game, x, y) {
     
     // Sprinkler Physics
     game.physics.enable(this.sprinkler, Phaser.Physics.ARCADE);
+    this.sprinkler.name = index.toString();
     this.sprinkler.anchor.setTo(0.5, 0.6);
     this.sprinkler.scale.setTo(0.5, 0.5);
-    this.sprinkler.name = index.toString();
     this.sprinkler.body.immovable = true;
     this.sprinkler.body.allowGravity = false;
     this.sprinkler.body.collideWorldBounds = true;
@@ -42,38 +42,65 @@ EnemySprinkler = function (index, game, x, y) {
 };
 
 SprinklerCollisionBox = function (index, game, x, y) {
+    this.sprinklerCollision = game.add.sprite(x, y, 'sprinklerCollision');
 
     // Sprinkler Collision Physics
     game.physics.arcade.enable(this.sprinklerCollision, Phaser.Physics.ARCADE);
+    this.sprinklerCollision.name = index.toString();
+    this.sprinklerCollision.anchor.setTo(0.5, 0.4);
+    this.sprinklerCollision.scale.setTo(0.45, 0.4);
     this.sprinklerCollision.body.immovable = true;
-    this.sprinklerCollision.anchor.setTo(0.5);
-    this.sprinklerCollision.scale.setTo(0.2, 0.1);
-    // this.sprinklerCollision.body.setSize(128, 128, 0, 6);
+    this.sprinklerCollision.body.allowGravity = false;
+    this.sprinklerCollision.body.collideWorldBounds = true;
+
 
     //Sets the Sprinkler Boundary to invisible
-    // this.sprinklerCollision.alpha = 0;
+    this.sprinklerCollision.alpha = 0;
 };
+
 
 
 
 SprinklerEmitter = function(index, game, x, y) {
   this.emitter = game.add.emitter(x, y);
 
-	this.emitter.makeParticles('diamond', 0, 45, true);
-	// this.emitter.start(false, 45, 5);
+	this.emitter.makeParticles('water', 0, 120, true);
+	this.emitter.start(false, 200, -1);
 
 
-	this.emitter.minParticleScale = 0.15;
+	this.emitter.minParticleScale = 0.2;
 	this.emitter.maxParticleScale = 0.3;
-	this.emitter.lifespan = 3200;
+	this.emitter.lifespan = 3800;
 
-	this.emitter.setYSpeed(-600, -550);
+    this.emitter.setYSpeed(-500, -450);
     this.emitter.setXSpeed(-75, 75);
-    this.emitter.gravity = 900;
-	this.emitter.name = index.toString();
-	this.emitter.enableBody = true;
+    this.emitter.gravity = 400;
+    this.emitter.name = index.toString();
+    
 
 };
+
+
+SprinklerEmitter2 = function(index, game, x, y) {
+    this.emitter = game.add.emitter(x, y);
+  
+      this.emitter.makeParticles('water', 0, 120, true);
+      this.emitter.start(false, 200, -1);
+  
+  
+      this.emitter.minParticleScale = 0.2;
+      this.emitter.maxParticleScale = 0.3;
+      this.emitter.lifespan = 3800;
+  
+      this.emitter.setYSpeed(-380, -375);
+    //   this.emitter.setXSpeed(-500, -450);
+      this.emitter.gravity = 600;
+      this.emitter.name = index.toString();
+      
+  
+  };
+
+
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
@@ -122,8 +149,8 @@ var chris1;
 
 //Sprinkler Vars
 var emitter1;
-var sprinkler;
-var sprinklerCollision;
+var emitter2;
+
 
 Game.Level1 = function (game) { };
 
@@ -142,6 +169,7 @@ var rightTrue = false;
 var controls = {};
 var cursors;
 var hitSprinkler = false;
+var hitSprinklerCollision = false;
 var mobile = false;
 
 var timer;
@@ -248,9 +276,21 @@ Game.Level1.prototype = {
 			timer.loop(1000, updateCounter, this);
 
 
-			timer.start();
-			sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
-			emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+            timer.start();
+            
+            
+            // Sprinkler & Emitter 1
+            emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+            sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+            sprinklerCollision = new SprinklerCollisionBox(1, game, player.x + 350, player.y + 70);
+            
+            
+            // Sprinkler & Emitter 2
+            emitter2 = new SprinklerEmitter2(2, game, player.x + 1800, player.y + 55);
+            sprinkler2 = new EnemySprinkler(1, game, player.x + 1800, player.y + 70);
+            sprinklerCollision2 = new SprinklerCollisionBox(1, game, player.x + 1800, player.y + 70);
+
+
 
 			npc1 = new NPC(3, game, player.x + 128, player.y);
 
@@ -288,7 +328,15 @@ Game.Level1.prototype = {
 			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
 			tweenCatFound.chain(tweenCatReappear);
 
-			this.world.bringToTop(player);
+            this.world.bringToTop(player);
+
+
+// Sprinkler Interaction Shit
+oneHit = true;
+oneHit2 = true;
+allowBounce = true;
+allowBounce2 = true;
+
 
     },
 	
@@ -299,10 +347,25 @@ Game.Level1.prototype = {
 
     update: function () {
 
-         //Collide Player with Sprinkler
-      this.physics.arcade.collide(player, sprinkler.sprinkler);
-      this.physics.arcade.collide(player, layer);
-      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+//<<<<<<< HEAD
+//         //Collide Player with Sprinkler
+//      this.physics.arcade.collide(player, sprinkler.sprinkler);
+//      this.physics.arcade.collide(player, layer);
+//      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+//=======
+        //Collide Player with Sprinkler and SprinkerCollision
+       var hitSprinkler = this.physics.arcade.collide(player, sprinkler.sprinkler);
+       var  hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
+
+       var hitSprinkler2 = this.physics.arcade.collide(player, sprinkler2.sprinkler);
+       var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
+
+
+
+
+       this.physics.arcade.collide(player, layer);
+       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+//>>>>>>> Testing
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
@@ -311,13 +374,17 @@ Game.Level1.prototype = {
 			 this.physics.arcade.collide(cat2.cat, layer);
 			 this.physics.arcade.collide(chris1.chris, layer);
 			
-        // //Collide Player with Sprinkler
-       hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
+    
 
         //emitter physics
-       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
-         this.resetPlayer();
-       }
+        if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+          this.resetPlayer();
+        }
+        
+        if(emitter2.emitter !== null && this.physics.arcade.overlap(player, emitter2.emitter)) {
+          this.resetPlayer();
+        }
+
 
         player.body.velocity.x = 0;
         npc1.npc.body.velocity.x = 0;
@@ -359,14 +426,81 @@ Game.Level1.prototype = {
 //        if (checkOverlap(player, enemy1.robot)) {
 //            this.resetPlayer();
 //        }
-			
 
-		if (emitter1.emitter.exists) {
-			if (hitSprinkler) {
-			    emitter1.emitter.destroy();
-			}	
-		}
+        //Emitter2 Re-Direction
+        if(player.position.x > sprinkler2.sprinkler.position.x) {
+            emitter2.emitter.setXSpeed(500, 450);
+        } else {
+            emitter2.emitter.setXSpeed(-500, -450);
+        }
 			
+        
+
+        // KILL EMITTERS ON SPRINKLER IMPACT *****
+        if (oneHit) {
+            sprinkler.sprinkler.animations.play('on');
+            
+            //Kill Emitter 1
+            if (emitter1.emitter.exists) {
+                if (hitSprinkler) {
+                    emitter1.emitter.destroy();
+                    sprinkler.sprinkler.animations.stop();
+                    sprinkler.sprinkler.animations.frame = 1;
+                    oneHit = false;
+                    sprinkler.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision.sprinklerCollision.destroy();
+                    playerBounce();
+                } 
+            }
+        } 
+        
+        if (oneHit2) {
+            sprinkler2.sprinkler.animations.play('on');
+
+            //Kill Emitter 2
+            if (emitter2.emitter.exists) {
+                if (hitSprinkler2) {
+                    emitter2.emitter.destroy();
+                    sprinkler2.sprinkler.animations.stop();
+                    sprinkler2.sprinkler.animations.frame = 1;
+                    oneHit2 = false;
+                    sprinkler2.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision2.sprinklerCollision.destroy();
+                    playerBounce2();
+                } 
+            }
+        }
+        
+        
+        // END OF KILL EMITTTERS ON SPRINKLER IMPACT *****
+
+
+
+        // Function for Bouncing On Sprinklers
+        function playerBounce() {
+            if (hitSprinkler && allowBounce) {
+
+                //BOUNCES PLAYER UP
+                player.body.velocity.y = -500;
+                allowBounce = false;    
+
+            } else if (player.body.touching.down && hitSprinkler) {
+                    player.body.velocity.y = -400;
+            }
+        }
+
+        function playerBounce2() {
+            if (hitSprinkler2 && allowBounce2) {
+
+                 //BOUNCES PLAYER UP
+                 player.body.velocity.y = -500;
+                 allowBounce2 = false;          
+
+            } else if (player.body.touching.down && hitSprinkler2) {
+                    player.body.velocity.y = -400;
+            }
+        }
+
 			
 			
 
@@ -402,6 +536,9 @@ Game.Level1.prototype = {
         game.debug.text('TIME: ' + total, 0, 15);
         game.debug.text(playerName, 0, 40);
         game.debug.body(sprinkler.sprinkler);
+        game.debug.body(sprinkler2.sprinkler);
+        game.debug.body(sprinklerCollision.sprinklerCollision);
+        game.debug.body(sprinklerCollision2.sprinklerCollision);
     },
     resetPlayer: function () {
         console.log("died");
@@ -435,6 +572,8 @@ Game.Level1.prototype = {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
+
+
 
 
 
