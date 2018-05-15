@@ -59,9 +59,6 @@ SprinklerCollisionBox = function (index, game, x, y) {
 };
 
 
-// Sprinkler Interaction Shit
-oneHit = true;
-allowBounce = true;
 
 
 SprinklerEmitter = function(index, game, x, y) {
@@ -312,6 +309,11 @@ Game.Level1.prototype = {
             this.world.bringToTop(player);
 
 
+// Sprinkler Interaction Shit
+oneHit = true;
+oneHit2 = true;
+allowBounce = true;
+allowBounce2 = true;
 
 
     },
@@ -328,7 +330,7 @@ Game.Level1.prototype = {
        var  hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
 
        var hitSprinkler2 = this.physics.arcade.collide(player, sprinkler2.sprinkler);
-       var  hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinkler);
+       var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
 
 
 
@@ -407,13 +409,13 @@ Game.Level1.prototype = {
                     sprinkler.sprinkler.animations.frame = 1;
                     oneHit = false;
                     sprinkler.sprinkler.body.setSize(16, 8, 25, 18);
-                    sprinklerCollision.sprinklerCollision.kill();
+                    sprinklerCollision.sprinklerCollision.destroy();
                     playerBounce();
                 } 
             }
         } 
         
-        if (oneHit) {
+        if (oneHit2) {
             sprinkler2.sprinkler.animations.play('on');
 
             //Kill Emitter 2
@@ -422,7 +424,7 @@ Game.Level1.prototype = {
                     emitter2.emitter.destroy();
                     sprinkler2.sprinkler.animations.stop();
                     sprinkler2.sprinkler.animations.frame = 1;
-                    oneHit = false;
+                    oneHit2 = false;
                     sprinkler2.sprinkler.body.setSize(16, 8, 25, 18);
                     sprinklerCollision2.sprinklerCollision.destroy();
                     playerBounce2();
@@ -438,32 +440,28 @@ Game.Level1.prototype = {
         // Function for Bouncing On Sprinklers
         function playerBounce() {
             if (hitSprinkler && allowBounce) {
-                bounceTrigger();         
+
+                //BOUNCES PLAYER UP
+                player.body.velocity.y = -500;
+                allowBounce = false;    
+
             } else if (player.body.touching.down && hitSprinkler) {
                     player.body.velocity.y = -400;
-            } allowBounce = true;
+            }
         }
 
         function playerBounce2() {
-            if (hitSprinkler2 && allowBounce) {
-                bounceTrigger();         
+            if (hitSprinkler2 && allowBounce2) {
+
+                 //BOUNCES PLAYER UP
+                 player.body.velocity.y = -500;
+                 allowBounce2 = false;          
+
             } else if (player.body.touching.down && hitSprinkler2) {
                     player.body.velocity.y = -400;
             }
         }
 
-
-
-
-
-
-        // Function for Triggering Bounce
-        function bounceTrigger() {
-            //BOUNCES PLAYER UP
-            player.body.velocity.y = -500;
-            allowBounce = false;
-        }
-			
 			
 			
 
