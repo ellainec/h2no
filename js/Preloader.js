@@ -33,8 +33,9 @@ Game.Preloader.prototype = {
 			this.load.spritesheet('h2no', 'assets/characters/H2NObit.png', 32, 48);
 			this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
-			this.load.image('sprinkler', 'assets/sprinkler.png');
-			this.load.image('diamond', 'assets/diamond.png');
+			this.load.spritesheet('sprinkler', 'assets/sprinklerSprite.png', 64, 64);
+			this.load.image('sprinklerCollision', 'assets/sprinkler_on.png', 64, 64);
+			this.load.image('water', 'assets/water.png');
 			this.load.image('clock', 'assets/clock.png');
         
     },
