@@ -7,7 +7,7 @@ Game.Gameover.prototype = {
 
     create:function() {
 			postScores();
-			console.log(total + " " + playerName);
+			console.log(timeLimit + " " + playerName);
 			gameover = true;
 			this.createButton(game, "Game Over", 400, 200,
 					300, 80,

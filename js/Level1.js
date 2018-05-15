@@ -272,7 +272,7 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 
 			// this says that the updateCounter function will execute every 1000ms
-			timer.loop(1000, updateCounter, this);
+			//timer.loop(1000, updateCounter, this);
 
 
             timer.start();
@@ -297,7 +297,7 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 			timer.loop(1000, this.countdown, this);
 			timer.start();
-			timeLimit = 500;
+			timeLimit = 20;
 			timeText = game.add.text(610, 40, "500", {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
@@ -542,8 +542,8 @@ allowBounce2 = true;
 
     render: function() {
         // the numbers are the coordinates to place the text at
-        game.debug.text('TIME: ' + timeLimit, 0, 15);
-        game.debug.text(playerName, 0, 40);
+        // game.debug.text('TIME: ' + timeLimit, 0, 15);
+        // game.debug.text(playerName, 0, 40);
         game.debug.body(sprinkler.sprinkler);
         game.debug.body(sprinkler2.sprinkler);
         game.debug.body(sprinklerCollision.sprinklerCollision);
@@ -576,6 +576,7 @@ allowBounce2 = true;
         if (timeLimit == 0 || timeLimit < 0) {
             //change this to something else later, like gameover or minus one life
              timer.stop();
+					game.state.start('Gameover');
         }
     },
     createClock: function(x, y) {
