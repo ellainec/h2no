@@ -22,37 +22,85 @@ EnemyRobot = function (index, game, x, y) {
 
 EnemySprinkler = function (index, game, x, y) {
     this.sprinkler = game.add.sprite(x, y, 'sprinkler');
-    // adding sprite
+    // Adding Sprite
     
-    //Sprinkler Physics
-    this.sprinkler.anchor.setTo(0.5, 0.5);
-    this.sprinkler.name = index.toString();
+    // Sprinkler Physics
     game.physics.enable(this.sprinkler, Phaser.Physics.ARCADE);
+    this.sprinkler.name = index.toString();
+    this.sprinkler.anchor.setTo(0.5, 0.6);
+    this.sprinkler.scale.setTo(0.5, 0.5);
     this.sprinkler.body.immovable = true;
-    this.sprinkler.body.setSize(5, 20, 5, 2);
     this.sprinkler.body.allowGravity = false;
     this.sprinkler.body.collideWorldBounds = true;
+    
+    // Sets the Collision Size
+    this.sprinkler.body.setSize(16, 8, 25, 6);
+
+    // Sprinkler Sprite Animation
+    this.sprinkler.animations.add('on', [0], 1, true);
 
 };
+
+SprinklerCollisionBox = function (index, game, x, y) {
+    this.sprinklerCollision = game.add.sprite(x, y, 'sprinklerCollision');
+
+    // Sprinkler Collision Physics
+    game.physics.arcade.enable(this.sprinklerCollision, Phaser.Physics.ARCADE);
+    this.sprinklerCollision.name = index.toString();
+    this.sprinklerCollision.anchor.setTo(0.5, 0.4);
+    this.sprinklerCollision.scale.setTo(0.45, 0.4);
+    this.sprinklerCollision.body.immovable = true;
+    this.sprinklerCollision.body.allowGravity = false;
+    this.sprinklerCollision.body.collideWorldBounds = true;
+
+
+    //Sets the Sprinkler Boundary to invisible
+    this.sprinklerCollision.alpha = 0;
+};
+
+
+
 
 SprinklerEmitter = function(index, game, x, y) {
   this.emitter = game.add.emitter(x, y);
 
-	this.emitter.makeParticles('diamond', 0, 45, true);
-	this.emitter.start(false, 45, 5);
+	this.emitter.makeParticles('water', 0, 120, true);
+	this.emitter.start(false, 200, -1);
 
 
-	this.emitter.minParticleScale = 0.15;
+	this.emitter.minParticleScale = 0.2;
 	this.emitter.maxParticleScale = 0.3;
-	this.emitter.lifespan = 3200;
+	this.emitter.lifespan = 3800;
 
-	this.emitter.setYSpeed(-600, -550);
+    this.emitter.setYSpeed(-500, -450);
     this.emitter.setXSpeed(-75, 75);
-    this.emitter.gravity = 900;
-	this.emitter.name = index.toString();
-	this.emitter.enableBody = true;
+    this.emitter.gravity = 400;
+    this.emitter.name = index.toString();
+    
 
 };
+
+
+SprinklerEmitter2 = function(index, game, x, y) {
+    this.emitter = game.add.emitter(x, y);
+  
+      this.emitter.makeParticles('water', 0, 120, true);
+      this.emitter.start(false, 200, -1);
+  
+  
+      this.emitter.minParticleScale = 0.2;
+      this.emitter.maxParticleScale = 0.3;
+      this.emitter.lifespan = 3800;
+  
+      this.emitter.setYSpeed(-380, -375);
+    //   this.emitter.setXSpeed(-500, -450);
+      this.emitter.gravity = 600;
+      this.emitter.name = index.toString();
+      
+  
+  };
+
+
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
@@ -101,25 +149,41 @@ var chris1;
 
 //Sprinkler Vars
 var emitter1;
-var sprinkler;
+var emitter2;
+
 
 Game.Level1 = function (game) { };
 
 var map;
 var layer;
 var frontLayer;
+var backlayer;
 
 var player;
-var controls = {};
-var cursors;
 var playerSpeed = 450;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var life;
+var lifeText;
+
+var controls = {};
+var cursors;
 var hitSprinkler = false;
+var hitSprinklerCollision = false;
 var mobile = false;
 
+var timer;
+
+var playerName;
+//TIMER//
+var timer;
+var timeLimit;
+var timeText;
+
+//CLOCKS FOR EXTRA TIME
+var clocks;
 var easterEggReward = false;
 
 
@@ -130,92 +194,158 @@ var easterEggReward = false;
 Game.Level1.prototype = {
 
     create: function (game) {
-        this.stage.backgroundColor = '#3598db';
-			//this.stage.backgroundColor = '#000000';
+			//assignment of playerName can't be outside in global scope
+			playerName = sessionStorage.getItem("playerName");
 
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.physics.arcade.gravity.y = 1400;
+			this.stage.backgroundColor = '#3598db';
+	  	//this.stage.backgroundColor = '#000000';
 
-        // add map with 'map id'
-        map = this.add.tilemap('map');
+			this.stage.backgroundColor = '#3598db';
+			this.physics.startSystem(Phaser.Physics.ARCADE);
+			this.physics.arcade.gravity.y = 1400;
+
+			// add map with 'map id'
+      map = this.add.tilemap('map');
 			// add tileset with 'tileset id', 'key'
-        map.addTilesetImage('Tileset', 'tiles');
-		
-        layer = map.createLayer('Layer1');
+      map.addTilesetImage('Tileset', 'tiles');
+			
+			backlayer = map.createLayer('BG');
+			backlayer.alpha = 0.5;
+      layer = map.createLayer('Layer1');
 			frontLayer = map.createLayer('layer2');
-			  // uncomment to check layer collision boxes
-			  // layer.debug = true;
-        layer.resizeWorld();
+			frontLayer.alpha = 0.7;
+			// uncomment to check layer collision boxes
+			// layer.debug = true;
+      layer.resizeWorld();
 			
 			
-			  map.setCollisionBetween(0, 3, true, 'Layer1');
-			  map.setCollisionBetween(32, 35, true, 'Layer1');
-			
-        map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
-        map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
-			
-        map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
-        map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
-			
+			map.setCollisionBetween(0, 3, true, 'Layer1');
+			map.setCollisionBetween(32, 35, true, 'Layer1');
 
-        // Set up player
-        player = this.add.sprite(100, 400, 'WaterBot');
-        player.anchor.setTo(0.5, 0.5);
-        // player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
-        // Enable physics on player
-        this.physics.enable(player, Phaser.Physics.ARCADE);
-        // Ground and edges of the world
-        player.body.collideWorldBounds = true;
-        player.body.maxVelocity.y = 800;
-        this.camera.follow(player);
+			map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
+			map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
+
+			map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
+			map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
 
 
-        controls = {
-            up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-        };
+			// Set up player
+			player = this.add.sprite(100, 400, 'h2no');
+			player.anchor.setTo(0.5, 0.5);
+			// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
+			// Enable physics on player
+			this.physics.enable(player, Phaser.Physics.ARCADE);
+			// Ground and edges of the world
+			player.body.collideWorldBounds = true;
+			player.body.maxVelocity.y = 800;
+			this.camera.follow(player);
 			
-        cursors = this.input.keyboard.createCursorKeys();
-			
-			
-			if (!game.device.desktop) {
-				mobile = true;
-				this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-        this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-        this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+			player.animations.add('idle', [4], 10, true);
+			player.animations.add('left', [0, 1, 2, 3], 10, true);
+			player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+
+			controls = {
+					up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			};
+
+			cursors = this.input.keyboard.createCursorKeys();
+
+
+		  if (!game.device.desktop) {
+			mobile = true;
+			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
 
 				
 			}
 
 			// This is a test to add an extra enemy sprite into game
-        // enemy1 = new EnemyRobot(0, game, player.x + 400, player.y - 200);
+
+			timer = game.time.create(false);
+
+			// this says that the updateCounter function will execute every 1000ms
+			//timer.loop(1000, updateCounter, this);
+
+
+            timer.start();
+            
+            
+            // Sprinkler & Emitter 1
+            emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+            sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
+            sprinklerCollision = new SprinklerCollisionBox(1, game, player.x + 350, player.y + 70);
+            
+            
+            // Sprinkler & Emitter 2
+            emitter2 = new SprinklerEmitter2(2, game, player.x + 1800, player.y + 55);
+            sprinkler2 = new EnemySprinkler(1, game, player.x + 1800, player.y + 70);
+            sprinklerCollision2 = new SprinklerCollisionBox(1, game, player.x + 1800, player.y + 70);
+
+
+
+			npc1 = new NPC(3, game, player.x + 128, player.y);
+
+			// TIMER //
+			timer = game.time.create(false);
+			timer.loop(1000, this.countdown, this);
+			timer.start();
+			timeLimit = 20;
+			timeText = game.add.text(610, 40, "500", {
+					font: "12pt press_start_2pregular",
+					fill: "#fff",
+					align: "center"
+			});
+			timeText.fixedToCamera = true;
 			
-        sprinkler = new EnemySprinkler(1, game, player.x + 350, player.y + 70);
-        emitter1 = new SprinklerEmitter(2, game, player.x + 350, player.y + 55);
+			// LIFE // -- Die a certain amount of times before the game over screen pops up
+			life = 3;
+			lifeText = game.add.text(40, 40, life, {
+					font: "12pt press_start_2pregular",
+					fill: "#fff",
+					align: "center"
+			});
+			lifeText.fixedToCamera = true;
 
-        npc1 = new NPC(3, game, player.x + 128, player.y);
+			// CLOCKS //
+			clocks = game.add.group();
+			clocks.enableBody = true;
+			this.createClock(300, 300);
+			this.createClock(500, 300);
+			this.createClock(900, 300);
 
-        chris1 = new Chris(3, game, 4950, 0);
-        chris1.chris.scale.setTo(0.2, 0.2);
+			chris1 = new Chris(3, game, 4950, 0);
+			chris1.chris.scale.setTo(0.2, 0.2);
 
-        cat1 = new Cat(3, game, 8500, 0);
-        cat1.cat.scale.setTo(0.1, 0.1);
+			cat1 = new Cat(3, game, 8500, 0);
+			cat1.cat.scale.setTo(0.1, 0.1);
 
-        cat2 = new Cat(3, game, 4950, 0);
-        cat2.cat.scale.setTo(0.1, 0.1);
-        cat2.cat.alpha = 0;
+			cat2 = new Cat(3, game, 4950, 0);
+			cat2.cat.scale.setTo(0.1, 0.1);
+			cat2.cat.alpha = 0;
 
-        // Tweens to make cat1 disappear, and cat2 appear next to Chris
-        tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
-        tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
-        tweenCatFound.chain(tweenCatReappear);
+			// Tweens to make cat1 disappear, and cat2 appear next to Chris
+			tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
+			tweenCatFound.chain(tweenCatReappear);
 
-        this.world.bringToTop(player);
+            this.world.bringToTop(player);
+
+
+// Sprinkler Interaction Shit
+oneHit = true;
+oneHit2 = true;
+allowBounce = true;
+allowBounce2 = true;
+
+
     },
 	
 	
@@ -225,9 +355,25 @@ Game.Level1.prototype = {
 
     update: function () {
 
-         //Collide Player with Sprinkler
-       this.physics.arcade.collide(player, sprinkler.sprinkler);
+//<<<<<<< HEAD
+//      //Collide Player with Sprinkler
+//      this.physics.arcade.collide(player, sprinkler.sprinkler);
+//      this.physics.arcade.collide(player, layer);
+//      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+//=======
+        //Collide Player with Sprinkler and SprinkerCollision
+       var hitSprinkler = this.physics.arcade.collide(player, sprinkler.sprinkler);
+       var  hitSprinklerCollision = this.physics.arcade.collide(player, sprinklerCollision.sprinklerCollision);
+
+       var hitSprinkler2 = this.physics.arcade.collide(player, sprinkler2.sprinkler);
+       var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
+
+
+
+
        this.physics.arcade.collide(player, layer);
+       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+//>>>>>>> Testing
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
@@ -236,13 +382,17 @@ Game.Level1.prototype = {
 			 this.physics.arcade.collide(cat2.cat, layer);
 			 this.physics.arcade.collide(chris1.chris, layer);
 			
-        // //Collide Player with Sprinkler
-       hitSprinkler = checkOverlap(player, sprinkler.sprinkler);
+    
 
         //emitter physics
-       if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
-         this.resetPlayer();
-       }
+        if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
+          this.resetPlayer();
+        }
+        
+        if(emitter2.emitter !== null && this.physics.arcade.overlap(player, emitter2.emitter)) {
+          this.resetPlayer();
+        }
+
 
         player.body.velocity.x = 0;
         npc1.npc.body.velocity.x = 0;
@@ -268,60 +418,170 @@ Game.Level1.prototype = {
             jumpNow();
         }
 
+			// controls
         if (cursors.left.isDown || leftTrue) {
             moveLeft();
-        }
-
-        if (cursors.right.isDown || rightTrue) {
+					player.animations.play('left');
+        } else if (cursors.right.isDown || rightTrue) {
             moveRight();
-        }
+					player.animations.play('right');
+        } else {
+					player.animations.play('idle');
+				}
         
 			
 			// this line will check if player overlaps with enemy
 //        if (checkOverlap(player, enemy1.robot)) {
 //            this.resetPlayer();
 //        }
-			
-		if (emitter1.emitter.exists) {
-			if (hitSprinkler) {
-			    emitter1.emitter.destroy();
-			}	
-		}
-			
-			
+
+        //Emitter2 Re-Direction
+        if(player.position.x > sprinkler2.sprinkler.position.x) {
+            emitter2.emitter.setXSpeed(500, 450);
+        } else {
+            emitter2.emitter.setXSpeed(-500, -450);
+        }
 			
         
 
+        // KILL EMITTERS ON SPRINKLER IMPACT *****
+        if (oneHit) {
+            sprinkler.sprinkler.animations.play('on');
+            
+            //Kill Emitter 1
+            if (emitter1.emitter.exists) {
+                if (hitSprinkler) {
+                    emitter1.emitter.destroy();
+                    sprinkler.sprinkler.animations.stop();
+                    sprinkler.sprinkler.animations.frame = 1;
+                    oneHit = false;
+                    sprinkler.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision.sprinklerCollision.destroy();
+                    playerBounce();
+                } 
+            }
+        } 
+        
+        if (oneHit2) {
+            sprinkler2.sprinkler.animations.play('on');
+
+            //Kill Emitter 2
+            if (emitter2.emitter.exists) {
+                if (hitSprinkler2) {
+                    emitter2.emitter.destroy();
+                    sprinkler2.sprinkler.animations.stop();
+                    sprinkler2.sprinkler.animations.frame = 1;
+                    oneHit2 = false;
+                    sprinkler2.sprinkler.body.setSize(16, 8, 25, 18);
+                    sprinklerCollision2.sprinklerCollision.destroy();
+                    playerBounce2();
+                } 
+            }
+        }
+        
+        
+        // END OF KILL EMITTTERS ON SPRINKLER IMPACT *****
+
+
+
+        // Function for Bouncing On Sprinklers
+        function playerBounce() {
+            if (hitSprinkler && allowBounce) {
+
+                //BOUNCES PLAYER UP
+                player.body.velocity.y = -500;
+                allowBounce = false;    
+
+            } else if (player.body.touching.down && hitSprinkler) {
+                    player.body.velocity.y = -400;
+            }
+        }
+
+        function playerBounce2() {
+            if (hitSprinkler2 && allowBounce2) {
+
+                 //BOUNCES PLAYER UP
+                 player.body.velocity.y = -500;
+                 allowBounce2 = false;          
+
+            } else if (player.body.touching.down && hitSprinkler2) {
+                    player.body.velocity.y = -400;
+            }
+        }
+
+			
+			
+
+
 		if (mobile) {
-            if (this.joystick.properties.right) {
-                moveRight();
-            }
-
-            if (this.joystick.properties.left) {
-                moveLeft();
-            }
-
+			
             if (this.button.isDown) {
                 jumpNow();
-            }			
+            }
+            if (this.joystick.properties.right) {
+              moveRight();
+							player.animations.play('right');
+            } else if (this.joystick.properties.left) {
+              moveLeft();
+							player.animations.play('left');
+            } else {
+							player.animations.play('idle');
+						}		
         }
+
+        timeText.setText('Time: ' + timeLimit);
+			  lifeText.setText('Lives: ' + life);
+
+        this.timeUp();
+
         
         findCat();
         easterEgg();
 
     },
+
+    render: function() {
+        // the numbers are the coordinates to place the text at
+        // game.debug.text('TIME: ' + timeLimit, 0, 15);
+        // game.debug.text(playerName, 0, 40);
+        game.debug.body(sprinkler.sprinkler);
+        game.debug.body(sprinkler2.sprinkler);
+        game.debug.body(sprinklerCollision.sprinklerCollision);
+        game.debug.body(sprinklerCollision2.sprinklerCollision);
+    },
     resetPlayer: function () {
         player.reset(100, 400);
+			  life--;
+				console.log("died");
+				if (life === 0) {
+					this.state.start('Gameover');
+				}
+
     },
     // for checkpoint create checkx/y
 
     // creating buttons
     createButton: function (game, imgString, x, y, w, h, callBack) {
         var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
-
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
+    },
+
+    countdown: function(){
+        timeLimit--;
+    },
+
+    timeUp: function(){
+        if (timeLimit == 0 || timeLimit < 0) {
+            //change this to something else later, like gameover or minus one life
+             timer.stop();
+					game.state.start('Gameover');
+        }
+    },
+    createClock: function(x, y) {
+        var clock = clocks.create(x, y, 'clock');
+        clock.body.gravity = false;
     }
 
 };
@@ -330,7 +590,6 @@ Game.Level1.prototype = {
 // ==================================
 // GENERAL FUNCTIONS TO BE CALLED
 // ==================================
-
 
 function moveLeft() {
     player.body.velocity.x -= playerSpeed;
@@ -369,6 +628,11 @@ function npcJump() {
     }
 }
 
+function collectClock(player, clock){
+    timeLimit += 5;
+    clock.kill();
+}
+
 function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
@@ -381,3 +645,4 @@ function easterEgg() {
         player.loadTexture('WaterBotSkin');
     }
 }
+
