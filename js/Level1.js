@@ -133,13 +133,14 @@ var frontLayer;
 var backlayer;
 
 var player;
-var controls = {};
-var cursors;
 var playerSpeed = 450;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+
+var controls = {};
+var cursors;
 var hitSprinkler = false;
 var mobile = false;
 
@@ -218,8 +219,8 @@ Game.Level1.prototype = {
 			player.body.maxVelocity.y = 800;
 			this.camera.follow(player);
 			
-			player.animations.add('left', [0, 1, 2, 3], 10, true);
 			player.animations.add('idle', [4], 10, true);
+			player.animations.add('left', [0, 1, 2, 3], 10, true);
 			player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 
@@ -257,7 +258,7 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 			timer.loop(1000, this.countdown, this);
 			timer.start();
-			timeLimit = 5;
+			timeLimit = 500;
 			timeText = game.add.text(680, 40, "120", {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
@@ -299,9 +300,9 @@ Game.Level1.prototype = {
     update: function () {
 
          //Collide Player with Sprinkler
-       this.physics.arcade.collide(player, sprinkler.sprinkler);
-       this.physics.arcade.collide(player, layer);
-       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+      this.physics.arcade.collide(player, sprinkler.sprinkler);
+      this.physics.arcade.collide(player, layer);
+      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
@@ -342,13 +343,16 @@ Game.Level1.prototype = {
             jumpNow();
         }
 
+			// controls
         if (cursors.left.isDown || leftTrue) {
             moveLeft();
-        }
-
-        if (cursors.right.isDown || rightTrue) {
+					player.animations.play('left');
+        } else if (cursors.right.isDown || rightTrue) {
             moveRight();
-        }
+					player.animations.play('right');
+        } else {
+					player.animations.play('idle');
+				}
         
 			
 			// this line will check if player overlaps with enemy
@@ -368,17 +372,19 @@ Game.Level1.prototype = {
 
 
 		if (mobile) {
-            if (this.joystick.properties.right) {
-                moveRight();
-            }
-
-            if (this.joystick.properties.left) {
-                moveLeft();
-            }
-
+			
             if (this.button.isDown) {
                 jumpNow();
-            }			
+            }
+            if (this.joystick.properties.right) {
+              moveRight();
+							player.animations.play('right');
+            } else if (this.joystick.properties.left) {
+              moveLeft();
+							player.animations.play('left');
+            } else {
+							player.animations.play('idle');
+						}		
         }
 
         timeText.setText(timeLimit);
