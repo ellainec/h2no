@@ -50,7 +50,7 @@
         preload: function () {
             this.load.image('trees', 'assets/trees-h.png');
             this.load.image('background', 'assets/sky.png');
-            this.load.image('platform', 'assets/platform.png');
+            this.load.image('platform', 'assets/drone.png');
             this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         },
 
@@ -65,14 +65,14 @@
             //  Moving Platforms
             this.clouds = this.add.physicsGroup();
 
-            var cloud1 = new CloudPlatform(this.game, 300, 300, 'platform', this.clouds);
+            var cloud1 = new CloudPlatform(this.game, 100, 300, 'platform', this.clouds);
 
             cloud1.addMotionPath([
-                { x: "+600", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
-                { x: "-600", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+                { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+                { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
             ]);
 
-            var cloud2 = new CloudPlatform(this.game, 1400, 70, 'platform', this.clouds);
+            var cloud2 = new CloudPlatform(this.game, 700, 70, 'platform', this.clouds);
 
             cloud2.addMotionPath([
                 { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
