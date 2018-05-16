@@ -104,13 +104,13 @@ li:hover {
 	z-index: -1;
 }
 
-#coverup #logoMain {
+#playerInput #logoMain {
 	position: absolute;
-	width: 40%;
+	width: 120%;
 	height: auto;
-	left: 45%;
+	left: 35%;
 	margin-left: -100px;
-	margin-top: 2%;
+	margin-top: -60%;
 }
 
 #playerInput {
@@ -125,7 +125,7 @@ li:hover {
 #submitButton {
 	width: 50%;
 	height: 40px;
-	margin-left: 12%;
+	margin-left: 25%;
 	border-radius: 25px;
 	-moz-border-radius: 5px;
 	/* -webkit-border-radius: 5px; */
@@ -136,11 +136,13 @@ li:hover {
 	color: white;
 }
 
+
 #name {
 	text-align: center;
 	height: 25px;
 	margin: 10px;
 }
+
 
 
 #Setup {

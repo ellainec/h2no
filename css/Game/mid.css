@@ -97,28 +97,31 @@ li:hover {
 	z-index: -1;
 }
 
-#coverup #logoMain {
-	position: absolute;
-	width: 40%;
-	height: auto;
-	left: 50%;
-	margin-left: -100px;
-	margin-top: 2%;
-}
 
 #playerInput {
 	position: absolute;
 	top: 50%; 
-	left: 50%;
+	left: 40%;
 	padding: 10px;
-	margin-top: -50px;
-	margin-left: -100px;
+	margin-top: -5%;
+	margin-left: -15%;
 }
+
+#playerInput #logoMain {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	left: 65%;
+	margin-left: -40%;
+	margin-top: -50%;
+}
+
+
 
 #submitButton {
 	width: 50%;
 	height: 40px;
-	margin-left: 12%;
+	margin-left: 50%;
 	border-radius: 25px;
 	-moz-border-radius: 5px;
 	/* -webkit-border-radius: 5px; */
@@ -133,6 +136,8 @@ li:hover {
 	text-align: center;
 	height: 25px;
 	margin: 10px;
+	position: relative;
+	left: 25%;
 	color: black;
 }
 
