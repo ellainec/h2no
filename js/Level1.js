@@ -218,6 +218,10 @@ var cursors;
 var mobile = false;
 
 var playerName;
+
+// BOSS
+var bossButton;
+
 //TIMER//
 var timer;
 var timeLimit;
@@ -313,7 +317,8 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 
             timer.start();
-
+		
+		
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE START
@@ -357,7 +362,25 @@ Game.Level1.prototype = {
 					align: "center"
 			});
 			lifeText.fixedToCamera = true;
+		
+		
+		// =====================================
+		
+		
+		// THIS BOSS BUTTON IS FOR TESTING PURPOSES -- 
+		// WILL BE REMOVED FROM OFFICIAL GAME
+		
+		
+		// =======================================
+		
+	    bossButton = this.createButton(game, "Boss", 
+									   400, 350, 100, 50,
+									   function () {this.state.start('Boss');}
+						 );
+		
+		// =========================================
 
+		
 			// CLOCKS //
 			clocks = game.add.group();
 			clocks.enableBody = true;
@@ -553,14 +576,6 @@ Game.Level1.prototype = {
     },
     // for checkpoint create checkx/y
 
-    // creating buttons
-    createButton: function (game, imgString, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
-        button1.anchor.setTo(0.5, 0.5);
-        button1.width = w;
-        button1.height = h;
-    },
-
     countdown: function(){
         timeLimit--;
     },
@@ -571,6 +586,22 @@ Game.Level1.prototype = {
              timer.stop();
 					game.state.start('Gameover');
         }
+    },
+    createButton:function(game, string, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
+
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+		button1.fixedToCamera = true;
+
+        var txt = game.add.text(button1.x, button1.y, string, {
+            font: "10pt press_start_2pregular",
+            fill: "#fff",
+            align: "center"
+        });
+        txt.anchor.setTo(0.5, 0.5);
+		txt.fixedToCamera = true;
     },
     createClock: function(x, y) {
         var clock = clocks.create(x, y, 'clock');
