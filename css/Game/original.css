@@ -123,7 +123,6 @@ li:hover {
 }
 
 #submitButton {
-	/* width: 150px; */
 	width: 50%;
 	height: 40px;
 	margin-left: 12%;
@@ -142,7 +141,6 @@ li:hover {
 	height: 25px;
 	margin: 10px;
 }
-
 
 
 #Setup {
