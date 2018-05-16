@@ -37,6 +37,9 @@ Game.Preloader.prototype = {
 			this.load.image('sprinklerCollision', 'assets/sprinkler_on.png', 64, 64);
 			this.load.image('water', 'assets/water.png');
 			this.load.image('clock', 'assets/clock.png');
+
+			// drone
+			this.load.image('platform', 'assets/droneTwo.png');
         
     },
     
