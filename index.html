@@ -37,8 +37,14 @@
 		</div>
 		<div id="container">
 			<div id="coverup">
-				<input type="text" id="name" placeholder="Name">
-				<input type="submit" id = "submitButton">
+				<img id="coverup" src="assets/game_menu/vancouver.png" alt="Vancouver in Pixels"/>
+				<div id="playerInput">
+						<img id="logoMain" src="assets/logo.png" alt='H2NO! Logo'>
+					<form id="myForm"> 
+						<input type="text" id="name" placeholder="Name"/>
+					</form>
+						<input type="submit" id="submitButton" value="Submit"/>
+				</div>
 				<p id="message"></p>
 			</div>
 		<div id="Setup">
@@ -62,11 +68,18 @@
 		var submitButton = document.getElementById("submitButton");
 
 		submitButton.onclick = function() {
-		    var nameInput = document.getElementById("name").value;
-		    sessionStorage.setItem("playerName", nameInput);
-		    document.getElementById("coverup").classList.add("hide");
-
+			var nameInput = document.getElementById("name").value.trim();
+			var resetText = document.getElementById("myForm");
+			if (nameInput === "") {
+					alert("Please Enter Your Name");
+					resetText.reset();
+				} else {
+					sessionStorage.setItem("playerName", nameInput);
+					document.getElementById("coverup").classList.add("hide");
+				}
 		}
+
+
 	</script>
     
 		<script>

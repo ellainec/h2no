@@ -72,3 +72,75 @@ li:hover {
 .active {
 	background-color: #1f2731;
 }
+
+
+#container {
+	position: relative;
+}
+
+.hide {
+	display: none;
+}
+
+#coverup {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+}
+
+#coverup img {
+	opacity: 1;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: -1;
+}
+
+
+#playerInput {
+	position: absolute;
+	top: 50%; 
+	left: 40%;
+	padding: 10px;
+	margin-top: -5%;
+	margin-left: -15%;
+}
+
+#playerInput #logoMain {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	left: 65%;
+	margin-left: -40%;
+	margin-top: -50%;
+}
+
+
+
+#submitButton {
+	width: 50%;
+	height: 40px;
+	margin-left: 50%;
+	border-radius: 25px;
+	-moz-border-radius: 5px;
+	/* -webkit-border-radius: 5px; */
+}
+
+#submitButton:hover {
+	background-color: #2C99D4;
+	color: white;
+}
+
+#name {
+	text-align: center;
+	height: 25px;
+	margin: 10px;
+	position: relative;
+	left: 25%;
+	color: black;
+}
+
+input {
+	color: black;
+}
