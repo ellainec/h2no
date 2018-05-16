@@ -205,7 +205,9 @@ var frontLayer;
 var backlayer;
 
 var player;
-var playerSpeed = 450;
+var playerSpeed = 20;
+var playerMaxSpeed = 450;
+var playerSlow = 40;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
@@ -513,7 +515,6 @@ Game.Level1.prototype = {
         //                                   SPRINKLER UPDATE END
         //========================================================================================================================================
 
-        player.body.velocity.x = 0;
         npc1.npc.body.velocity.x = 0;
 
 
@@ -545,6 +546,13 @@ Game.Level1.prototype = {
             moveRight();
             player.animations.play('right');
         } else {
+            if (player.body.velocity.x >= playerSlow) {
+                player.body.velocity.x -= playerSlow;
+            } else if (player.body.velocity.x < -playerSlow) {
+                player.body.velocity.x += playerSlow;
+            } else {
+                player.body.velocity.x = 0;
+            }
             player.animations.play('idle');
         }
 
@@ -630,11 +638,19 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-    player.body.velocity.x -= playerSpeed;
+    if (player.body.velocity.x > -playerMaxSpeed) {
+        player.body.velocity.x -= playerSpeed;
+    } else {
+        player.body.velocity.x = -playerMaxSpeed;
+    }
 }
 
 function moveRight() {
-    player.body.velocity.x += playerSpeed;
+    if (player.body.velocity.x < playerMaxSpeed) {
+        player.body.velocity.x += playerSpeed;
+    } else {
+        player.body.velocity.x = playerMaxSpeed;
+    }
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -646,7 +662,11 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        player.body.velocity.y -= 600;
+        if (Math.abs(player.body.velocity.x) >= 125) {
+                player.body.velocity.y -= 600;
+            } else {
+                player.body.velocity.y -= 400;
+            }
         jumpTimer = game.time.now + 750;
     }
 }
