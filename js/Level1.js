@@ -210,13 +210,12 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
+var life;
+var lifeText;
 
 var controls = {};
 var cursors;
 var mobile = false;
-
-// number of seconds to start counting down from
-var total = 500;
 
 var playerName;
 //TIMER//
@@ -313,9 +312,8 @@ Game.Level1.prototype = {
 
 			timer = game.time.create(false);
 
-			// this says that the updateCounter function will execute every 1000ms
-			timer.loop(1000, updateCounter, this);
             timer.start();
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE START
@@ -343,13 +341,22 @@ Game.Level1.prototype = {
 			timer = game.time.create(false);
 			timer.loop(1000, this.countdown, this);
 			timer.start();
-			timeLimit = 500;
-			timeText = game.add.text(680, 40, "120", {
+			timeLimit = 200;
+			timeText = game.add.text(610, 40, "500", {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
 					align: "center"
 			});
 			timeText.fixedToCamera = true;
+			
+			// LIFE // -- Die a certain amount of times before the game over screen pops up
+			life = 3;
+			lifeText = game.add.text(40, 40, life, {
+					font: "12pt press_start_2pregular",
+					fill: "#fff",
+					align: "center"
+			});
+			lifeText.fixedToCamera = true;
 
 			// CLOCKS //
 			clocks = game.add.group();
@@ -375,7 +382,6 @@ Game.Level1.prototype = {
 
             this.world.bringToTop(player);
 
-
     },
 	
 	
@@ -385,12 +391,6 @@ Game.Level1.prototype = {
 
     update: function () {
 
-//<<<<<<< HEAD
-//         //Collide Player with Sprinkler
-//      this.physics.arcade.collide(player, sprinkler.sprinkler);
-//      this.physics.arcade.collide(player, layer);
-//      this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-//=======
 
         //>>>>>>> Testing
         this.physics.arcade.collide(player, frontLayer);
@@ -425,6 +425,16 @@ Game.Level1.prototype = {
             var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
+
+       this.physics.arcade.collide(player, layer);
+       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+			this.physics.arcade.collide(player, frontLayer);
+			// this will add physics to enemy 
+			// this.physics.arcade.collide(enemy1.robot, layer);
+			 this.physics.arcade.collide(npc1.npc, layer);
+			 this.physics.arcade.collide(cat1.cat, layer);
+			 this.physics.arcade.collide(cat2.cat, layer);
+			 this.physics.arcade.collide(chris1.chris, layer);
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
@@ -517,7 +527,8 @@ Game.Level1.prototype = {
 						}		
         }
 
-        timeText.setText(timeLimit);
+        timeText.setText('Time: ' + timeLimit);
+			  lifeText.setText('Lives: ' + life);
 
         this.timeUp();
 
@@ -528,17 +539,18 @@ Game.Level1.prototype = {
     },
 
     render: function() {
-        // the numbers are the coordinates to place the text at
-        game.debug.text('TIME: ' + total, 0, 15);
-        game.debug.text(playerName, 0, 40);
+
     },
     resetPlayer: function () {
-        console.log("died");
-        //this.state.start("Gameover");
-        player.reset(100, 400);
-      
-    },
 
+        player.reset(100, 400);
+			  life--;
+				console.log("died");
+				if (life === 0) {
+					game.state.start('Gameover');
+				}
+
+    },
     // for checkpoint create checkx/y
 
     // creating buttons
@@ -557,6 +569,7 @@ Game.Level1.prototype = {
         if (timeLimit == 0 || timeLimit < 0) {
             //change this to something else later, like gameover or minus one life
              timer.stop();
+					game.state.start('Gameover');
         }
     },
     createClock: function(x, y) {
@@ -608,10 +621,6 @@ function npcJump() {
     }
 }
 
-
-function updateCounter() {
-    total--;
-}
 function collectClock(player, clock){
     timeLimit += 5;
     clock.kill();
