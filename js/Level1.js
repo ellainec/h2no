@@ -252,32 +252,40 @@ Game.Level1.prototype = {
 			// add map with 'map id'
       map = this.add.tilemap('map');
 			// add tileset with 'tileset id', 'key'
-      map.addTilesetImage('Tileset', 'tiles');
+      map.addTilesetImage('h2no_tilesheet', 'tiles');
 			
-			backlayer = map.createLayer('BG');
-			backlayer.alpha = 0.5;
-      layer = map.createLayer('Layer1');
-			frontLayer = map.createLayer('layer2');
-			frontLayer.alpha = 0.7;
+			bossStateLayer = map.createLayer('boss_state_layer');
+            elevationBackgroundLayer = map.createLayer('elevation_background_layer');
+			treeLayer = map.createLayer('tree_layer');
+			leavesLayer = map.createLayer('leaves_layer');
+			branchLayer = map.createLayer('branch_layer');
+			appleLayer = map.createLayer('apple_layer');
+			floorBackgroundLayer = map.createLayer('floor_background_layer');
+			elevationRightLayer = map.createLayer('elevation_right_layer');
+			elevationLeftLayer = map.createLayer('elevation_left_layer');
+			fenceLayer = map.createLayer('fence_layer');
+			carLayer = map.createLayer('car_layer');
+			elevationLayer = map.createLayer('elevation_layer');
+			houseWallLayer = map.createLayer('house_wall_layer');
+			houseDoorWindowLayer = map.createLayer('house_door_window_layer');
+		    houseRoofLayer = map.createLayer('house_roof_layer');
+		    grassBackgroundLayer = map.createLayer('grass_background_layer');
+		    mainLayer = map.createLayer('main_layer');
+            grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
+            grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
+            grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
+            waterLayer = map.createLayer('water_layer');
+                        
 			// uncomment to check layer collision boxes
 			// layer.debug = true;
-      layer.resizeWorld();
+            mainLayer.resizeWorld();
+            
+            
 			
-			
-			map.setCollisionBetween(0, 3, true, 'Layer1');
-			map.setCollisionBetween(32, 35, true, 'Layer1');
+			map.setCollisionBetween(0, 999, true, 'main_layer');
+			map.setCollisionBetween(0, 999, true, 'house_roof_layer');
+			map.setCollisionBetween(0, 999, true, 'elevation_layer');
 
-			map.setTileIndexCallback(4, this.resetPlayer, this, 'Layer1');
-			map.setTileIndexCallback(5, this.resetPlayer, this, 'Layer1');
-			map.setTileIndexCallback(6, this.resetPlayer, this, 'Layer1');
-			map.setTileIndexCallback(12, this.resetPlayer, this, 'Layer1');
-			map.setTileIndexCallback(13, this.resetPlayer, this, 'Layer1');
-
-			map.setTileIndexCallback(4, this.resetPlayer, this, 'layer2');
-			map.setTileIndexCallback(5, this.resetPlayer, this, 'layer2');
-			map.setTileIndexCallback(6, this.resetPlayer, this, 'layer2');
-			map.setTileIndexCallback(12, this.resetPlayer, this, 'layer2');
-			map.setTileIndexCallback(13, this.resetPlayer, this, 'layer2');
 
 
 			// Set up player
@@ -295,6 +303,7 @@ Game.Level1.prototype = {
 			player.animations.add('left', [0, 1, 2, 3], 10, true);
 			player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+            
 
 			controls = {
 					up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
@@ -329,10 +338,10 @@ Game.Level1.prototype = {
             boxGroup = game.add.group();
 
             //CREATE NEW SPRINKLERS HERE
-            createSprinkler(1, game, player.x + 350, player.y + 70);
-            createSprinkler2(1, game, player.x + 1800, player.y + 70);
-            createSprinkler(1, game, player.x + 2000, player.y + 70);
-            createSprinkler2(1, game, player.x + 2500, player.y + 70);
+            // createSprinkler(1, game, player.x + 350, player.y + 70);
+            // createSprinkler2(1, game, player.x + 1800, player.y + 70);
+            // createSprinkler(1, game, player.x + 2000, player.y + 70);
+            // createSprinkler2(1, game, player.x + 2500, player.y + 70);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -404,7 +413,10 @@ Game.Level1.prototype = {
 			tweenCatFound.chain(tweenCatReappear);
 
             this.world.bringToTop(player);
-
+            this.world.bringToTop(grassForegroundFloorLayer);
+            this.world.bringToTop(grassForegroundRightLayer);
+            this.world.bringToTop(grassForegroundLeftLayer);
+            this.world.bringToTop(waterLayer);
     },
 	
 	
@@ -416,15 +428,17 @@ Game.Level1.prototype = {
 
 
         //>>>>>>> Testing
-        this.physics.arcade.collide(player, frontLayer);
+        this.physics.arcade.collide(player, mainLayer);
+        this.physics.arcade.collide(player, houseRoofLayer);
+        this.physics.arcade.collide(player, elevationLayer);
         // this will add physics to enemy
         // this.physics.arcade.collide(enemy1.robot, layer);
-        this.physics.arcade.collide(npc1.npc, layer);
-        this.physics.arcade.collide(cat1.cat, layer);
-        this.physics.arcade.collide(cat2.cat, layer);
-        this.physics.arcade.collide(chris1.chris, layer);
+        this.physics.arcade.collide(npc1.npc, mainLayer);
+        this.physics.arcade.collide(cat1.cat, mainLayer);
+        this.physics.arcade.collide(cat2.cat, mainLayer);
+        this.physics.arcade.collide(chris1.chris, mainLayer);
 
-        this.physics.arcade.collide(player, layer);
+        this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 
         // =======================================================================================================================================
@@ -449,15 +463,15 @@ Game.Level1.prototype = {
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
 
-       this.physics.arcade.collide(player, layer);
+       this.physics.arcade.collide(player, mainLayer);
        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
-			 this.physics.arcade.collide(npc1.npc, layer);
-			 this.physics.arcade.collide(cat1.cat, layer);
-			 this.physics.arcade.collide(cat2.cat, layer);
-			 this.physics.arcade.collide(chris1.chris, layer);
+			 this.physics.arcade.collide(npc1.npc, mainLayer);
+			 this.physics.arcade.collide(cat1.cat, mainLayer);
+			 this.physics.arcade.collide(cat2.cat, mainLayer);
+			 this.physics.arcade.collide(chris1.chris, mainLayer);
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
