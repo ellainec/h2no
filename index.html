@@ -6,7 +6,9 @@
 		<meta charset="UTF-8"/>
 		<title>H2NO - The Game</title>
 	  <link rel="stylesheet" media="(min-width: 800px)" href="css/Game/original.css">
-  	<link rel="stylesheet" media="(min-width: 400px) and (max-width: 800px)" href="css/Game/mid.css">
+  	<link rel="stylesheet" media="(min-width: 600px) and (max-width: 800px)" href="css/Game/mid.css">
+  	<link rel="stylesheet" media="(min-width: 480px) and (max-width: 600px)" href="css/Game/midSmall.css">
+  	<link rel="stylesheet" media="(min-width: 400px) and (max-width: 480px)" href="css/Game/smallMid.css">
   	<link rel="stylesheet" media="(max-width: 400px)" href="css/Game/small.css">
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -32,13 +34,20 @@
 				<li><a href="html/AboutTheCharacters.html">Characters</a></li>
         <li><a href="html/DevDiary.html">Dev Diary</a></li>
         <li><a href="html/AboutTheTeam.html">About Us</a></li>
+
       </ul>
 		
 		</div>
 		<div id="container">
 			<div id="coverup">
-				<input type="text" id="name" placeholder="Name">
-				<input type="submit" id = "submitButton">
+				<img id="coverup" src="assets/game_menu/vancouver.png" alt="Vancouver in Pixels"/>
+				<div id="playerInput">
+						<img id="logoMain" src="assets/logo.png" alt='H2NO! Logo'>
+					<form id="myForm"> 
+						<input type="text" id="name" placeholder="Name"/>
+					</form>
+						<input type="submit" id="submitButton" value="Submit"/>
+				</div>
 				<p id="message"></p>
 			</div>
 		<div id="Setup">
@@ -56,17 +65,25 @@
 			in the children of Vancouver about water waste! Your job is to help H2-NO turn off the 
 			major water wasting appliances around the city of Vancouver!
 		</div>
-    
+		<--TWITTER-->
+		<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script>
 
 		var submitButton = document.getElementById("submitButton");
 
 		submitButton.onclick = function() {
-		    var nameInput = document.getElementById("name").value;
-		    sessionStorage.setItem("playerName", nameInput);
-		    document.getElementById("coverup").classList.add("hide");
-
+			var nameInput = document.getElementById("name").value.trim();
+			var resetText = document.getElementById("myForm");
+			if (nameInput === "") {
+					alert("Please Enter Your Name");
+					resetText.reset();
+				} else {
+					sessionStorage.setItem("playerName", nameInput);
+					document.getElementById("coverup").classList.add("hide");
+				}
 		}
+
+
 	</script>
     
 		<script>
