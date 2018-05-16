@@ -15,33 +15,53 @@
 
     var PhaserGame = function () {
 
-        this.bg = null;
-        this.trees = null;
+        // this.bg = null;
+        // this.trees = null;
 
-        this.player = null;
+        // this.player = null;
 
-        this.stationary = null;
-        this.clouds = null;
+        // this.stationary = null;
+        // this.clouds = null;
 
-        this.facing = 'left';
+        // this.facing = 'left';
         this.jumpTimer = 0;
-        this.cursors;
-        this.locked = false;
-        this.lockedTo = null;
-        this.wasLocked = false;
-        this.willJump = false;
+        // this.cursors;
+        // this.locked = false;
+        // this.lockedTo = null;
+        // this.wasLocked = false;
+        // this.willJump = false;
 
     };
+
+        var bg = null;
+        var trees = null;
+
+        var player = null;
+
+        var stationary = null;
+        var clouds = null;
+
+        var facing = 'left';
+        // var jumpTimer = 0;
+        var cursors;
+        var locked = false;
+        var lockedTo = null;
+        var wasLocked = false;
+        var willJump = false;
+
+
+
+
 
     PhaserGame.prototype = {
 
         init: function () {
 
-            this.game.renderer.renderSession.roundPixels = true;
+            // this.game.renderer.renderSession.roundPixels = true;
 
-            this.world.resize(640*2, 480);
+            // this.world.resize(640*2, 480);
 
-            this.physics.startSystem(Phaser.Physics.ARCADE);
+            // this.physics.startSystem(Phaser.Physics.ARCADE);
 
             this.physics.arcade.gravity.y = 600;
 
@@ -98,6 +118,9 @@
             this.camera.follow(this.player);
 
             this.cursors = this.input.keyboard.createCursorKeys();
+
+
+
 
             this.clouds.callAll('start');
 
@@ -185,7 +208,6 @@
             this.background.tilePosition.x = -(this.camera.x * 0.7);
             this.trees.tilePosition.x = -(this.camera.x * 0.9);
 
-            this.physics.arcade.collide(this.player, this.stationary);
             this.physics.arcade.collide(this.player, this.clouds, this.customSep, null, this);
 
             //  Do this AFTER the collide check, or we won't have blocked/touching set
@@ -197,21 +219,21 @@
             {
                 this.player.body.velocity.x = -150;
 
-                if (this.facing !== 'left')
-                {
-                    this.player.play('left');
-                    this.facing = 'left';
-                }
+                // if (this.facing !== 'left')
+                // {
+                //     this.player.play('left');
+                //     this.facing = 'left';
+                // }
             }
             else if (this.cursors.right.isDown)
             {
                 this.player.body.velocity.x = 150;
 
-                if (this.facing !== 'right')
-                {
-                    this.player.play('right');
-                    this.facing = 'right';
-                }
+                // if (this.facing !== 'right')
+                // {
+                //     this.player.play('right');
+                //     this.facing = 'right';
+                // }
             }
             else
             {
