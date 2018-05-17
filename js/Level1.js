@@ -241,101 +241,124 @@ var easterEggReward = false;
 Game.Level1.prototype = {
 
     create: function (game) {
-			//assignment of playerName can't be outside in global scope
-			playerName = sessionStorage.getItem("playerName");
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES START
+        //=========================================================================================================================================
 
-			this.stage.backgroundColor = '#3598db';
+		//assignment of playerName can't be outside in global scope
+		playerName = sessionStorage.getItem("playerName");
+
+		// Set up player
+		player = this.add.sprite(100, 400, 'h2no');
+		player.anchor.setTo(0.5, 0.5);
+		// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
+		// Enable physics on player
+		this.physics.enable(player, Phaser.Physics.ARCADE);
+		// Ground and edges of the world
+		player.body.collideWorldBounds = true;
+		player.body.maxVelocity.y = 800;
+		this.camera.follow(player);
+
+		player.animations.add('idle', [4], 10, true);
+		player.animations.add('left', [0, 1, 2, 3], 10, true);
+		player.animations.add('right', [5, 6, 7, 8], 10, true);
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES END
+        //=========================================================================================================================================
+
+
+        // =======================================================================================================================================
+        //                                   MAP VARIABLES START
+        //=========================================================================================================================================
+
+
+		this.stage.backgroundColor = '#3598db';
 	  	//this.stage.backgroundColor = '#000000';
 
-			this.stage.backgroundColor = '#3598db';
-			this.physics.startSystem(Phaser.Physics.ARCADE);
-			this.physics.arcade.gravity.y = 1400;
+		this.stage.backgroundColor = '#3598db';
+		this.physics.startSystem(Phaser.Physics.ARCADE);
+		this.physics.arcade.gravity.y = 1400;
 
 			// add map with 'map id'
-      map = this.add.tilemap('map');
-			// add tileset with 'tileset id', 'key'
-      map.addTilesetImage('h2no_tilesheet', 'tiles');
+		map = this.add.tilemap('map');
+				// add tileset with 'tileset id', 'key'
+		map.addTilesetImage('h2no_tilesheet', 'tiles');
 			
-			bossStateLayer = map.createLayer('boss_state_layer');
-            elevationBackgroundLayer = map.createLayer('elevation_background_layer');
-			treeLayer = map.createLayer('tree_layer');
-			leavesLayer = map.createLayer('leaves_layer');
-			branchLayer = map.createLayer('branch_layer');
-			appleLayer = map.createLayer('apple_layer');
-			floorBackgroundLayer = map.createLayer('floor_background_layer');
-			elevationRightLayer = map.createLayer('elevation_right_layer');
-			elevationLeftLayer = map.createLayer('elevation_left_layer');
-			fenceLayer = map.createLayer('fence_layer');
-			carLayer = map.createLayer('car_layer');
-			elevationLayer = map.createLayer('elevation_layer');
-			houseWallLayer = map.createLayer('house_wall_layer');
-			houseDoorWindowLayer = map.createLayer('house_door_window_layer');
-		    houseRoofLayer = map.createLayer('house_roof_layer');
-		    grassBackgroundLayer = map.createLayer('grass_background_layer');
-		    mainLayer = map.createLayer('main_layer');
-            grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
-            grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
-            grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
-            waterLayer = map.createLayer('water_layer');
-                        
-			// uncomment to check layer collision boxes
-			// layer.debug = true;
-            mainLayer.resizeWorld();
-            
-            
-			
-			map.setCollisionBetween(0, 999, true, 'main_layer');
-			map.setCollisionBetween(0, 999, true, 'house_roof_layer');
-			map.setCollisionBetween(0, 999, true, 'elevation_layer');
+		bossStateLayer = map.createLayer('boss_state_layer');
+		elevationBackgroundLayer = map.createLayer('elevation_background_layer');
+		treeLayer = map.createLayer('tree_layer');
+		leavesLayer = map.createLayer('leaves_layer');
+		branchLayer = map.createLayer('branch_layer');
+		appleLayer = map.createLayer('apple_layer');
+		floorBackgroundLayer = map.createLayer('floor_background_layer');
+		elevationRightLayer = map.createLayer('elevation_right_layer');
+		elevationLeftLayer = map.createLayer('elevation_left_layer');
+		fenceLayer = map.createLayer('fence_layer');
+		carLayer = map.createLayer('car_layer');
+		elevationLayer = map.createLayer('elevation_layer');
+		houseWallLayer = map.createLayer('house_wall_layer');
+		houseDoorWindowLayer = map.createLayer('house_door_window_layer');
+		houseRoofLayer = map.createLayer('house_roof_layer');
+		grassBackgroundLayer = map.createLayer('grass_background_layer');
+		mainLayer = map.createLayer('main_layer');
+		grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
+		grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
+		grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
+		waterLayer = map.createLayer('water_layer');
+
+		// uncomment to check layer collision boxes
+		// layer.debug = true;
+		mainLayer.resizeWorld();
 
 
 
-			// Set up player
-			player = this.add.sprite(100, 400, 'h2no');
-			player.anchor.setTo(0.5, 0.5);
-			// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
-			// Enable physics on player
-			this.physics.enable(player, Phaser.Physics.ARCADE);
-			// Ground and edges of the world
-			player.body.collideWorldBounds = true;
-			player.body.maxVelocity.y = 800;
-			this.camera.follow(player);
-			
-			player.animations.add('idle', [4], 10, true);
-			player.animations.add('left', [0, 1, 2, 3], 10, true);
-			player.animations.add('right', [5, 6, 7, 8], 10, true);
+		map.setCollisionBetween(0, 999, true, 'main_layer');
+		map.setCollisionBetween(0, 999, true, 'house_roof_layer');
+		map.setCollisionBetween(0, 999, true, 'elevation_layer');
 
-            
-
-			controls = {
-					up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-			};
-
-			cursors = this.input.keyboard.createCursorKeys();
+        // =======================================================================================================================================
+        //                                   MAP VARIABLES START
+        //=========================================================================================================================================
 
 
-		  if (!game.device.desktop) {
-			mobile = true;
-			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+        // =======================================================================================================================================
+        //                                   CONTROL VARIABLES START
+        //=========================================================================================================================================
 
-				
-			}
+		controls = {
+				up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+		};
+
+		cursors = this.input.keyboard.createCursorKeys();
+
+
+	    if (!game.device.desktop) {
+		mobile = true;
+		this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+		this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+		this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+
+
+		}
+
+        // =======================================================================================================================================
+        //                                   CONTROL VARIABLES END
+        //=========================================================================================================================================
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE START
         //=========================================================================================================================================
 
-            sprinklersGroup = game.add.group();
-            sprinklersGroup2 = game.add.group();
-            boxGroup = game.add.group();
+		sprinklersGroup = game.add.group();
+		sprinklersGroup2 = game.add.group();
+		boxGroup = game.add.group();
 
-            //CREATE NEW SPRINKLERS HERE
-            // createSprinkler(1, game, player.x + 350, player.y + 70);
-            // createSprinkler2(1, game, player.x + 1800, player.y + 70);
-            // createSprinkler(1, game, player.x + 2000, player.y + 70);
-            // createSprinkler2(1, game, player.x + 2500, player.y + 70);
+		//CREATE NEW SPRINKLERS HERE
+		// createSprinkler(1, game, player.x + 350, player.y + 70);
+		// createSprinkler2(1, game, player.x + 1800, player.y + 70);
+		// createSprinkler(1, game, player.x + 2000, player.y + 70);
+		// createSprinkler2(1, game, player.x + 2500, player.y + 70);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -343,29 +366,37 @@ Game.Level1.prototype = {
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
-			npc1 = new NPC(3, game, player.x + 128, player.y);
+		npc1 = new NPC(3, game, player.x + 128, player.y);
 
-			// TIMER //
-			timer = game.time.create(false);
-			timer.loop(1000, this.countdown, this);
-			timer.start();
-			timeLimit = 200;
-			timeText = game.add.text(610, 40, timeLimit, {
-					font: "12pt press_start_2pregular",
-					fill: "#fff",
-					align: "center"
-			});
-			timeText.fixedToCamera = true;
-			
-			// LIFE // -- Die a certain amount of times before the game over screen pops up
-			life = 3;
-			lifeText = game.add.text(40, 40, life, {
-					font: "12pt press_start_2pregular",
-					fill: "#fff",
-					align: "center"
-			});
-			lifeText.fixedToCamera = true;
-		
+        // =======================================================================================================================================
+        //                                   GAME UI START
+        //=========================================================================================================================================
+
+		// TIMER //
+		timer = game.time.create(false);
+		timer.loop(1000, this.countdown, this);
+		timer.start();
+		timeLimit = 200;
+		timeText = game.add.text(610, 40, timeLimit, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		timeText.fixedToCamera = true;
+
+		// LIFE // -- Die a certain amount of times before the game over screen pops up
+		life = 3;
+		lifeText = game.add.text(40, 40, life, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		lifeText.fixedToCamera = true;
+        // =======================================================================================================================================
+        //                                   GAME UI END
+        //=========================================================================================================================================
+
+
 		
 		// =====================================
 		
@@ -378,39 +409,52 @@ Game.Level1.prototype = {
 		
 	    bossButton = this.createButton(game, "Boss", 
 									   400, 350, 100, 50,
-									   function () {this.state.start('BossState');}
-						 );
+									   function () {this.state.start('BossState');});
 		
 		// =========================================
 
 		
-			// CLOCKS //
-			clocks = game.add.group();
-			clocks.enableBody = true;
-			this.createClock(300, 300);
-			this.createClock(500, 300);
-			this.createClock(900, 300);
+		// CLOCKS //
+		clocks = game.add.group();
+		clocks.enableBody = true;
+		this.createClock(300, 300);
+		this.createClock(500, 300);
+		this.createClock(900, 300);
 
-			chris1 = new Chris(3, game, 4950, 0);
-			chris1.chris.scale.setTo(0.2, 0.2);
+        // =======================================================================================================================================
+        //                                   LOLOLOL THIS EASTER EGG DOE
+        //=========================================================================================================================================
 
-			cat1 = new Cat(3, game, 8500, 0);
-			cat1.cat.scale.setTo(0.1, 0.1);
+		chris1 = new Chris(3, game, 4950, 0);
+		chris1.chris.scale.setTo(0.2, 0.2);
 
-			cat2 = new Cat(3, game, 4950, 0);
-			cat2.cat.scale.setTo(0.1, 0.1);
-			cat2.cat.alpha = 0;
+		cat1 = new Cat(3, game, 8500, 0);
+		cat1.cat.scale.setTo(0.1, 0.1);
 
-			// Tweens to make cat1 disappear, and cat2 appear next to Chris
-			tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
-			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
-			tweenCatFound.chain(tweenCatReappear);
+		cat2 = new Cat(3, game, 4950, 0);
+		cat2.cat.scale.setTo(0.1, 0.1);
+		cat2.cat.alpha = 0;
 
-            this.world.bringToTop(player);
-            this.world.bringToTop(grassForegroundFloorLayer);
-            this.world.bringToTop(grassForegroundRightLayer);
-            this.world.bringToTop(grassForegroundLeftLayer);
-            this.world.bringToTop(waterLayer);
+		// Tweens to make cat1 disappear, and cat2 appear next to Chris
+		tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+		tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
+		tweenCatFound.chain(tweenCatReappear);
+
+		
+        // =======================================================================================================================================
+        //                                   LAYER CONTROL START
+        //=========================================================================================================================================
+
+		
+		this.world.bringToTop(player);
+		this.world.bringToTop(grassForegroundFloorLayer);
+		this.world.bringToTop(grassForegroundRightLayer);
+		this.world.bringToTop(grassForegroundLeftLayer);
+		this.world.bringToTop(waterLayer);
+        // =======================================================================================================================================
+        //                                   LAYER CONTROL END
+        //=========================================================================================================================================
+
     },
 	
 	
