@@ -54,8 +54,8 @@ createSprinkler = function (index, game, x, y) {
 
 
     thisSprinkler.emitter.y = thisSprinkler.y - 2;
-    thisSprinkler.emitter.minParticleScale = 0.2;
-    thisSprinkler.emitter.maxParticleScale = 0.3;
+    thisSprinkler.emitter.minParticleScale = 0.3;
+    thisSprinkler.emitter.maxParticleScale = 0.5;
     thisSprinkler.emitter.lifespan = 3400;
 
     thisSprinkler.emitter.setYSpeed(-500, -450);
@@ -107,8 +107,8 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.start(false, 40, -1);
 
     thisSprinkler2.emitter.y = thisSprinkler2.y - 2;
-    thisSprinkler2.emitter.minParticleScale = 0.2;
-    thisSprinkler2.emitter.maxParticleScale = 0.3;
+    thisSprinkler2.emitter.minParticleScale = 0.3;
+    thisSprinkler2.emitter.maxParticleScale = 0.5;
     thisSprinkler2.emitter.lifespan = 3400;
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
@@ -166,13 +166,13 @@ createSprinkler3 = function (index, game, x, y) {
     thisSprinkler3.emitter2.start(false, 40, -1);
 
     thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter.minParticleScale = 0.2;
-    thisSprinkler3.emitter.maxParticleScale = 0.3;
+    thisSprinkler3.emitter.minParticleScale = 0.3;
+    thisSprinkler3.emitter.maxParticleScale = 0.5;
     thisSprinkler3.emitter.lifespan = 3200;
 
     thisSprinkler3.emitter2.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter2.minParticleScale = 0.2;
-    thisSprinkler3.emitter2.maxParticleScale = 0.3;
+    thisSprinkler3.emitter2.minParticleScale = 0.3;
+    thisSprinkler3.emitter2.maxParticleScale = 0.5;
     thisSprinkler3.emitter2.lifespan = 3200;
 
     thisSprinkler3.emitter.setYSpeed(-575, -565);
@@ -427,22 +427,22 @@ Game.Level1.prototype = {
             //CREATE NEW SPRINKLERS HERE
             //kevin - search purposes
             createSprinkler(1, game, 467, 1256 + 12);
-            createSprinkler(1, game, 1465, 1202);
-            createSprinkler(1, game, 2192, 1064 + 12);
+            // createSprinkler(1, game, 1465, 1202);
+            // createSprinkler(1, game, 2192, 1064 + 12);
             createSprinkler2(1, game, 2835, 936 + 12);
-            createSprinkler(1, game, 2705, 1192 + 12);
-            createSprinkler(1, game, 3400, 936 + 12);
-            createSprinkler(1, game, 3855, 776 + 12);
-            createSprinkler2(1, game, 3600, 1192 + 12);
-            createSprinkler3(1, game, 4757, 1192 + 12);
-            createSprinkler2(1, game, 5257, 1192 + 12);
-            createSprinkler2(1, game, 6226, 1192 + 12);
-            createSprinkler(1, game, 6984, 936 + 12);
-            createSprinkler(1, game, 6436, 936 + 12);
-            createSprinkler(1, game, 6367, 616 + 12);
-            createSprinkler3(1, game, 7441, 1192 + 12);
-            createSprinkler(1, game, 8393, 1192 + 12);
-            createSprinkler(1, game, 9414, 1192 + 12);
+            // createSprinkler(1, game, 2705, 1192 + 12);
+            // createSprinkler(1, game, 3400, 936 + 12);
+            // createSprinkler(1, game, 3855, 776 + 12);
+            // createSprinkler2(1, game, 3600, 1192 + 12);
+            // createSprinkler3(1, game, 4757, 1192 + 12);
+            // createSprinkler2(1, game, 5257, 1192 + 12);
+            // createSprinkler2(1, game, 6226, 1192 + 12);
+            // createSprinkler(1, game, 6984, 936 + 12);
+            // createSprinkler(1, game, 6436, 936 + 12);
+            // createSprinkler(1, game, 6367, 616 + 12);
+            // createSprinkler3(1, game, 7441, 1192 + 12);
+            // createSprinkler(1, game, 8393, 1192 + 12);
+            // createSprinkler(1, game, 9414, 1192 + 12);
             // createSprinkler3(1, game, 10135, 1192 + 12);
             
 
@@ -693,6 +693,7 @@ Game.Level1.prototype = {
 	// 			}
 
     // },
+
     // for checkpoint create checkx/y
 
     // creating buttons
