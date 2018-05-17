@@ -2,6 +2,7 @@
 // GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
 // ==================================
 
+
 EnemyRobot = function (index, game, x, y) {
     this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
@@ -48,12 +49,14 @@ createSprinkler = function (index, game, x, y) {
 
     thisSprinkler.emitter = game.add.emitter(x, y);
     game.physics.arcade.enable(thisSprinkler.emitter, Phaser.Physics.ARCADE);
-    thisSprinkler.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler.emitter.start(false, 200, -1);
+    thisSprinkler.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler.emitter.start(false, 40, -1);
 
+
+    thisSprinkler.emitter.y = thisSprinkler.y - 2;
     thisSprinkler.emitter.minParticleScale = 0.2;
     thisSprinkler.emitter.maxParticleScale = 0.3;
-    thisSprinkler.emitter.lifespan = 3800;
+    thisSprinkler.emitter.lifespan = 3400;
 
     thisSprinkler.emitter.setYSpeed(-500, -450);
     thisSprinkler.emitter.setXSpeed(-75, 75);
@@ -70,6 +73,9 @@ createSprinkler = function (index, game, x, y) {
 
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler.sprinklerCollision.alpha = 0;
+
+    thisSprinkler.emitter.checkWorldBounce = true;
+    thisSprinkler.emitter.outOfBoundsKill = true;
 
 };
 
@@ -97,13 +103,13 @@ createSprinkler2 = function (index, game, x, y) {
     // Emitter
     thisSprinkler2.emitter = game.add.emitter(x, y);
 
-    thisSprinkler2.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler2.emitter.start(false, 200, -1);
+    thisSprinkler2.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler2.emitter.start(false, 40, -1);
 
-
+    thisSprinkler2.emitter.y = thisSprinkler2.y - 2;
     thisSprinkler2.emitter.minParticleScale = 0.2;
     thisSprinkler2.emitter.maxParticleScale = 0.3;
-    thisSprinkler2.emitter.lifespan = 3800;
+    thisSprinkler2.emitter.lifespan = 3400;
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
     //   this.emitter.setXSpeed(-500, -450);
@@ -122,7 +128,88 @@ createSprinkler2 = function (index, game, x, y) {
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler2.sprinklerCollision.alpha = 0;
 
+    thisSprinkler2.emitter.checkWorldBounce = true;
+    thisSprinkler2.emitter.outOfBoundsKill = true;
+
 };
+
+
+createSprinkler3 = function (index, game, x, y) {
+    var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
+
+    game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
+
+    //hit
+    thisSprinkler3.oneHit = true;
+    thisSprinkler3.name = index.toString();
+    thisSprinkler3.anchor.setTo(0.5, 0.6);
+    thisSprinkler3.scale.setTo(0.5, 0.5);
+    thisSprinkler3.body.immovable = true;
+    thisSprinkler3.body.allowGravity = false;
+    thisSprinkler3.body.collideWorldBounds = true;
+
+    // Sets the Collision Size
+    thisSprinkler3.body.setSize(16, 8, 25, 6);
+    // Sprinkler Sprite Animation
+    thisSprinkler3.animations.add([0], 1, true);
+    var box = boxGroup.create(x, y+5, 'sprinklerCollision');
+    thisSprinkler3.sprinklerCollision = box;
+
+    // Emitter
+    thisSprinkler3.emitter = game.add.emitter(x, y);
+    thisSprinkler3.emitter2 = game.add.emitter(x, y);
+
+    thisSprinkler3.emitter.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter.start(false, 40, -1);
+
+    thisSprinkler3.emitter2.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter2.start(false, 40, -1);
+
+    thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
+    thisSprinkler3.emitter.minParticleScale = 0.2;
+    thisSprinkler3.emitter.maxParticleScale = 0.3;
+    thisSprinkler3.emitter.lifespan = 3200;
+
+    thisSprinkler3.emitter2.y = thisSprinkler3.y + 7;
+    thisSprinkler3.emitter2.minParticleScale = 0.2;
+    thisSprinkler3.emitter2.maxParticleScale = 0.3;
+    thisSprinkler3.emitter2.lifespan = 3200;
+
+    thisSprinkler3.emitter.setYSpeed(-575, -565);
+    thisSprinkler3.emitter.gravity = 1800;
+    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 350;
+
+    thisSprinkler3.emitter2.setYSpeed(-575, -565);
+    thisSprinkler3.emitter2.gravity = 1800;
+    thisSprinkler3.emitter2.emitX = thisSprinkler3.x - 100;
+
+
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 350 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+
+
+    thisSprinkler3.emitter.name = index.toString();
+
+    // Sprinkler Collision Physics
+    game.physics.arcade.enable(thisSprinkler3.sprinklerCollision, Phaser.Physics.ARCADE);
+    thisSprinkler3.sprinklerCollision.name = index.toString();
+    thisSprinkler3.sprinklerCollision.anchor.setTo(0.5, 0.4);
+    thisSprinkler3.sprinklerCollision.scale.setTo(0.45, 0.4);
+    thisSprinkler3.sprinklerCollision.body.immovable = true;
+    thisSprinkler3.sprinklerCollision.body.allowGravity = false;
+    thisSprinkler3.sprinklerCollision.body.collideWorldBounds = true;
+
+    //Sets the Sprinkler Boundary to invisible
+    thisSprinkler3.sprinklerCollision.alpha = 0;
+
+    thisSprinkler3.emitter.checkWorldBounce = true;
+    thisSprinkler3.emitter.outOfBoundsKill = true;
+
+
+};
+
+
 
 /*createEmitter2 = function(index, game, x, y) {
     this.emitter = game.add.emitter(x, y);
@@ -264,7 +351,9 @@ Game.Level1.prototype = {
 		player.animations.add('right', [5, 6, 7, 8], 10, true);
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES END
-        //=========================================================================================================================================
+        //====================================================================================================================================
+
+        
 
 
         // =======================================================================================================================================
@@ -315,6 +404,8 @@ Game.Level1.prototype = {
 		map.setCollisionBetween(0, 999, true, 'main_layer');
 		map.setCollisionBetween(0, 999, true, 'house_roof_layer');
 		map.setCollisionBetween(0, 999, true, 'elevation_layer');
+		
+		// this.world.setBounds(800, 400); //KV TESTING
 
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
@@ -352,17 +443,34 @@ Game.Level1.prototype = {
 
 		sprinklersGroup = game.add.group();
 		sprinklersGroup2 = game.add.group();
+		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
 
 		//CREATE NEW SPRINKLERS HERE
-		// createSprinkler(1, game, player.x + 350, player.y + 70);
-		// createSprinkler2(1, game, player.x + 1800, player.y + 70);
-		// createSprinkler(1, game, player.x + 2000, player.y + 70);
-		// createSprinkler2(1, game, player.x + 2500, player.y + 70);
+		//kevin - search purposes
+		createSprinkler(1, game, 467, 1256 + 12);
+		createSprinkler(1, game, 1465, 1202);
+		createSprinkler(1, game, 2192, 1064 + 12);
+		createSprinkler2(1, game, 2835, 936 + 12);
+		createSprinkler(1, game, 2705, 1192 + 12);
+		createSprinkler(1, game, 3400, 936 + 12);
+		createSprinkler(1, game, 3855, 776 + 12);
+		createSprinkler2(1, game, 3600, 1192 + 12);
+		createSprinkler3(1, game, 4757, 1192 + 12);
+		createSprinkler2(1, game, 5257, 1192 + 12);
+		createSprinkler2(1, game, 6226, 1192 + 12);
+		createSprinkler(1, game, 6984, 936 + 12);
+		createSprinkler(1, game, 6436, 936 + 12);
+		createSprinkler(1, game, 6367, 616 + 12);
+		createSprinkler3(1, game, 7441, 1192 + 12);
+		createSprinkler(1, game, 8393, 1192 + 12);
+		createSprinkler(1, game, 9414, 1192 + 12);
+		// createSprinkler3(1, game, 10135, 1192 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
         this.world.bringToTop(sprinklersGroup2);
+        this.world.bringToTop(sprinklersGroup3);
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -485,6 +593,7 @@ Game.Level1.prototype = {
         //Collide Player with Sprinkler and SprinkerCollision
        this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
+       this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
 
        //var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
@@ -500,6 +609,14 @@ Game.Level1.prototype = {
             var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
+
+        for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
+            var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
+            var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
+            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
+            this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
+        }
+
 
        this.physics.arcade.collide(player, mainLayer);
        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
@@ -522,6 +639,8 @@ Game.Level1.prototype = {
             }
         }
 
+
+
         //if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
         //  this.resetPlayer();
         //}
@@ -540,12 +659,17 @@ Game.Level1.prototype = {
             if (sprinkler.oneHit) {
                     sprinkler.oneHit = false;
                     sprinkler.emitter.destroy();
+                    if ('emitter2' in sprinkler) {
+                        sprinkler.emitter2.destroy();
+                    }      
                     sprinkler.animations.frame = 1;
                     sprinkler.body.setSize(16, 8, 25, 18);
                     sprinkler.sprinklerCollision.destroy();
                     player.body.velocity.y = -500;
             }
+
         }
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE END
@@ -620,7 +744,8 @@ Game.Level1.prototype = {
     },
 
     render: function() {
-
+        game.debug.body(player);
+        game.debug.spriteInfo(player);
     },
     resetPlayer: function () {
         player.reset(100, 400);
