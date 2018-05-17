@@ -566,9 +566,9 @@ Game.Level1.prototype = {
             if (sprinkler.oneHit) {
                     sprinkler.oneHit = false;
                     sprinkler.emitter.destroy();
-                    if (sprinkler.hasOwnProperty(sprinkler.emitter2)) {
+                    if ('emitter2' in sprinkler) {
                         sprinkler.emitter2.destroy();
-                    }                
+                    }      
                     sprinkler.animations.frame = 1;
                     sprinkler.body.setSize(16, 8, 25, 18);
                     sprinkler.sprinklerCollision.destroy();
