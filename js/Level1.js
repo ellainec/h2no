@@ -508,7 +508,7 @@ Game.Level1.prototype = {
 		chris1 = new Chris(3, game, 4950, 0);
 		chris1.chris.scale.setTo(0.2, 0.2);
 
-		cat1 = new Cat(3, game, 8500, 0);
+		cat1 = new Cat(3, game, 500, 0);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
 		cat2 = new Cat(3, game, 4950, 0);
@@ -541,6 +541,10 @@ Game.Level1.prototype = {
 
         npcGroup = game.add.group();
 
+        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
+        createNPC(game, 200, 1220, 'chris', 200,
+            "Have you seen my cat?");
+
         createNPC(game, 300, 1250, 'npc', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
@@ -559,7 +563,7 @@ Game.Level1.prototype = {
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
-
+			
     },
 	
 	
@@ -575,7 +579,12 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
+        this.physics.arcade.collide(chris1.chris, elevationLayer);
+        this.physics.arcade.collide(chris1.chris, houseRoofLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
+        this.physics.arcade.collide(npcGroup, elevationLayer);
+        this.physics.arcade.collide(npcGroup, houseRoofLayer);
+
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 		this.physics.arcade.collide(player, frontLayer);
 
@@ -588,7 +597,6 @@ Game.Level1.prototype = {
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
-
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
@@ -625,6 +633,7 @@ Game.Level1.prototype = {
                 this.world.remove(npcGroup.children[i].SpeechBubble);
             }
         }
+
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
@@ -815,6 +824,12 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        /*for(var i = 0; i < npcGroup.children.length; i++) {
+            if (npcGroup.children[i].isChris) {
+                npcGroup.children[i].destroy();
+            }
+        }*/
     }
 }
 
@@ -825,12 +840,19 @@ function easterEgg() {
 }
 
 function createNPC(game, x, y, image, width, text) {
-    var npc = npcGroup.create(x,y , image);
+    var npc = npcGroup.create(x,y,image);
     game.physics.arcade.enable(npc);
     npc.body.gravity.y = 600;
     npc.body.collideWorldBounds = false;
-
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
+
+    //easter egg NPC
+    /*if (image == 'chris') {
+        npc.isChris = true;
+    } else {
+        npc.isChris = false;
+    }*/
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
