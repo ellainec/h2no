@@ -28,7 +28,7 @@ Game.Preloader.prototype = {
 		this.load.image('button', 'assets/Button.png');
 
 		this.load.spritesheet('baddie', 'assets/baddie.png', 32, 32, 4);
-		this.load.spritesheet('chris', 'assets/chris.png');
+		this.load.image('chris', 'assets/tinychris.png');
 		this.load.spritesheet('cat', 'assets/cat.png');
 		this.load.spritesheet('h2no', 'assets/characters/H2NObit.png', 32, 48);
 		this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
@@ -63,6 +63,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
 		this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
+
 
     },
     
