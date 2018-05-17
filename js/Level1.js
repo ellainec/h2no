@@ -132,8 +132,6 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.outOfBoundsKill = true;
 
 };
-
-
 createSprinkler3 = function (index, game, x, y) {
     var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
 
@@ -319,7 +317,6 @@ Game.Level1.prototype = {
 		// Set up player
 		player = this.add.sprite(100, 400, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
-		// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
 		// Ground and edges of the world
@@ -335,8 +332,6 @@ Game.Level1.prototype = {
         //====================================================================================================================================
 
         
-
-
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
         //=========================================================================================================================================
@@ -353,7 +348,7 @@ Game.Level1.prototype = {
 		map = this.add.tilemap('map');
 				// add tileset with 'tileset id', 'key'
 		map.addTilesetImage('h2no_tilesheet', 'tiles');
-			
+		
 		bossStateLayer = map.createLayer('boss_state_layer');
 		elevationBackgroundLayer = map.createLayer('elevation_background_layer');
 		treeLayer = map.createLayer('tree_layer');
@@ -391,14 +386,12 @@ Game.Level1.prototype = {
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
         //=========================================================================================================================================
-
-
         // =======================================================================================================================================
         //                                   CONTROL VARIABLES START
         //=========================================================================================================================================
 
 		controls = {
-				up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
 		};
 
 		cursors = this.input.keyboard.createCursorKeys();
@@ -446,7 +439,6 @@ Game.Level1.prototype = {
 		createSprinkler3(1, game, 7441, 1192 + 12);
 		createSprinkler(1, game, 8393, 1192 + 12);
 		createSprinkler(1, game, 9414, 1192 + 12);
-		// createSprinkler3(1, game, 10135, 1192 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -577,21 +569,16 @@ Game.Level1.prototype = {
 
     update: function () {
 
-
-        //>>>>>>> Testing
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, houseRoofLayer);
         this.physics.arcade.collide(player, elevationLayer);
-        // this will add physics to enemy
-        // this.physics.arcade.collide(enemy1.robot, layer);
-        /*this.physics.arcade.collide(npc1.npc, mainLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
-        this.physics.arcade.collide(cat2.cat, mainLayer);*/
+        this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
-
-        this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+		this.physics.arcade.collide(player, frontLayer);
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -601,8 +588,6 @@ Game.Level1.prototype = {
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
-
-       //var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
 
 
         //emitter physics
@@ -631,8 +616,6 @@ Game.Level1.prototype = {
         }
 
 
-       this.physics.arcade.collide(player, mainLayer);
-
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
                 this.world.add(npcGroup.children[i].SpeechBubble);
@@ -642,15 +625,6 @@ Game.Level1.prototype = {
                 this.world.remove(npcGroup.children[i].SpeechBubble);
             }
         }
-
-       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-			this.physics.arcade.collide(player, frontLayer);
-			// this will add physics to enemy 
-			// this.physics.arcade.collide(enemy1.robot, layer);
-			 /*this.physics.arcade.collide(npc1.npc, mainLayer);
-			 this.physics.arcade.collide(cat1.cat, mainLayer);
-			 this.physics.arcade.collide(cat2.cat, mainLayer);*/
-			 this.physics.arcade.collide(chris1.chris, mainLayer);
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
@@ -662,8 +636,6 @@ Game.Level1.prototype = {
                 sprinklerEmitter.setXSpeed(-500, -450);
             }
         }
-
-
 
 
         function hitSprinklerFunction(player, sprinkler) {
@@ -687,16 +659,8 @@ Game.Level1.prototype = {
         //                                   SPRINKLER UPDATE END
         //========================================================================================================================================
 
-        player.body.velocity.x = 0;
 
-       
-
-		
-		// ========================================================================
-		// CONTROL MOVEMENT PHYSICS
-		
-		// ========================================================================
-		if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
+        if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
         }
@@ -756,6 +720,7 @@ Game.Level1.prototype = {
 		    game.state.start('Gameover');
 	    }
     },
+	
     // for checkpoint create checkx/y
 
     countdown: function(){
@@ -802,6 +767,7 @@ Game.Level1.prototype = {
 function moveLeft() {
     if (player.body.velocity.x > -playerMaxSpeed) {
         player.body.velocity.x -= playerSpeed;
+		console.log(player.body.velocity.x);
     } else {
         player.body.velocity.x = -playerMaxSpeed;
     }
