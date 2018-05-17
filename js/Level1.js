@@ -51,6 +51,7 @@ createSprinkler = function (index, game, x, y) {
     thisSprinkler.emitter.makeParticles('water', 0, 120, true);
     thisSprinkler.emitter.start(false, 200, -1);
 
+
     thisSprinkler.emitter.y = thisSprinkler.y - 2;
     thisSprinkler.emitter.minParticleScale = 0.2;
     thisSprinkler.emitter.maxParticleScale = 0.3;
@@ -71,6 +72,8 @@ createSprinkler = function (index, game, x, y) {
 
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler.sprinklerCollision.alpha = 0;
+
+    thisSprinkler.emitter.setAll('outOfBoundsKill', true);
 
 };
 
@@ -104,7 +107,7 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.y = thisSprinkler2.y - 2;
     thisSprinkler2.emitter.minParticleScale = 0.2;
     thisSprinkler2.emitter.maxParticleScale = 0.3;
-    thisSprinkler2.emitter.lifespan = 3800;
+    thisSprinkler2.emitter.lifespan = 3600;
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
     //   this.emitter.setXSpeed(-500, -450);
@@ -122,6 +125,8 @@ createSprinkler2 = function (index, game, x, y) {
 
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler2.sprinklerCollision.alpha = 0;
+
+    thisSprinkler2.emitter.setAll('outOfBoundsKill', true);
 
 };
 
@@ -152,10 +157,10 @@ createSprinkler3 = function (index, game, x, y) {
     thisSprinkler3.emitter2 = game.add.emitter(x, y);
 
     thisSprinkler3.emitter.makeParticles('water', 0, 600, true);
-    thisSprinkler3.emitter.start(false, 50, -1);
+    thisSprinkler3.emitter.start(false, 60, -1);
 
     thisSprinkler3.emitter2.makeParticles('water', 0, 600, true);
-    thisSprinkler3.emitter2.start(false, 50, -1);
+    thisSprinkler3.emitter2.start(false, 60, -1);
 
     thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
     thisSprinkler3.emitter.minParticleScale = 0.2;
@@ -169,16 +174,16 @@ createSprinkler3 = function (index, game, x, y) {
 
     thisSprinkler3.emitter.setYSpeed(-575, -565);
     thisSprinkler3.emitter.gravity = 1800;
-    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 300;
+    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 350;
 
     thisSprinkler3.emitter2.setYSpeed(-575, -565);
     thisSprinkler3.emitter2.gravity = 1800;
     thisSprinkler3.emitter2.emitX = thisSprinkler3.x - 100;
 
 
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1850, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
 
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 300 }, 1850, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 350 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
 
 
     thisSprinkler3.emitter.name = index.toString();
@@ -194,6 +199,9 @@ createSprinkler3 = function (index, game, x, y) {
 
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler3.sprinklerCollision.alpha = 0;
+
+    thisSprinkler3.emitter.setAll('outOfBoundsKill', true);
+
 
 };
 
@@ -409,11 +417,25 @@ Game.Level1.prototype = {
             boxGroup = game.add.group();
 
             //CREATE NEW SPRINKLERS HERE
-            createSprinkler(1, game, player.x + 650, player.y + 868);
-            createSprinkler2(1, game, player.x + 1000, player.y + 868);
-            // createSprinkler(1, game, player.x + 2000, player.y + 70);
-            // createSprinkler2(1, game, player.x + 2500, player.y + 70);
-            createSprinkler3(1, game, player.x + 500, player.y + 868);
+            //kevin - search purposes
+            createSprinkler(1, game, 467, 1256 + 12);
+            // createSprinkler(1, game, 1465, 1202);
+            // createSprinkler(1, game, 2192, 1064 + 12);
+            // createSprinkler2(1, game, 2835, 936 + 12);
+            // createSprinkler(1, game, 2705, 1192 + 12);
+            // createSprinkler(1, game, 3400, 936 + 12);
+            // createSprinkler(1, game, 3855, 776 + 12);
+            // createSprinkler2(1, game, 3600, 1192 + 12);
+            // createSprinkler3(1, game, 4757, 1192 + 12);
+            // createSprinkler2(1, game, 5257, 1192 + 12);
+            // createSprinkler2(1, game, 6226, 1192 + 12);
+            // createSprinkler(1, game, 6984, 936 + 12);
+            // createSprinkler(1, game, 6436, 936 + 12);
+            // createSprinkler(1, game, 6367, 616 + 12);
+            // createSprinkler3(1, game, 7441, 1192 + 12);
+            // createSprinkler(1, game, 8393, 1192 + 12);
+            
+
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -548,6 +570,21 @@ Game.Level1.prototype = {
             }
         }
 
+        //vizconde - search purposes TEST
+        for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
+            var sprinkler = sprinklersGroup.children[i];
+            var sprinklerEmitter = sprinklersGroup.children[i].emitter;
+            if (player.position.x - sprinkler.position.x <= 10) {
+                // if ('emitter' in sprinkler) {
+                //     ;
+                // }
+
+            // } else {
+            //     sprinklerEmitter.stop();
+            }
+        }
+
+
         //if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
         //  this.resetPlayer();
         //}
@@ -576,6 +613,7 @@ Game.Level1.prototype = {
             }
 
         }
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE END
@@ -644,7 +682,8 @@ Game.Level1.prototype = {
     },
 
     render: function() {
-
+        game.debug.body(player);
+        game.debug.spriteInfo(player);
     },
     resetPlayer: function () {
 
