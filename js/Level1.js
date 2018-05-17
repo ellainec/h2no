@@ -2,6 +2,7 @@
 // GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
 // ==================================
 
+
 EnemyRobot = function (index, game, x, y) {
     this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
@@ -48,14 +49,14 @@ createSprinkler = function (index, game, x, y) {
 
     thisSprinkler.emitter = game.add.emitter(x, y);
     game.physics.arcade.enable(thisSprinkler.emitter, Phaser.Physics.ARCADE);
-    thisSprinkler.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler.emitter.start(false, 200, -1);
+    thisSprinkler.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler.emitter.start(false, 40, -1);
 
 
     thisSprinkler.emitter.y = thisSprinkler.y - 2;
     thisSprinkler.emitter.minParticleScale = 0.2;
     thisSprinkler.emitter.maxParticleScale = 0.3;
-    thisSprinkler.emitter.lifespan = 3800;
+    thisSprinkler.emitter.lifespan = 3400;
 
     thisSprinkler.emitter.setYSpeed(-500, -450);
     thisSprinkler.emitter.setXSpeed(-75, 75);
@@ -73,7 +74,8 @@ createSprinkler = function (index, game, x, y) {
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler.sprinklerCollision.alpha = 0;
 
-    thisSprinkler.emitter.setAll('outOfBoundsKill', true);
+    thisSprinkler.emitter.checkWorldBounce = true;
+    thisSprinkler.emitter.outOfBoundsKill = true;
 
 };
 
@@ -101,13 +103,13 @@ createSprinkler2 = function (index, game, x, y) {
     // Emitter
     thisSprinkler2.emitter = game.add.emitter(x, y);
 
-    thisSprinkler2.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler2.emitter.start(false, 200, -1);
+    thisSprinkler2.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler2.emitter.start(false, 40, -1);
 
     thisSprinkler2.emitter.y = thisSprinkler2.y - 2;
     thisSprinkler2.emitter.minParticleScale = 0.2;
     thisSprinkler2.emitter.maxParticleScale = 0.3;
-    thisSprinkler2.emitter.lifespan = 3600;
+    thisSprinkler2.emitter.lifespan = 3400;
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
     //   this.emitter.setXSpeed(-500, -450);
@@ -126,7 +128,8 @@ createSprinkler2 = function (index, game, x, y) {
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler2.sprinklerCollision.alpha = 0;
 
-    thisSprinkler2.emitter.setAll('outOfBoundsKill', true);
+    thisSprinkler2.emitter.checkWorldBounce = true;
+    thisSprinkler2.emitter.outOfBoundsKill = true;
 
 };
 
@@ -156,11 +159,11 @@ createSprinkler3 = function (index, game, x, y) {
     thisSprinkler3.emitter = game.add.emitter(x, y);
     thisSprinkler3.emitter2 = game.add.emitter(x, y);
 
-    thisSprinkler3.emitter.makeParticles('water', 0, 600, true);
-    thisSprinkler3.emitter.start(false, 60, -1);
+    thisSprinkler3.emitter.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter.start(false, 40, -1);
 
-    thisSprinkler3.emitter2.makeParticles('water', 0, 600, true);
-    thisSprinkler3.emitter2.start(false, 60, -1);
+    thisSprinkler3.emitter2.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter2.start(false, 40, -1);
 
     thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
     thisSprinkler3.emitter.minParticleScale = 0.2;
@@ -200,7 +203,8 @@ createSprinkler3 = function (index, game, x, y) {
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler3.sprinklerCollision.alpha = 0;
 
-    thisSprinkler3.emitter.setAll('outOfBoundsKill', true);
+    thisSprinkler3.emitter.checkWorldBounce = true;
+    thisSprinkler3.emitter.outOfBoundsKill = true;
 
 
 };
@@ -318,6 +322,10 @@ var easterEggReward = false;
 Game.Level1.prototype = {
 
     create: function (game) {
+
+            game.world.setBounds(800, 400); //KV TESTING
+
+
 			//assignment of playerName can't be outside in global scope
 			playerName = sessionStorage.getItem("playerName");
 
@@ -419,21 +427,23 @@ Game.Level1.prototype = {
             //CREATE NEW SPRINKLERS HERE
             //kevin - search purposes
             createSprinkler(1, game, 467, 1256 + 12);
-            // createSprinkler(1, game, 1465, 1202);
-            // createSprinkler(1, game, 2192, 1064 + 12);
-            // createSprinkler2(1, game, 2835, 936 + 12);
-            // createSprinkler(1, game, 2705, 1192 + 12);
-            // createSprinkler(1, game, 3400, 936 + 12);
-            // createSprinkler(1, game, 3855, 776 + 12);
-            // createSprinkler2(1, game, 3600, 1192 + 12);
-            // createSprinkler3(1, game, 4757, 1192 + 12);
-            // createSprinkler2(1, game, 5257, 1192 + 12);
-            // createSprinkler2(1, game, 6226, 1192 + 12);
-            // createSprinkler(1, game, 6984, 936 + 12);
-            // createSprinkler(1, game, 6436, 936 + 12);
-            // createSprinkler(1, game, 6367, 616 + 12);
-            // createSprinkler3(1, game, 7441, 1192 + 12);
-            // createSprinkler(1, game, 8393, 1192 + 12);
+            createSprinkler(1, game, 1465, 1202);
+            createSprinkler(1, game, 2192, 1064 + 12);
+            createSprinkler2(1, game, 2835, 936 + 12);
+            createSprinkler(1, game, 2705, 1192 + 12);
+            createSprinkler(1, game, 3400, 936 + 12);
+            createSprinkler(1, game, 3855, 776 + 12);
+            createSprinkler2(1, game, 3600, 1192 + 12);
+            createSprinkler3(1, game, 4757, 1192 + 12);
+            createSprinkler2(1, game, 5257, 1192 + 12);
+            createSprinkler2(1, game, 6226, 1192 + 12);
+            createSprinkler(1, game, 6984, 936 + 12);
+            createSprinkler(1, game, 6436, 936 + 12);
+            createSprinkler(1, game, 6367, 616 + 12);
+            createSprinkler3(1, game, 7441, 1192 + 12);
+            createSprinkler(1, game, 8393, 1192 + 12);
+            createSprinkler(1, game, 9414, 1192 + 12);
+            // createSprinkler3(1, game, 10135, 1192 + 12);
             
 
 
@@ -570,19 +580,6 @@ Game.Level1.prototype = {
             }
         }
 
-        //vizconde - search purposes TEST
-        for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
-            var sprinkler = sprinklersGroup.children[i];
-            var sprinklerEmitter = sprinklersGroup.children[i].emitter;
-            if (player.position.x - sprinkler.position.x <= 10) {
-                // if ('emitter' in sprinkler) {
-                //     ;
-                // }
-
-            // } else {
-            //     sprinklerEmitter.stop();
-            }
-        }
 
 
         //if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
@@ -685,16 +682,17 @@ Game.Level1.prototype = {
         game.debug.body(player);
         game.debug.spriteInfo(player);
     },
-    resetPlayer: function () {
 
-        player.reset(100, 400);
-			  life--;
-				console.log("died");
-				if (life === 0) {
-					game.state.start('Gameover');
-				}
+    // resetPlayer: function () {
 
-    },
+    //     player.reset(100, 400);
+	// 		  life--;
+	// 			console.log("died");
+	// 			if (life === 0) {
+	// 				game.state.start('Gameover');
+	// 			}
+
+    // },
     // for checkpoint create checkx/y
 
     // creating buttons
