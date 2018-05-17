@@ -556,14 +556,8 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
-        this.physics.arcade.collide(chris1.chris, elevationLayer);
-        this.physics.arcade.collide(chris1.chris, houseRoofLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
-        this.physics.arcade.collide(npcGroup, elevationLayer);
-        this.physics.arcade.collide(npcGroup, houseRoofLayer);
-
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-		this.physics.arcade.collide(player, frontLayer);
 
 
         // =======================================================================================================================================
