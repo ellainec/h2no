@@ -129,7 +129,7 @@ createSprinkler2 = function (index, game, x, y) {
 //
 //=========================================================================================================================================
 
-/*
+
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
     // this isa global variable
@@ -144,10 +144,10 @@ NPC = function (index, game, x, y) {
     this.npc.animations.add('left', [0, 1], 10, true);
     this.npc.animations.add('right', [2, 3], 10, true);
 };
-*/
 
 
-/*Cat = function (index, game, x, y) {
+
+Cat = function (index, game, x, y) {
     this.cat = game.add.sprite(x, y, 'cat');
 
     this.cat.name = index.toString();
@@ -155,7 +155,7 @@ NPC = function (index, game, x, y) {
     this.cat.body.immovable = false;
     this.cat.body.allowGravity = true;
     this.cat.body.collideWorldBounds = false;
-};*/
+};
 
 Chris = function (index, game, x, y) {
     this.chris = game.add.sprite(x, y, 'chris');
@@ -331,6 +331,10 @@ Game.Level1.prototype = {
 			//npc1 = new NPC(3, game, player.x + 128, player.y);
         npcGroup = game.add.group();
 
+        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
+        createNPC(game, 200, 1220, 'chris', 200,
+            "Have you seen my cat?");
+
         createNPC(game, 300, 1250, 'npc', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
@@ -376,20 +380,20 @@ Game.Level1.prototype = {
 			this.createClock(500, 300);
 			this.createClock(900, 300);
 
-			chris1 = new Chris(3, game, 100, 0);
+			chris1 = new Chris(3, game, 2000, 1000);
 			chris1.chris.scale.setTo(0.2, 0.2);
 
-			/*cat1 = new Cat(3, game, 8500, 0);
+			cat1 = new Cat(3, game, 500, 0);
 			cat1.cat.scale.setTo(0.1, 0.1);
 
-			cat2 = new Cat(3, game, 4950, 0);
+			cat2 = new Cat(3, game, 170, 0);
 			cat2.cat.scale.setTo(0.1, 0.1);
-			cat2.cat.alpha = 0;*/
+			cat2.cat.alpha = 0;
 
-			// Tweens to make cat1 disappear, and cat2 appear next to Chris
-			/*tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+			//Tweens to make cat1 disappear, and cat2 appear next to Chris
+			tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
 			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
-			tweenCatFound.chain(tweenCatReappear);*/
+			tweenCatFound.chain(tweenCatReappear);
 
             this.world.bringToTop(player);
             this.world.bringToTop(grassForegroundFloorLayer);
@@ -410,13 +414,15 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, houseRoofLayer);
         this.physics.arcade.collide(player, elevationLayer);
-        // this will add physics to enemy
-        // this.physics.arcade.collide(enemy1.robot, layer);
-        /*this.physics.arcade.collide(npc1.npc, mainLayer);
+        //this.physics.arcade.collide(npc1.npc, mainLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
-        this.physics.arcade.collide(cat2.cat, mainLayer);*/
+        this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
+        this.physics.arcade.collide(chris1.chris, elevationLayer);
+        this.physics.arcade.collide(chris1.chris, houseRoofLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
+        this.physics.arcade.collide(npcGroup, elevationLayer);
+        this.physics.arcade.collide(npcGroup, houseRoofLayer);
 
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
@@ -428,9 +434,6 @@ Game.Level1.prototype = {
        this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
-
-       //var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
-
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
@@ -464,9 +467,9 @@ Game.Level1.prototype = {
 			this.physics.arcade.collide(player, frontLayer);
 			// this will add physics to enemy 
 			// this.physics.arcade.collide(enemy1.robot, layer);
-			 /*this.physics.arcade.collide(npc1.npc, mainLayer);
+			 //this.physics.arcade.collide(npc1.npc, mainLayer);
 			 this.physics.arcade.collide(cat1.cat, mainLayer);
-			 this.physics.arcade.collide(cat2.cat, mainLayer);*/
+			 this.physics.arcade.collide(cat2.cat, mainLayer);
 			 this.physics.arcade.collide(chris1.chris, mainLayer);
 
         //emitter2 direction
@@ -566,7 +569,7 @@ Game.Level1.prototype = {
         this.timeUp();
 
         
-        //findCat();
+        findCat();
         easterEgg();
 
     },
@@ -651,12 +654,18 @@ function collectClock(player, clock){
     clock.kill();
 }
 
-/*function findCat() {
+function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        /*for(var i = 0; i < npcGroup.children.length; i++) {
+            if (npcGroup.children[i].isChris) {
+                npcGroup.children[i].destroy();
+            }
+        }*/
     }
-}*/
+}
 
 function easterEgg() {
     if (checkOverlap(player, chris1.chris) && easterEggReward) {
@@ -665,12 +674,19 @@ function easterEgg() {
 }
 
 function createNPC(game, x, y, image, width, text) {
-    var npc = npcGroup.create(x,y , image);
+    var npc = npcGroup.create(x,y,image);
     game.physics.arcade.enable(npc);
     npc.body.gravity.y = 600;
     npc.body.collideWorldBounds = false;
-
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
+
+    //easter egg NPC
+    /*if (image == 'chris') {
+        npc.isChris = true;
+    } else {
+        npc.isChris = false;
+    }*/
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
