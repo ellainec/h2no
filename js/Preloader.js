@@ -16,9 +16,9 @@ Game.Preloader.prototype = {
 		this.load.image('WaterBot', 'assets/WaterBot.png');
 		this.load.image('WaterBotSkin', 'assets/WaterBotSkin.png');
 		// load map
-		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v3.json', null, Phaser.Tilemap.TILED_JSON);        
+		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v4.json', null, Phaser.Tilemap.TILED_JSON);        
 		// load tiles
-		this.load.image('tiles', 'assets/tiles/h2no_tilesheet.png');
+		this.load.image('tiles', 'assets/tiles/h2no_tilesheet_pastel.png');
 
 		this.load.image('buttonLeft', 'assets/buttons/arrowLeft.png');
 		this.load.image('buttonJump', 'assets/buttons/arrowUp.png');

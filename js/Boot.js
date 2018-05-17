@@ -16,7 +16,7 @@ Game.Boot.prototype = {
     },
     create:function() {
         this.state.start('Preloader');
-        
+        this.game.plugins.add(Phaser.Plugin.TilemapPlus);
     }
     
     

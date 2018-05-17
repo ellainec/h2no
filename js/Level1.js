@@ -344,44 +344,24 @@ Game.Level1.prototype = {
 		this.physics.startSystem(Phaser.Physics.ARCADE);
 		this.physics.arcade.gravity.y = 1400;
 
-			// add map with 'map id'
-		map = this.add.tilemap('map');
-				// add tileset with 'tileset id', 'key'
-		map.addTilesetImage('h2no_tilesheet', 'tiles');
-		
-		bossStateLayer = map.createLayer('boss_state_layer');
-		elevationBackgroundLayer = map.createLayer('elevation_background_layer');
-		treeLayer = map.createLayer('tree_layer');
-		leavesLayer = map.createLayer('leaves_layer');
-		branchLayer = map.createLayer('branch_layer');
-		appleLayer = map.createLayer('apple_layer');
-		floorBackgroundLayer = map.createLayer('floor_background_layer');
-		elevationRightLayer = map.createLayer('elevation_right_layer');
-		elevationLeftLayer = map.createLayer('elevation_left_layer');
-		fenceLayer = map.createLayer('fence_layer');
-		carLayer = map.createLayer('car_layer');
-		elevationLayer = map.createLayer('elevation_layer');
-		houseWallLayer = map.createLayer('house_wall_layer');
-		houseDoorWindowLayer = map.createLayer('house_door_window_layer');
-		houseRoofLayer = map.createLayer('house_roof_layer');
-		grassBackgroundLayer = map.createLayer('grass_background_layer');
-		mainLayer = map.createLayer('main_layer');
-		grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
-		grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
-		grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
-		waterLayer = map.createLayer('water_layer');
+		// add map with 'map id'
+        map = this.add.tilemap('map');
+	    // add tileset with 'tileset id', 'key'
+        map.addTilesetImage('h2no_tilesheet_pastel', 'tiles');
+			
+        secretLayer = map.createLayer('secret');
+		backgroundFarLayer = map.createLayer('background_far');
+		backgroundLayer = map.createLayer('background');
+		mainLayer = map.createLayer('main');
+		foregroundLayer = map.createLayer('foreground');
 
 		// uncomment to check layer collision boxes
 		// layer.debug = true;
-		mainLayer.resizeWorld();
-
-
-
-		map.setCollisionBetween(0, 999, true, 'main_layer');
-		map.setCollisionBetween(0, 999, true, 'house_roof_layer');
-		map.setCollisionBetween(0, 999, true, 'elevation_layer');
+        mainLayer.resizeWorld();
 		
-		// this.world.setBounds(800, 400); //KV TESTING
+		map.setCollisionBetween(0, 999, true, 'main');
+		map.setCollisionBetween(0, 999, true, 'secret');
+
 
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
@@ -525,12 +505,8 @@ Game.Level1.prototype = {
         //                                   LAYER CONTROL START
         //=========================================================================================================================================
 
-		
-		this.world.bringToTop(player);
-		this.world.bringToTop(grassForegroundFloorLayer);
-		this.world.bringToTop(grassForegroundRightLayer);
-		this.world.bringToTop(grassForegroundLeftLayer);
-		this.world.bringToTop(waterLayer);
+            this.world.bringToTop(player);
+            this.world.bringToTop(foregroundLayer);
         // =======================================================================================================================================
         //                                   LAYER CONTROL END
         //=========================================================================================================================================
@@ -563,7 +539,9 @@ Game.Level1.prototype = {
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
-			
+
+
+
     },
 	
 	
@@ -574,8 +552,7 @@ Game.Level1.prototype = {
     update: function () {
 
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, houseRoofLayer);
-        this.physics.arcade.collide(player, elevationLayer);
+        this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
