@@ -323,14 +323,6 @@ Game.Level1.prototype = {
 				
 			}
 
-			// This is a test to add an extra enemy sprite into game
-
-			timer = game.time.create(false);
-
-            timer.start();
-		
-		
-
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE START
         //=========================================================================================================================================
@@ -358,7 +350,7 @@ Game.Level1.prototype = {
 			timer.loop(1000, this.countdown, this);
 			timer.start();
 			timeLimit = 200;
-			timeText = game.add.text(610, 40, "500", {
+			timeText = game.add.text(610, 40, timeLimit, {
 					font: "12pt press_start_2pregular",
 					fill: "#fff",
 					align: "center"
@@ -386,7 +378,7 @@ Game.Level1.prototype = {
 		
 	    bossButton = this.createButton(game, "Boss", 
 									   400, 350, 100, 50,
-									   function () {this.state.start('Boss');}
+									   function () {this.state.start('BossState');}
 						 );
 		
 		// =========================================
@@ -573,7 +565,7 @@ Game.Level1.prototype = {
         }
 
         timeText.setText('Time: ' + timeLimit);
-			  lifeText.setText('Lives: ' + life);
+	    lifeText.setText('Lives: ' + life);
 
         this.timeUp();
 
@@ -587,14 +579,12 @@ Game.Level1.prototype = {
 
     },
     resetPlayer: function () {
-
         player.reset(100, 400);
-			  life--;
-				console.log("died");
-				if (life === 0) {
-					game.state.start('Gameover');
-				}
-
+		life--;
+	    console.log("died");
+	    if (life === 0) {
+		    game.state.start('Gameover');
+	    }
     },
     // for checkpoint create checkx/y
 
@@ -616,6 +606,7 @@ Game.Level1.prototype = {
         button1.width = w;
         button1.height = h;
 		button1.fixedToCamera = true;
+		button1.alpha = 0.5;
 
         var txt = game.add.text(button1.x, button1.y, string, {
             font: "10pt press_start_2pregular",
@@ -624,6 +615,8 @@ Game.Level1.prototype = {
         });
         txt.anchor.setTo(0.5, 0.5);
 		txt.fixedToCamera = true;
+		txt.alpha = 0.5;
+		
     },
     createClock: function(x, y) {
         var clock = clocks.create(x, y, 'clock');
@@ -665,7 +658,7 @@ function jumpNow() {
         if (Math.abs(player.body.velocity.x) >= 125) {
                 player.body.velocity.y -= 600;
             } else {
-                player.body.velocity.y -= 400;
+                player.body.velocity.y -= 1000;
             }
         jumpTimer = game.time.now + 750;
     }
