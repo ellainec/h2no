@@ -286,6 +286,13 @@ Game.BossState.prototype = {
             	moveLeft();
 				player.animations.play('left');
             } else {
+				if (player.body.velocity.x >= playerSlow) {
+					player.body.velocity.x -= playerSlow;
+				} else if (player.body.velocity.x < -playerSlow) {
+					player.body.velocity.x += playerSlow;
+				} else {
+					player.body.velocity.x = 0;
+				}
 				player.animations.play('idle');
 			}		
         }

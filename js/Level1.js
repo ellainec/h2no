@@ -214,6 +214,33 @@ createSprinkler3 = function (index, game, x, y) {
 //
 //=========================================================================================================================================
 
+
+NPC = function (index, game, x, y) {
+    this.npc = game.add.sprite(x, y, 'baddie');
+    // this isa global variable
+
+    this.npc.anchor.setTo(0.5, 0.5);
+    this.npc.name = index.toString();
+    game.physics.enable(this.npc, Phaser.Physics.ARCADE);
+    this.npc.body.immovable = false;
+    this.npc.body.allowGravity = true;
+    this.npc.body.collideWorldBounds = true;
+
+    this.npc.animations.add('left', [0, 1], 10, true);
+    this.npc.animations.add('right', [2, 3], 10, true);
+
+};
+
+Cat = function (index, game, x, y) {
+    this.cat = game.add.sprite(x, y, 'cat');
+
+    this.cat.name = index.toString();
+    game.physics.enable(this.cat, Phaser.Physics.ARCADE);
+    this.cat.body.immovable = false;
+    this.cat.body.allowGravity = true;
+    this.cat.body.collideWorldBounds = false;
+};
+
 Chris = function (index, game, x, y) {
     this.chris = game.add.sprite(x, y, 'chris');
     this.chris.name = index.toString();
@@ -248,7 +275,7 @@ var backlayer;
 var player;
 var playerSpeed = 20;
 var playerMaxSpeed = 450;
-var playerSlow = 40;
+var playerSlow = 10;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
@@ -660,10 +687,16 @@ Game.Level1.prototype = {
         //                                   SPRINKLER UPDATE END
         //========================================================================================================================================
 
-        npc1.npc.body.velocity.x = 0;
         player.body.velocity.x = 0;
 
-        if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
+       
+
+		
+		// ========================================================================
+		// CONTROL MOVEMENT PHYSICS
+		
+		// ========================================================================
+		if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
         }
@@ -687,35 +720,33 @@ Game.Level1.prototype = {
         }
 
 		if (mobile) {
-			
             if (this.button.isDown) {
                 jumpNow();
             }
             if (this.joystick.properties.right) {
-              moveRight();
-							player.animations.play('right');
+            	moveRight();
+				player.animations.play('right');
             } else if (this.joystick.properties.left) {
-              moveLeft();
-							player.animations.play('left');
+            	moveLeft();
+				player.animations.play('left');
             } else {
-							player.animations.play('idle');
-						}		
+				player.animations.play('idle');
+			}		
         }
 
         timeText.setText('Time: ' + timeLimit);
 	    lifeText.setText('Lives: ' + life);
 
         this.timeUp();
-
-        
+		
         findCat();
         easterEgg();
 
     },
 
     render: function() {
-        game.debug.body(player);
-        game.debug.spriteInfo(player);
+        //game.debug.body(player);
+        //game.debug.spriteInfo(player);
     },
     resetPlayer: function () {
         player.reset(100, 400);
@@ -733,9 +764,8 @@ Game.Level1.prototype = {
 
     timeUp: function(){
         if (timeLimit == 0 || timeLimit < 0) {
-            //change this to something else later, like gameover or minus one life
-             timer.stop();
-					game.state.start('Gameover');
+            timer.stop();
+			game.state.start('Gameover');
         }
     },
     createButton:function(game, string, x, y, w, h, callBack) {
@@ -770,19 +800,25 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
+	player.body.velocity.x = -playerMaxSpeed;
+	/*
     if (player.body.velocity.x > -playerMaxSpeed) {
         player.body.velocity.x -= playerSpeed;
     } else {
         player.body.velocity.x = -playerMaxSpeed;
     }
+	*/ 
+	// NEED TO FIX
 }
 
 function moveRight() {
-    if (player.body.velocity.x < playerMaxSpeed) {
+    player.body.velocity.x = playerMaxSpeed;
+    /*if (player.body.velocity.x < playerMaxSpeed) {
         player.body.velocity.x += playerSpeed;
     } else {
         player.body.velocity.x = playerMaxSpeed;
-    }
+    }*/
+	// need to fix
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -797,7 +833,7 @@ function jumpNow() {
         if (Math.abs(player.body.velocity.x) >= 125) {
                 player.body.velocity.y -= 600;
             } else {
-                player.body.velocity.y -= 1000;
+                player.body.velocity.y -= 400;
             }
         jumpTimer = game.time.now + 750;
     }
@@ -811,7 +847,7 @@ function npcJump(npc) {
 }
 
 function collectClock(player, clock){
-    timeLimit += 5;
+    timeLimit += 10;
     clock.kill();
 }
 
