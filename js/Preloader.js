@@ -36,6 +36,10 @@ Game.Preloader.prototype = {
 			this.load.spritesheet('sprinkler', 'assets/sprinklerSprite.png', 64, 64);
 			this.load.image('sprinklerCollision', 'assets/sprinkler_on.png', 64, 64);
 			this.load.image('clock', 'assets/clock.png');
+			this.load.image('npc', 'assets/smolcat.png');
+            this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
+            this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
+            this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
         
     },
     
