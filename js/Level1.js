@@ -275,7 +275,7 @@ var backlayer;
 var player;
 var playerSpeed = 20;
 var playerMaxSpeed = 450;
-var playerSlow = 10;
+var playerSlow = 40;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
@@ -800,25 +800,19 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-	player.body.velocity.x = -playerMaxSpeed;
-	/*
     if (player.body.velocity.x > -playerMaxSpeed) {
         player.body.velocity.x -= playerSpeed;
     } else {
         player.body.velocity.x = -playerMaxSpeed;
     }
-	*/ 
-	// NEED TO FIX
 }
 
 function moveRight() {
-    player.body.velocity.x = playerMaxSpeed;
-    /*if (player.body.velocity.x < playerMaxSpeed) {
+    if (player.body.velocity.x < playerMaxSpeed) {
         player.body.velocity.x += playerSpeed;
     } else {
         player.body.velocity.x = playerMaxSpeed;
-    }*/
-	// need to fix
+    }
 }
 
 function checkOverlap(spriteA, spriteB) {
