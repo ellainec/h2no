@@ -15,9 +15,9 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.body.collideWorldBounds = true;
 
     // tween
-     this.robotTween = game.add.tween(this.robot).to({
-         x: this.robot.x + 25
-     }, 2000, 'Linear', true, 0, 100, true);
+    this.robotTween = game.add.tween(this.robot).to({
+        x: this.robot.x + 25
+    }, 2000, 'Linear', true, 0, 100, true);
 
 };
 
@@ -110,6 +110,7 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.minParticleScale = 0.3;
     thisSprinkler2.emitter.maxParticleScale = 0.5;
     thisSprinkler2.emitter.lifespan = 3400;
+
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
     //   this.emitter.setXSpeed(-500, -450);
@@ -207,6 +208,7 @@ createSprinkler3 = function (index, game, x, y) {
 
 };
 
+
 // =======================================================================================================================================
 //                                   SPRINKLERS END
 //
@@ -263,7 +265,10 @@ var sprinklersGroup2;
 var boxGroup;
 var npcGroup;
 
-Game.Level1 = function (game) { };
+Game.Level1 = function (game) {
+
+    // this.jumpTimer = 0;
+};
 
 var map;
 var layer;
@@ -305,6 +310,17 @@ var clocks;
 var clockAdd = 10;
 var easterEggReward = false;
 
+
+// DRONE PARTS
+var stationary = null;
+var clouds = null;
+
+var facing = 'left';
+
+var locked = false;
+var lockedTo = null;
+var wasLocked = false;
+var willJump = false;
 
 // ==================================
 // CREATE FUNCTION BELOW
@@ -520,8 +536,8 @@ Game.Level1.prototype = {
         //                                   LAYER CONTROL START
         //=========================================================================================================================================
 
-            this.world.bringToTop(player);
-            this.world.bringToTop(foregroundLayer);
+		this.world.bringToTop(player);
+		this.world.bringToTop(foregroundLayer);
         // =======================================================================================================================================
         //                                   LAYER CONTROL END
         //=========================================================================================================================================
@@ -556,16 +572,101 @@ Game.Level1.prototype = {
         //                                  NPC END //=========================================================================================================================================
 
 
+        //////////////////////////////////////////Drones//////////////////////////////////////////
+        this.clouds = this.add.physicsGroup();
+
+        var cloud1 = new CloudPlatform(this.game, 400, 400, 'platform', this.clouds);
+
+        cloud1.addMotionPath([
+            { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+        ]);
+
+        this.clouds.callAll('start');
+
+        //////////////////////////////////////////Drones//////////////////////////////////////////
 
     },
-	
-	
-// ==================================
-// UPDATE FUNCTION BELOW
-// ==================================
+
+    /////////////Drone Functions////////////
+
+
+    customSep: function (player, platform) {
+
+        if (!this.locked && player.body.velocity.y > 0) {
+            this.locked = true;
+            this.lockedTo = platform;
+            platform.playerLocked = true;
+
+            player.body.velocity.y = 0;
+        }
+
+    },
+
+    checkLock: function () {
+
+        this.player.body.velocity.y = 0;
+
+        //  If the player has walked off either side of the platform then they're no longer locked to it
+        if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
+            this.cancelLock();
+        }
+
+    },
+
+    cancelLock: function () {
+
+        this.wasLocked = true;
+        this.locked = false;
+
+    },
+
+    preRender: function () {
+
+        if (this.game.paused) {
+            //  Because preRender still runs even if your game pauses!
+            return;
+        }
+
+        if (this.locked || this.wasLocked) {
+            this.player.x += this.lockedTo.deltaX;
+            this.player.y = this.lockedTo.y - 48;
+
+            if (this.player.body.velocity.x !== 0) {
+                this.player.body.velocity.y = 0;
+            }
+        }
+
+        if (this.willJump) {
+            this.willJump = false;
+
+            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
+                //  If the platform is moving up we add its velocity to the players jump
+                this.player.body.velocity.y = -500 + (this.lockedTo.deltaY * 10);
+            }
+            else {
+                this.player.body.velocity.y = -500;
+            }
+
+            this.jumpTimer = this.time.time + 750;
+        }
+
+        if (this.wasLocked) {
+            this.wasLocked = false;
+            this.lockedTo.playerLocked = false;
+            this.lockedTo = null;
+        }
+
+    },
+
+
+
+
+    // ==================================
+    // UPDATE FUNCTION BELOW
+    // ==================================
 
     update: function () {
-
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
@@ -573,6 +674,8 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.collide(player, clouds, this.customSep, null, this);
+
 
 
         // =======================================================================================================================================
@@ -679,7 +782,9 @@ Game.Level1.prototype = {
             player.animations.play('idle');
         }
 
-		if (mobile) {
+
+
+        if (mobile) {
             if (this.button.isDown) {
                 jumpNow();
             }
@@ -702,21 +807,73 @@ Game.Level1.prototype = {
 		
         findCat();
         easterEgg();
+	},
 
-    },
 
     render: function() {
         //game.debug.body(player);
         //game.debug.spriteInfo(player);
     },
+        ///////////////////Drone///////////////////
 
-    resetPlayer: function () {
-		player.reset(100, 400);
-		life--;
-	 	console.log("died");
-	 	if (life === 0) {
-	 		game.state.start('Gameover');
-	 	}
+        //  Do this AFTER the collide check, or we won't have blocked/touching set
+        // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
+
+        // this.player.body.velocity.x = 0;
+
+        // if (this.cursors.left.isDown) {
+        //     this.player.body.velocity.x = -150;
+
+        //     if (this.facing !== 'left') {
+        //         this.player.play('left');
+        //         this.facing = 'left';
+        //     }
+        // }
+        // else if (this.cursors.right.isDown) {
+        //     this.player.body.velocity.x = 150;
+
+        //     if (this.facing !== 'right') {
+        //         this.player.play('right');
+        //         this.facing = 'right';
+        //     }
+        // }
+        // else {
+        //     if (this.facing !== 'idle') {
+        //         this.player.animations.stop();
+
+        //         if (this.facing === 'left') {
+        //             this.player.frame = 0;
+        //         }
+        //         else {
+        //             this.player.frame = 5;
+        //         }
+
+        //         this.facing = 'idle';
+        //     }
+        // }
+
+        // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer) {
+        //     if (this.locked) {
+        //         this.cancelLock();
+        //     }
+
+        //     this.willJump = true;
+        // }
+
+        // if (this.locked) {
+        //     this.checkLock();
+        // }
+
+        ///////////////////////Drone///////////////////////////
+
+    resetPlayer: function() {
+
+        player.reset(100, 400);
+        life--;
+        console.log("died");
+        if (life === 0) {
+            this.state.start('Gameover');
+        }
     },
 
     // for checkpoint create checkx/y
@@ -732,11 +889,11 @@ Game.Level1.prototype = {
 	
     // for checkpoint create checkx/y
 
-    countdown: function(){
+    countdown: function () {
         timeLimit--;
     },
 
-    timeUp: function(){
+    timeUp: function () {
         if (timeLimit == 0 || timeLimit < 0) {
             timer.stop();
 			game.state.start('Gameover');
@@ -761,7 +918,7 @@ Game.Level1.prototype = {
 		txt.alpha = 0.5;
 		
     },
-    createClock: function(x, y) {
+    createClock: function (x, y) {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
@@ -815,8 +972,8 @@ function npcJump(npc) {
     }
 }
 
-function collectClock(player, clock){
-    timeLimit += clockAdd;
+function collectClock(player, clock) {
+    timeLimit += 5;
     clock.kill();
 }
 
@@ -933,3 +1090,66 @@ SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
+
+CloudPlatform = function (game, x, y, key, group) {
+
+    if (typeof group === 'undefined') { group = game.world; }
+
+    Phaser.Sprite.call(this, game, x, y, key);
+
+    game.physics.arcade.enable(this);
+
+    this.anchor.x = 0.5;
+
+    this.body.customSeparateX = true;
+    this.body.customSeparateY = true;
+    this.body.allowGravity = false;
+    this.body.immovable = true;
+
+    this.playerLocked = false;
+
+    group.add(this);
+
+};
+
+CloudPlatform.prototype = Object.create(Phaser.Sprite.prototype);
+CloudPlatform.prototype.constructor = CloudPlatform;
+
+CloudPlatform.prototype.addMotionPath = function (motionPath) {
+
+    this.tweenX = this.game.add.tween(this.body);
+    this.tweenY = this.game.add.tween(this.body);
+
+    //  motionPath is an array containing objects with this structure
+    //  [
+    //   { x: "+200", xSpeed: 2000, xEase: "Linear", y: "-200", ySpeed: 2000, yEase: "Sine.easeIn" }
+    //  ]
+
+    for (var i = 0; i < motionPath.length; i++) {
+        this.tweenX.to({ x: motionPath[i].x }, motionPath[i].xSpeed, motionPath[i].xEase);
+        this.tweenY.to({ y: motionPath[i].y }, motionPath[i].ySpeed, motionPath[i].yEase);
+    }
+
+    this.tweenX.loop();
+    this.tweenY.loop();
+
+};
+
+CloudPlatform.prototype.start = function () {
+
+    this.tweenX.start();
+    this.tweenY.start();
+
+};
+
+CloudPlatform.prototype.stop = function () {
+
+    this.tweenX.stop();
+    this.tweenY.stop();
+
+};
+
+/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////

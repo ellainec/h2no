@@ -1,19 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>Cloud Platforms</title>
-    <meta charset="utf-8">
-    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
-</head>
-<body>
-
-    <div id="game"></div>
-
-    <script type="text/javascript">
-
-    var game = new Phaser.Game(640, 480, Phaser.CANVAS, 'game');
-
-    var PhaserGame = function () {
+var PhaserGame = function () {
 
         this.bg = null;
         this.trees = null;
@@ -309,10 +294,3 @@
         this.tweenY.stop();
 
     };
-
-    game.state.add('Game', PhaserGame, true);
-
-    </script>
-
-</body>
-</html>
