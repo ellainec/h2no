@@ -896,7 +896,7 @@ Game.Level1.prototype = {
         life--;
         console.log("died");
         if (life === 0) {
-            this.state.start('Gameover');
+            game.state.start('Gameover');
         }
     },
 	
@@ -956,20 +956,26 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-    if (player.body.velocity.x > -playerMaxSpeed) {
-        player.body.velocity.x -= playerSpeed;
-		console.log(player.body.velocity.x);
-    } else {
-        player.body.velocity.x = -playerMaxSpeed;
-    }
+	player.body.velocity.x = -playerMaxSpeed
+	
+//    if (player.body.velocity.x > -playerMaxSpeed) {
+//        player.body.velocity.x -= playerSpeed;
+//    } else {
+//        player.body.velocity.x = -playerMaxSpeed;
+//    }
+	
+	console.log(player.body.velocity.x);
 }
 
 function moveRight() {
-    if (player.body.velocity.x < playerMaxSpeed) {
-        player.body.velocity.x += playerSpeed;
-    } else {
-        player.body.velocity.x = playerMaxSpeed;
-    }
+	player.body.velocity.x = playerMaxSpeed;
+//    if (player.body.velocity.x < playerMaxSpeed) {
+//        player.body.velocity.x += playerSpeed;
+//    } else {
+//        player.body.velocity.x = playerMaxSpeed;
+//    }
+	
+	console.log(player.body.velocity.x);
 }
 
 function checkOverlap(spriteA, spriteB) {
