@@ -988,8 +988,8 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
-        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y -20, 400,
-            "Thanks for finding my cat! I am a Java Developer. I am also a cat lover. AND I'm a bearded man! Isn't polymorphism COOL?" +
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y, 340,
+            "Thanks for finding my cat! I am also a cat lover. But I'm also a Java Developer. And I'm a bearded man! Isn't polymorphism COOL?" +
             "I love beards.. I think you would look GREAT with one. Here, have this!");
         /*for(var i = 0; i < npcGroup.children.length; i++) {
             if (npcGroup.children[i].isChris) {
