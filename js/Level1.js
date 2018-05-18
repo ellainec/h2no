@@ -518,24 +518,27 @@ Game.Level1.prototype = {
         npcGroup = game.add.group();
 
         //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
-        createNPC(game, 200, 1220, 'chris', 200,
+        createNPC(game, 250, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 300, 1250, 'npc', 200,
+        createNPC(game, 200, 880, 'npc', 200,
+            "Why don't you make yourself useful and turn off some sprinklers huh?");
+
+        createNPC(game, 300, 800, 'npc', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 500, 1200, 'npc', 300,
+        createNPC(game, 500, 800, 'npc', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 1250, 'npc', 200,
+        createNPC(game, 700, 800, 'npc', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 1250, 'npc', 200,
+        createNPC(game, 900, 800, 'npc', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 1250, 'npc', 200,
+        createNPC(game, 1000, 800, 'npc', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
@@ -557,7 +560,17 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+
+
+      /*  secretLayer = map.createLayer('secret');
+        backgroundFarLayer = map.createLayer('background_far');
+        backgroundLayer = map.createLayer('background');
+        mainLayer = map.createLayer('main');
+        foregroundLayer = map.createLayer('foreground');*/
 
 
         // =======================================================================================================================================
@@ -812,11 +825,16 @@ function easterEgg() {
 
 function createNPC(game, x, y, image, width, text) {
     var npc = npcGroup.create(x,y,image);
-    game.physics.arcade.enable(npc);
-    npc.body.gravity.y = 600;
-    npc.body.collideWorldBounds = false;
+    game.physics.enable(npc, Phaser.Physics.ARCADE);
+    npc.body.immovable= false;
+    npc.body.allowGravity = true;
+    npc.body.collideWorldBounds = true;
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
 
+   /* game.physics.enable(this.cat, Phaser.Physics.ARCADE);
+    this.cat.body.immovable = false;
+    this.cat.body.allowGravity = true;
+    this.cat.body.collideWorldBounds = false;*/
     //easter egg NPC
     /*if (image == 'chris') {
         npc.isChris = true;
