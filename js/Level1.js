@@ -2,6 +2,7 @@
 // GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
 // ==================================
 
+
 EnemyRobot = function (index, game, x, y) {
     this.robot = game.add.sprite(x, y, 'WaterBot');
     // this is a global variable
@@ -14,9 +15,9 @@ EnemyRobot = function (index, game, x, y) {
     this.robot.body.collideWorldBounds = true;
 
     // tween
-     this.robotTween = game.add.tween(this.robot).to({
-         x: this.robot.x + 25
-     }, 2000, 'Linear', true, 0, 100, true);
+    this.robotTween = game.add.tween(this.robot).to({
+        x: this.robot.x + 25
+    }, 2000, 'Linear', true, 0, 100, true);
 
 };
 
@@ -48,12 +49,14 @@ createSprinkler = function (index, game, x, y) {
 
     thisSprinkler.emitter = game.add.emitter(x, y);
     game.physics.arcade.enable(thisSprinkler.emitter, Phaser.Physics.ARCADE);
-    thisSprinkler.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler.emitter.start(false, 200, -1);
+    thisSprinkler.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler.emitter.start(false, 40, -1);
 
-    thisSprinkler.emitter.minParticleScale = 0.2;
-    thisSprinkler.emitter.maxParticleScale = 0.3;
-    thisSprinkler.emitter.lifespan = 3800;
+
+    thisSprinkler.emitter.y = thisSprinkler.y - 2;
+    thisSprinkler.emitter.minParticleScale = 0.3;
+    thisSprinkler.emitter.maxParticleScale = 0.5;
+    thisSprinkler.emitter.lifespan = 3400;
 
     thisSprinkler.emitter.setYSpeed(-500, -450);
     thisSprinkler.emitter.setXSpeed(-75, 75);
@@ -70,6 +73,9 @@ createSprinkler = function (index, game, x, y) {
 
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler.sprinklerCollision.alpha = 0;
+
+    thisSprinkler.emitter.checkWorldBounce = true;
+    thisSprinkler.emitter.outOfBoundsKill = true;
 
 };
 
@@ -97,13 +103,14 @@ createSprinkler2 = function (index, game, x, y) {
     // Emitter
     thisSprinkler2.emitter = game.add.emitter(x, y);
 
-    thisSprinkler2.emitter.makeParticles('water', 0, 120, true);
-    thisSprinkler2.emitter.start(false, 200, -1);
+    thisSprinkler2.emitter.makeParticles('water', 0, 75, true);
+    thisSprinkler2.emitter.start(false, 40, -1);
 
+    thisSprinkler2.emitter.y = thisSprinkler2.y - 2;
+    thisSprinkler2.emitter.minParticleScale = 0.3;
+    thisSprinkler2.emitter.maxParticleScale = 0.5;
+    thisSprinkler2.emitter.lifespan = 3400;
 
-    thisSprinkler2.emitter.minParticleScale = 0.2;
-    thisSprinkler2.emitter.maxParticleScale = 0.3;
-    thisSprinkler2.emitter.lifespan = 3800;
 
     thisSprinkler2.emitter.setYSpeed(-380, -375);
     //   this.emitter.setXSpeed(-500, -450);
@@ -122,31 +129,91 @@ createSprinkler2 = function (index, game, x, y) {
     //Sets the Sprinkler Boundary to invisible
     thisSprinkler2.sprinklerCollision.alpha = 0;
 
+    thisSprinkler2.emitter.checkWorldBounce = true;
+    thisSprinkler2.emitter.outOfBoundsKill = true;
+
+};
+createSprinkler3 = function (index, game, x, y) {
+    var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
+
+    game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
+
+    //hit
+    thisSprinkler3.oneHit = true;
+    thisSprinkler3.name = index.toString();
+    thisSprinkler3.anchor.setTo(0.5, 0.6);
+    thisSprinkler3.scale.setTo(0.5, 0.5);
+    thisSprinkler3.body.immovable = true;
+    thisSprinkler3.body.allowGravity = false;
+    thisSprinkler3.body.collideWorldBounds = true;
+
+    // Sets the Collision Size
+    thisSprinkler3.body.setSize(16, 8, 25, 6);
+    // Sprinkler Sprite Animation
+    thisSprinkler3.animations.add([0], 1, true);
+    var box = boxGroup.create(x, y+5, 'sprinklerCollision');
+    thisSprinkler3.sprinklerCollision = box;
+
+    // Emitter
+    thisSprinkler3.emitter = game.add.emitter(x, y);
+    thisSprinkler3.emitter2 = game.add.emitter(x, y);
+
+    thisSprinkler3.emitter.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter.start(false, 40, -1);
+
+    thisSprinkler3.emitter2.makeParticles('water', 0, 200, true);
+    thisSprinkler3.emitter2.start(false, 40, -1);
+
+    thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
+    thisSprinkler3.emitter.minParticleScale = 0.3;
+    thisSprinkler3.emitter.maxParticleScale = 0.5;
+    thisSprinkler3.emitter.lifespan = 3200;
+
+    thisSprinkler3.emitter2.y = thisSprinkler3.y + 7;
+    thisSprinkler3.emitter2.minParticleScale = 0.3;
+    thisSprinkler3.emitter2.maxParticleScale = 0.5;
+    thisSprinkler3.emitter2.lifespan = 3200;
+
+    thisSprinkler3.emitter.setYSpeed(-575, -565);
+    thisSprinkler3.emitter.gravity = 1800;
+    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 350;
+
+    thisSprinkler3.emitter2.setYSpeed(-575, -565);
+    thisSprinkler3.emitter2.gravity = 1800;
+    thisSprinkler3.emitter2.emitX = thisSprinkler3.x - 100;
+
+
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+
+    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 350 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+
+
+    thisSprinkler3.emitter.name = index.toString();
+
+    // Sprinkler Collision Physics
+    game.physics.arcade.enable(thisSprinkler3.sprinklerCollision, Phaser.Physics.ARCADE);
+    thisSprinkler3.sprinklerCollision.name = index.toString();
+    thisSprinkler3.sprinklerCollision.anchor.setTo(0.5, 0.4);
+    thisSprinkler3.sprinklerCollision.scale.setTo(0.45, 0.4);
+    thisSprinkler3.sprinklerCollision.body.immovable = true;
+    thisSprinkler3.sprinklerCollision.body.allowGravity = false;
+    thisSprinkler3.sprinklerCollision.body.collideWorldBounds = true;
+
+    //Sets the Sprinkler Boundary to invisible
+    thisSprinkler3.sprinklerCollision.alpha = 0;
+
+    thisSprinkler3.emitter.checkWorldBounce = true;
+    thisSprinkler3.emitter.outOfBoundsKill = true;
+
+
 };
 
-/*createEmitter2 = function(index, game, x, y) {
-    this.emitter = game.add.emitter(x, y);
-  
-      this.emitter.makeParticles('water', 0, 120, true);
-      this.emitter.start(false, 200, -1);
-
-
-      this.emitter.minParticleScale = 0.2;
-      this.emitter.maxParticleScale = 0.3;
-      this.emitter.lifespan = 3800;
-  
-      this.emitter.setYSpeed(-380, -375);
-    //   this.emitter.setXSpeed(-500, -450);
-      this.emitter.gravity = 600;
-      this.emitter.name = index.toString();
-      this.emitter.setXSpeed(500, 450);
-      this.emitter.setXSpeed(500, 450);
-  };*/
 
 // =======================================================================================================================================
 //                                   SPRINKLERS END
 //
 //=========================================================================================================================================
+
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
@@ -196,8 +263,12 @@ var chris1;
 var sprinklersGroup;
 var sprinklersGroup2;
 var boxGroup;
+var npcGroup;
 
-Game.Level1 = function (game) { };
+Game.Level1 = function (game) {
+
+    // this.jumpTimer = 0;
+};
 
 var map;
 var layer;
@@ -229,10 +300,28 @@ var timer;
 var timeLimit;
 var timeText;
 
+// SCORE//
+var sprinklerAdd = 10;
+var score;
+var scoreText;
+
 //CLOCKS FOR EXTRA TIME
 var clocks;
+var clockAdd = 10;
 var easterEggReward = false;
 
+
+// DRONE PARTS
+var bg = null;
+var stationary = null;
+var clouds = null;
+
+var facing = 'left';
+
+var locked = false;
+var lockedTo = null;
+var wasLocked = false;
+var willJump = false;
 
 // ==================================
 // CREATE FUNCTION BELOW
@@ -251,7 +340,6 @@ Game.Level1.prototype = {
 		// Set up player
 		player = this.add.sprite(100, 400, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
-		// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
 		// Ground and edges of the world
@@ -264,9 +352,9 @@ Game.Level1.prototype = {
 		player.animations.add('right', [5, 6, 7, 8], 10, true);
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES END
-        //=========================================================================================================================================
+        //====================================================================================================================================
 
-
+        
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
         //=========================================================================================================================================
@@ -279,54 +367,34 @@ Game.Level1.prototype = {
 		this.physics.startSystem(Phaser.Physics.ARCADE);
 		this.physics.arcade.gravity.y = 1400;
 
-			// add map with 'map id'
-		map = this.add.tilemap('map');
-				// add tileset with 'tileset id', 'key'
-		map.addTilesetImage('h2no_tilesheet', 'tiles');
+		// add map with 'map id'
+        map = this.add.tilemap('map');
+	    // add tileset with 'tileset id', 'key'
+        map.addTilesetImage('h2no_tilesheet_pastel', 'tiles');
 			
-		bossStateLayer = map.createLayer('boss_state_layer');
-		elevationBackgroundLayer = map.createLayer('elevation_background_layer');
-		treeLayer = map.createLayer('tree_layer');
-		leavesLayer = map.createLayer('leaves_layer');
-		branchLayer = map.createLayer('branch_layer');
-		appleLayer = map.createLayer('apple_layer');
-		floorBackgroundLayer = map.createLayer('floor_background_layer');
-		elevationRightLayer = map.createLayer('elevation_right_layer');
-		elevationLeftLayer = map.createLayer('elevation_left_layer');
-		fenceLayer = map.createLayer('fence_layer');
-		carLayer = map.createLayer('car_layer');
-		elevationLayer = map.createLayer('elevation_layer');
-		houseWallLayer = map.createLayer('house_wall_layer');
-		houseDoorWindowLayer = map.createLayer('house_door_window_layer');
-		houseRoofLayer = map.createLayer('house_roof_layer');
-		grassBackgroundLayer = map.createLayer('grass_background_layer');
-		mainLayer = map.createLayer('main_layer');
-		grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
-		grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
-		grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
-		waterLayer = map.createLayer('water_layer');
+        secretLayer = map.createLayer('secret');
+		backgroundFarLayer = map.createLayer('background_far');
+		backgroundLayer = map.createLayer('background');
+		mainLayer = map.createLayer('main');
+		foregroundLayer = map.createLayer('foreground');
 
 		// uncomment to check layer collision boxes
 		// layer.debug = true;
-		mainLayer.resizeWorld();
+        mainLayer.resizeWorld();
+		
+		map.setCollisionBetween(0, 999, true, 'main');
+		map.setCollisionBetween(0, 999, true, 'secret');
 
-
-
-		map.setCollisionBetween(0, 999, true, 'main_layer');
-		map.setCollisionBetween(0, 999, true, 'house_roof_layer');
-		map.setCollisionBetween(0, 999, true, 'elevation_layer');
 
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
         //=========================================================================================================================================
-
-
         // =======================================================================================================================================
         //                                   CONTROL VARIABLES START
         //=========================================================================================================================================
 
 		controls = {
-				up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+			up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
 		};
 
 		cursors = this.input.keyboard.createCursorKeys();
@@ -352,21 +420,37 @@ Game.Level1.prototype = {
 
 		sprinklersGroup = game.add.group();
 		sprinklersGroup2 = game.add.group();
+		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
 
 		//CREATE NEW SPRINKLERS HERE
-		// createSprinkler(1, game, player.x + 350, player.y + 70);
-		// createSprinkler2(1, game, player.x + 1800, player.y + 70);
-		// createSprinkler(1, game, player.x + 2000, player.y + 70);
-		// createSprinkler2(1, game, player.x + 2500, player.y + 70);
+		//kevin - search purposes
+		createSprinkler(1, game, 467, 1256 + 12);
+		// createSprinkler(1, game, 1465, 1202);
+		// createSprinkler(1, game, 2192, 1064 + 12);
+		createSprinkler2(1, game, 2835, 936 + 12);
+		// createSprinkler(1, game, 2705, 1192 + 12);
+		// createSprinkler(1, game, 3400, 936 + 12);
+		// createSprinkler(1, game, 3855, 776 + 12);
+		// createSprinkler2(1, game, 3600, 1192 + 12);
+		// createSprinkler3(1, game, 4757, 1192 + 12);
+		// createSprinkler2(1, game, 5257, 1192 + 12);
+		// createSprinkler2(1, game, 6226, 1192 + 12);
+		// createSprinkler(1, game, 6984, 936 + 12);
+		// createSprinkler(1, game, 6436, 936 + 12);
+		// createSprinkler(1, game, 6367, 616 + 12);
+		// createSprinkler3(1, game, 7441, 1192 + 12);
+		// createSprinkler(1, game, 8393, 1192 + 12);
+		// createSprinkler(1, game, 9414, 1192 + 12);
+		// createSprinkler3(1, game, 10135, 1192 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
         this.world.bringToTop(sprinklersGroup2);
+        this.world.bringToTop(sprinklersGroup3);
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
-		npc1 = new NPC(3, game, player.x + 128, player.y);
 
         // =======================================================================================================================================
         //                                   GAME UI START
@@ -392,6 +476,14 @@ Game.Level1.prototype = {
 				align: "center"
 		});
 		lifeText.fixedToCamera = true;
+		
+		score = 0;
+		scoreText = game.add.text(300, 40, score, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		scoreText.fixedToCamera = true;
         // =======================================================================================================================================
         //                                   GAME UI END
         //=========================================================================================================================================
@@ -428,7 +520,7 @@ Game.Level1.prototype = {
 		chris1 = new Chris(3, game, 4950, 0);
 		chris1.chris.scale.setTo(0.2, 0.2);
 
-		cat1 = new Cat(3, game, 8500, 0);
+		cat1 = new Cat(3, game, 500, 0);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
 		cat2 = new Cat(3, game, 4950, 0);
@@ -445,39 +537,167 @@ Game.Level1.prototype = {
         //                                   LAYER CONTROL START
         //=========================================================================================================================================
 
-		
 		this.world.bringToTop(player);
-		this.world.bringToTop(grassForegroundFloorLayer);
-		this.world.bringToTop(grassForegroundRightLayer);
-		this.world.bringToTop(grassForegroundLeftLayer);
-		this.world.bringToTop(waterLayer);
+		this.world.bringToTop(foregroundLayer);
         // =======================================================================================================================================
         //                                   LAYER CONTROL END
         //=========================================================================================================================================
+        // =======================================================================================================================================
+        //                                   NPC START
+        //=========================================================================================================================================
+
+
+        npcGroup = game.add.group();
+
+        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
+        createNPC(game, 7855, 800, 'chris', 200,
+            "Have you seen my cat?");
+
+        createNPC(game, 200, 880, 'npc', 200,
+            "Why don't you make yourself useful and turn off some sprinklers huh?");
+
+        createNPC(game, 3745, 550, 'npc', 200,
+            "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
+
+        createNPC(game, 5555, 800, 'npc', 300,
+            "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
+            "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
+
+        createNPC(game, 700, 800, 'npc', 200,
+            "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
+
+        createNPC(game, 900, 800, 'npc', 200,
+            "He tried to run the dishwasher with only half a load, can you believe it? " +
+            "I almost lost it H2NO, what a water waster!");
+
+        createNPC(game, 1000, 800, 'npc', 200,
+            "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
+        // =======================================================================================================================================
+        //                                  NPC END //=========================================================================================================================================
+
+
+        //////////////////////////////////////////Drones//////////////////////////////////////////
+        this.clouds = this.add.physicsGroup();
+
+        var cloud1 = new CloudPlatform(game, 10500, 1200, 'platform', this.clouds);
+
+        cloud1.addMotionPath([
+            { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+        ]);
+
+        var cloud2 = new CloudPlatform(this.game, 800, 1000, 'platform', this.clouds);
+
+            cloud2.addMotionPath([
+                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
+                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 3000, yEase: "Sine.easeOut" }
+            ]);
+
+        this.clouds.callAll('start');
+
+        //////////////////////////////////////////Drones//////////////////////////////////////////
 
     },
-	
-	
-// ==================================
-// UPDATE FUNCTION BELOW
-// ==================================
+
+    /////////////Drone Functions////////////
+
+
+    customSep: function (player, platform) {
+
+        if (!this.locked && player.body.velocity.y > 0) {
+            this.locked = true;
+            this.lockedTo = platform;
+            platform.playerLocked = true;
+
+            player.body.velocity.y = 0;
+        }
+
+    },
+
+    checkLock: function () {
+
+        this.player.body.velocity.y = 0;
+
+        //  If the player has walked off either side of the platform then they're no longer locked to it
+        if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
+            this.cancelLock();
+        }
+
+    },
+
+    cancelLock: function () {
+
+        this.wasLocked = true;
+        this.locked = false;
+
+    },
+
+    preRender: function () {
+
+        if (this.game.paused) {
+            //  Because preRender still runs even if your game pauses!
+            return;
+        }
+
+        if (this.locked || this.wasLocked) {
+            this.player.x += this.lockedTo.deltaX;
+            this.player.y = this.lockedTo.y - 48;
+
+            if (this.player.body.velocity.x !== 0) {
+                this.player.body.velocity.y = 0;
+            }
+        }
+
+        if (this.willJump) {
+            this.willJump = false;
+
+            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
+                //  If the platform is moving up we add its velocity to the players jump
+                this.player.body.velocity.y = -500 + (this.lockedTo.deltaY * 10);
+            }
+            else {
+                this.player.body.velocity.y = -500;
+            }
+
+            this.jumpTimer = this.time.time + 750;
+        }
+
+        if (this.wasLocked) {
+            this.wasLocked = false;
+            this.lockedTo.playerLocked = false;
+            this.lockedTo = null;
+        }
+
+    },
+
+
+
+
+    // ==================================
+    // UPDATE FUNCTION BELOW
+    // ==================================
 
     update: function () {
-
-
-        //>>>>>>> Testing
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, houseRoofLayer);
-        this.physics.arcade.collide(player, elevationLayer);
-        // this will add physics to enemy
-        // this.physics.arcade.collide(enemy1.robot, layer);
-        this.physics.arcade.collide(npc1.npc, mainLayer);
+        this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
-
-        this.physics.arcade.collide(player, mainLayer);
+        this.physics.arcade.collide(npcGroup, mainLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.collide(player, clouds, this.customSep, null, this);
+
+
+
+      /*  secretLayer = map.createLayer('secret');
+        backgroundFarLayer = map.createLayer('background_far');
+        backgroundLayer = map.createLayer('background');
+        mainLayer = map.createLayer('main');
+        foregroundLayer = map.createLayer('foreground');*/
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -485,10 +705,8 @@ Game.Level1.prototype = {
         //Collide Player with Sprinkler and SprinkerCollision
        this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
+       this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
-
-       //var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
-
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
@@ -500,16 +718,32 @@ Game.Level1.prototype = {
             var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
+        /////////////////////
+        ///NPC UPDATES
+        /////////////////////
+        for (var i = 0; i < npcGroup.children.length; i++) {
+            npcGroup.children[i].body.velocity.x = 0;
+        }
 
-       this.physics.arcade.collide(player, mainLayer);
-       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-			this.physics.arcade.collide(player, frontLayer);
-			// this will add physics to enemy 
-			// this.physics.arcade.collide(enemy1.robot, layer);
-			 this.physics.arcade.collide(npc1.npc, mainLayer);
-			 this.physics.arcade.collide(cat1.cat, mainLayer);
-			 this.physics.arcade.collide(cat2.cat, mainLayer);
-			 this.physics.arcade.collide(chris1.chris, mainLayer);
+
+        for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
+            var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
+            var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
+            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
+            this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
+        }
+
+
+        for (var i = 0; i < npcGroup.children.length; i++) {
+            if (checkOverlap(player, npcGroup.children[i])) {
+                this.world.add(npcGroup.children[i].SpeechBubble);
+                npcJump(npcGroup.children[i]);
+            } else {
+                // Make SpeechBubble disappear
+                this.world.remove(npcGroup.children[i].SpeechBubble);
+            }
+        }
+
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
@@ -522,52 +756,29 @@ Game.Level1.prototype = {
             }
         }
 
-        //if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
-        //  this.resetPlayer();
-        //}
 
-        /*if(emitter2.emitter !== null && this.physics.arcade.overlap(player, emitter2.emitter)) {
-          this.resetPlayer();
-        }*/
-			// this line will check if player overlaps with enemy
-//        if (checkOverlap(player, enemy1.robot)) {
-//            this.resetPlayer();
-//        }
-
-        //TEST FUNCTION
         function hitSprinklerFunction(player, sprinkler) {
             //sprinkler.animations.frame = 0;
             if (sprinkler.oneHit) {
-                    sprinkler.oneHit = false;
-                    sprinkler.emitter.destroy();
-                    sprinkler.animations.frame = 1;
-                    sprinkler.body.setSize(16, 8, 25, 18);
-                    sprinkler.sprinklerCollision.destroy();
-                    player.body.velocity.y = -500;
+				sprinkler.oneHit = false;
+				sprinkler.emitter.destroy();
+				score += sprinklerAdd;
+                    if ('emitter2' in sprinkler) {
+                        sprinkler.emitter2.destroy();
+                    }      
+				sprinkler.animations.frame = 1;
+				sprinkler.body.setSize(16, 8, 25, 18);
+				sprinkler.sprinklerCollision.destroy();
+				player.body.velocity.y = -500;
             }
+
         }
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE END
         //========================================================================================================================================
 
-        npc1.npc.body.velocity.x = 0;
-
-
-        // NPC will jump if player stands on it
-        if (checkOverlap(player, npc1.npc)) {
-            npcJump();
-        }
-
-        // NPC will face the direction of the player
-        if (!checkOverlap(player, npc1.npc)) {
-
-            if (player.world.x > npc1.npc.world.x) {
-                npc1.npc.frame = 2;
-            } else {
-                npc1.npc.frame = 1;
-            }
-        }
 
         if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
@@ -592,55 +803,131 @@ Game.Level1.prototype = {
             player.animations.play('idle');
         }
 
-		if (mobile) {
-			
+
+
+        if (mobile) {
             if (this.button.isDown) {
                 jumpNow();
             }
             if (this.joystick.properties.right) {
-              moveRight();
-							player.animations.play('right');
+            	moveRight();
+				player.animations.play('right');
             } else if (this.joystick.properties.left) {
-              moveLeft();
-							player.animations.play('left');
+            	moveLeft();
+				player.animations.play('left');
             } else {
-							player.animations.play('idle');
-						}		
+				player.animations.play('idle');
+			}		
         }
 
         timeText.setText('Time: ' + timeLimit);
 	    lifeText.setText('Lives: ' + life);
+		scoreText.setText('Score: ' + score);
 
         this.timeUp();
-
-        
+		
         findCat();
         easterEgg();
+	},
 
-    },
 
     render: function() {
+        //game.debug.body(player);
+        game.debug.spriteInfo(player);
+    },
+        ///////////////////Drone//////////////////
 
-    },
-    resetPlayer: function () {
+            //  Do this AFTER the collide check, or we won't have blocked/touching set
+            // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
+
+            // this.player.body.velocity.x = 0;
+
+            // if (this.cursors.left.isDown)
+            // {
+            //     this.player.body.velocity.x = -150;
+
+            //     if (this.facing !== 'left')
+            //     {
+            //         this.player.play('left');
+            //         this.facing = 'left';
+            //     }
+            // }
+            // else if (this.cursors.right.isDown)
+            // {
+            //     this.player.body.velocity.x = 150;
+
+            //     if (this.facing !== 'right')
+            //     {
+            //         this.player.play('right');
+            //         this.facing = 'right';
+            //     }
+            // }
+            // else
+            // {
+            //     if (this.facing !== 'idle')
+            //     {
+            //         this.player.animations.stop();
+
+            //         if (this.facing === 'left')
+            //         {
+            //             this.player.frame = 0;
+            //         }
+            //         else
+            //         {
+            //             this.player.frame = 5;
+            //         }
+
+            //         this.facing = 'idle';
+            //     }
+            // }
+            
+            // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer)
+            // {
+            //     if (this.locked)
+            //     {
+            //         this.cancelLock();
+            //     }
+
+            //     this.willJump = true;
+            // }
+
+            // if (this.locked)
+            // {
+            //     this.checkLock();
+            // }
+
+
+    resetPlayer: function() {
+
         player.reset(100, 400);
-		life--;
-	    console.log("died");
-	    if (life === 0) {
-		    game.state.start('Gameover');
-	    }
+        life--;
+        console.log("died");
+        if (life === 0) {
+            this.state.start('Gameover');
+        }
     },
+
     // for checkpoint create checkx/y
 
-    countdown: function(){
+    // creating buttons
+    createButton: function (game, imgString, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+
+    },
+	
+    // for checkpoint create checkx/y
+
+    countdown: function () {
         timeLimit--;
     },
 
-    timeUp: function(){
+    timeUp: function () {
         if (timeLimit == 0 || timeLimit < 0) {
-            //change this to something else later, like gameover or minus one life
-             timer.stop();
-					game.state.start('Gameover');
+            timer.stop();
+			game.state.start('Gameover');
         }
     },
     createButton:function(game, string, x, y, w, h, callBack) {
@@ -662,7 +949,7 @@ Game.Level1.prototype = {
 		txt.alpha = 0.5;
 		
     },
-    createClock: function(x, y) {
+    createClock: function (x, y) {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
     }
@@ -677,6 +964,7 @@ Game.Level1.prototype = {
 function moveLeft() {
     if (player.body.velocity.x > -playerMaxSpeed) {
         player.body.velocity.x -= playerSpeed;
+		console.log(player.body.velocity.x);
     } else {
         player.body.velocity.x = -playerMaxSpeed;
     }
@@ -702,28 +990,20 @@ function jumpNow() {
         if (Math.abs(player.body.velocity.x) >= 125) {
                 player.body.velocity.y -= 600;
             } else {
-                player.body.velocity.y -= 1000;
+                player.body.velocity.y -= 400;
             }
         jumpTimer = game.time.now + 750;
     }
 }
 
 // Makes the NPC jump
-function npcJump() {
-    if (npc1.npc.body.blocked.down) {
-        npc1.npc.body.velocity.y = -300;
-        
-        let face;
-        if (player.world.x < npc1.npc.world.x) {
-            face = 'left';
-        } else {
-            face = 'right';
-        }
-        npc1.npc.animations.play(face);
+function npcJump(npc) {
+    if (npc.body.blocked.down) {
+        npc.body.velocity.y = -300;
     }
 }
 
-function collectClock(player, clock){
+function collectClock(player, clock) {
     timeLimit += 5;
     clock.kill();
 }
@@ -732,6 +1012,12 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        /*for(var i = 0; i < npcGroup.children.length; i++) {
+            if (npcGroup.children[i].isChris) {
+                npcGroup.children[i].destroy();
+            }
+        }*/
     }
 }
 
@@ -741,3 +1027,166 @@ function easterEgg() {
     }
 }
 
+function createNPC(game, x, y, image, width, text) {
+    var npc = npcGroup.create(x,y,image);
+    game.physics.enable(npc, Phaser.Physics.ARCADE);
+    npc.body.immovable= false;
+    npc.body.allowGravity = true;
+    npc.body.collideWorldBounds = true;
+    npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
+
+   /* game.physics.enable(this.cat, Phaser.Physics.ARCADE);
+    this.cat.body.immovable = false;
+    this.cat.body.allowGravity = true;
+    this.cat.body.collideWorldBounds = false;*/
+    //easter egg NPC
+    /*if (image == 'chris') {
+        npc.isChris = true;
+    } else {
+        npc.isChris = false;
+    }*/
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+var SpeechBubble = function(game, x, y, width, text) {
+    Phaser.Sprite.call(this, game, x, y);
+
+    // Some sensible minimum defaults
+    var height = 18;
+
+    // Set up our text and run our custom wrapping routine on it
+    this.bitmapText = game.make.bitmapText(x + 12, y+10, 'carrier-command', text, 12);
+    SpeechBubble.wrapBitmapText(this.bitmapText, width);
+
+    // Calculate the width and height needed for the edges
+    var bounds = this.bitmapText.getLocalBounds();
+    if (bounds.width + 18 > width) {
+        width = bounds.width + 18;
+    }
+    if (bounds.height + 14 > height) {
+        height = bounds.height + 14;
+    }
+
+    // Create all of our corners and edges
+    this.borders = [
+        game.make.tileSprite(x + 9, y + 9, width - 9, height - 9, 'bubble-border', 4),
+        game.make.image(x, y, 'bubble-border', 0),
+        game.make.image(x + width, y, 'bubble-border', 2),
+        game.make.image(x + width, y + height, 'bubble-border', 8),
+        game.make.image(x, y + height, 'bubble-border', 6),
+        game.make.tileSprite(x + 9, y, width - 9, 9, 'bubble-border', 1),
+        game.make.tileSprite(x + 9, y + height, width - 9, 9, 'bubble-border', 7),
+        game.make.tileSprite(x, y + 9, 9, height - 9, 'bubble-border', 3),
+        game.make.tileSprite(x + width, y + 9, 9, height - 9, 'bubble-border', 5)
+    ];
+
+    // Add all of the above to this sprite
+    for (var b = 0, len = this.borders.length; b < len; b++) {
+        this.addChild(this.borders[b]);
+    }
+
+    // Add the tail
+    this.tail = this.addChild(game.make.image(x + 18, y + 3 + height, 'bubble-tail'));
+
+    // Add our text last so it's on top
+    this.addChild(this.bitmapText);
+    this.bitmapText.tint = 0x111111;
+
+    // Offset the position to be centered on the end of the tail
+    this.pivot.set(x + 25, y + height + 24);
+};
+
+SpeechBubble.prototype = Object.create(Phaser.Sprite.prototype);
+SpeechBubble.prototype.constructor = SpeechBubble;
+
+SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
+    var words = bitmapText.text.split(' '), output = "", test = "";
+
+    for (var w = 0, len = words.length; w < len; w++) {
+        test += words[w] + " ";
+        bitmapText.text = test;
+        bitmapText.updateText();
+        if (bitmapText.textWidth > maxWidth) {
+            output += "\n" + words[w] + " ";
+        }
+        else {
+            output += words[w] + " ";
+        }
+        test = output;
+    }
+
+    output = output.replace(/(\s)$/gm, ""); // remove trailing spaces
+    bitmapText.text = output;
+    bitmapText.updateText();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
+
+CloudPlatform = function (game, x, y, key, group) {
+
+    if (typeof group === 'undefined') { group = game.world; }
+
+    Phaser.Sprite.call(this, game, x, y, key);
+
+    game.physics.arcade.enable(this);
+
+    this.anchor.x = 0.5;
+
+    this.body.customSeparateX = true;
+    this.body.customSeparateY = true;
+    this.body.allowGravity = false;
+    this.body.immovable = true;
+
+    this.playerLocked = false;
+
+    group.add(this);
+
+};
+
+CloudPlatform.prototype = Object.create(Phaser.Sprite.prototype);
+CloudPlatform.prototype.constructor = CloudPlatform;
+
+CloudPlatform.prototype.addMotionPath = function (motionPath) {
+
+    this.tweenX = this.game.add.tween(this.body);
+    this.tweenY = this.game.add.tween(this.body);
+
+    //  motionPath is an array containing objects with this structure
+    //  [
+    //   { x: "+200", xSpeed: 2000, xEase: "Linear", y: "-200", ySpeed: 2000, yEase: "Sine.easeIn" }
+    //  ]
+
+    for (var i = 0; i < motionPath.length; i++) {
+        this.tweenX.to({ x: motionPath[i].x }, motionPath[i].xSpeed, motionPath[i].xEase);
+        this.tweenY.to({ y: motionPath[i].y }, motionPath[i].ySpeed, motionPath[i].yEase);
+    }
+
+    this.tweenX.loop();
+    this.tweenY.loop();
+
+};
+
+CloudPlatform.prototype.start = function () {
+
+    this.tweenX.start();
+    this.tweenY.start();
+
+};
+
+CloudPlatform.prototype.stop = function () {
+
+    this.tweenX.stop();
+    this.tweenY.stop();
+
+};
+
+/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
+////////////////////////////////////////////////////////////////////////////

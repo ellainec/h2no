@@ -32,6 +32,8 @@ var springTweenC;
 var bossPlayerSpawnX;
 var bossPlayerSpawnY;
 
+var bossAdd = 1000;
+
 Game.BossState = function (game) { };
 
 Game.BossState.prototype = {
@@ -137,6 +139,12 @@ Game.BossState.prototype = {
 			align: "center"
 		});
 		lifeText.fixedToCamera = true;
+		scoreText = game.add.text(300, 40, score, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		scoreText.fixedToCamera = true;
 		
 		// =======================================================================
 		
@@ -286,6 +294,13 @@ Game.BossState.prototype = {
             	moveLeft();
 				player.animations.play('left');
             } else {
+				if (player.body.velocity.x >= playerSlow) {
+					player.body.velocity.x -= playerSlow;
+				} else if (player.body.velocity.x < -playerSlow) {
+					player.body.velocity.x += playerSlow;
+				} else {
+					player.body.velocity.x = 0;
+				}
 				player.animations.play('idle');
 			}		
         }
@@ -297,6 +312,7 @@ Game.BossState.prototype = {
 
         timeText.setText('Time: ' + timeLimit);
 		lifeText.setText('Lives: ' + life);
+		scoreText.setText('Score: ' + score);
 		this.timeUp();
 		
 		// ========================================================================
@@ -388,10 +404,13 @@ Game.BossState.prototype = {
             }
             if (boss.frame == 1) {
                 this.lowerWaterA();
+				score += bossAdd;
             } else if (boss.frame == 2) {
                 this.lowerWaterB();
+				score += bossAdd;
             } else if (boss.frame == 3) {
                 this.lowerWaterC();
+				score += bossAdd;
             }
         }
     },

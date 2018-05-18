@@ -6,14 +6,14 @@ Game.Gameover = function(game) {};
 Game.Gameover.prototype = {
 
     create:function() {
-			postScores();
-			console.log(timeLimit + " " + playerName);
-			gameover = true;
-			this.createButton(game, "Game Over", 400, 200,
-					300, 80,
-					function () {
-							this.state.start('DailyLeaderboard');
-					});
+		postScores();
+		console.log(timeLimit + " " + playerName);
+		gameover = true;
+		this.createButton(game, "Game Over", 400, 200,
+				300, 80,
+				function () {
+						this.state.start('DailyLeaderboard');
+				});
     },
     update:function(){
 
