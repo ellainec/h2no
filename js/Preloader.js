@@ -38,9 +38,9 @@ Game.Preloader.prototype = {
 		this.load.image('clock', 'assets/clock.png');
 
 	  
-	  // ==========================
-	  // THIS IS FOR THE BOSS STAGE 
-	  // ==========================
+	    // ==========================
+	    // THIS IS FOR THE BOSS STAGE 
+	    // ==========================
 	  
 		this.load.image('blue', 'assets/img/blue.png');
 		this.load.image('grey', 'assets/img/grey.png');
@@ -58,13 +58,22 @@ Game.Preloader.prototype = {
 		this.load.audio('buttonStomp', 'assets/audio/effects/button_stomp.wav');
 		this.load.audio('spring', 'assets/audio/effects/spring.wav');
 
-
+	  
+	    // ==========================
+	    // THIS IS FOR NPC
+	    // ==========================
+	  
+		
 		this.load.image('npc', 'assets/smolcat.png');
 		this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
 		this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
 
+	    // ==========================
+	    // THIS IS FOR DRONES
+	    // ==========================
 
+		this.load.image('platform', 'assets/droneTwo.png');
     },
     
     create:function() {
