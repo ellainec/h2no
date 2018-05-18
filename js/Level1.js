@@ -132,8 +132,6 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.outOfBoundsKill = true;
 
 };
-
-
 createSprinkler3 = function (index, game, x, y) {
     var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
 
@@ -209,31 +207,11 @@ createSprinkler3 = function (index, game, x, y) {
 
 };
 
-
-
-/*createEmitter2 = function(index, game, x, y) {
-    this.emitter = game.add.emitter(x, y);
-  
-      this.emitter.makeParticles('water', 0, 120, true);
-      this.emitter.start(false, 200, -1);
-
-
-      this.emitter.minParticleScale = 0.2;
-      this.emitter.maxParticleScale = 0.3;
-      this.emitter.lifespan = 3800;
-  
-      this.emitter.setYSpeed(-380, -375);
-    //   this.emitter.setXSpeed(-500, -450);
-      this.emitter.gravity = 600;
-      this.emitter.name = index.toString();
-      this.emitter.setXSpeed(500, 450);
-      this.emitter.setXSpeed(500, 450);
-  };*/
-
 // =======================================================================================================================================
 //                                   SPRINKLERS END
 //
 //=========================================================================================================================================
+
 
 NPC = function (index, game, x, y) {
     this.npc = game.add.sprite(x, y, 'baddie');
@@ -283,6 +261,7 @@ var chris1;
 var sprinklersGroup;
 var sprinklersGroup2;
 var boxGroup;
+var npcGroup;
 
 Game.Level1 = function (game) { };
 
@@ -292,7 +271,9 @@ var frontLayer;
 var backlayer;
 
 var player;
-var playerSpeed = 450;
+var playerSpeed = 20;
+var playerMaxSpeed = 450;
+var playerSlow = 40;
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
@@ -305,6 +286,10 @@ var cursors;
 var mobile = false;
 
 var playerName;
+
+// BOSS
+var bossButton;
+
 //TIMER//
 var timer;
 var timeLimit;
@@ -322,130 +307,119 @@ var easterEggReward = false;
 Game.Level1.prototype = {
 
     create: function (game) {
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES START
+        //=========================================================================================================================================
 
-            game.world.setBounds(800, 400); //KV TESTING
+		//assignment of playerName can't be outside in global scope
+		playerName = sessionStorage.getItem("playerName");
+
+		// Set up player
+		player = this.add.sprite(100, 400, 'h2no');
+		player.anchor.setTo(0.5, 0.5);
+		// Enable physics on player
+		this.physics.enable(player, Phaser.Physics.ARCADE);
+		// Ground and edges of the world
+		player.body.collideWorldBounds = true;
+		player.body.maxVelocity.y = 800;
+		this.camera.follow(player);
+
+		player.animations.add('idle', [4], 10, true);
+		player.animations.add('left', [0, 1, 2, 3], 10, true);
+		player.animations.add('right', [5, 6, 7, 8], 10, true);
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES END
+        //====================================================================================================================================
+
+        
+        // =======================================================================================================================================
+        //                                   MAP VARIABLES START
+        //=========================================================================================================================================
 
 
-			//assignment of playerName can't be outside in global scope
-			playerName = sessionStorage.getItem("playerName");
-
-			this.stage.backgroundColor = '#3598db';
+		this.stage.backgroundColor = '#3598db';
 	  	//this.stage.backgroundColor = '#000000';
 
-			this.stage.backgroundColor = '#3598db';
-			this.physics.startSystem(Phaser.Physics.ARCADE);
-			this.physics.arcade.gravity.y = 1400;
+		this.stage.backgroundColor = '#3598db';
+		this.physics.startSystem(Phaser.Physics.ARCADE);
+		this.physics.arcade.gravity.y = 1400;
 
-			// add map with 'map id'
-      map = this.add.tilemap('map');
-			// add tileset with 'tileset id', 'key'
-      map.addTilesetImage('h2no_tilesheet', 'tiles');
+		// add map with 'map id'
+        map = this.add.tilemap('map');
+	    // add tileset with 'tileset id', 'key'
+        map.addTilesetImage('h2no_tilesheet_pastel', 'tiles');
 			
-			bossStateLayer = map.createLayer('boss_state_layer');
-            elevationBackgroundLayer = map.createLayer('elevation_background_layer');
-			treeLayer = map.createLayer('tree_layer');
-			leavesLayer = map.createLayer('leaves_layer');
-			branchLayer = map.createLayer('branch_layer');
-			appleLayer = map.createLayer('apple_layer');
-			floorBackgroundLayer = map.createLayer('floor_background_layer');
-			elevationRightLayer = map.createLayer('elevation_right_layer');
-			elevationLeftLayer = map.createLayer('elevation_left_layer');
-			fenceLayer = map.createLayer('fence_layer');
-			carLayer = map.createLayer('car_layer');
-			elevationLayer = map.createLayer('elevation_layer');
-			houseWallLayer = map.createLayer('house_wall_layer');
-			houseDoorWindowLayer = map.createLayer('house_door_window_layer');
-		    houseRoofLayer = map.createLayer('house_roof_layer');
-		    grassBackgroundLayer = map.createLayer('grass_background_layer');
-		    mainLayer = map.createLayer('main_layer');
-            grassForegroundFloorLayer = map.createLayer('grass_foreground_layer_floor');
-            grassForegroundRightLayer = map.createLayer('grass_foreground_layer_right');
-            grassForegroundLeftLayer = map.createLayer('grass_foreground_layer_left');
-            waterLayer = map.createLayer('water_layer');
-                        
-			// uncomment to check layer collision boxes
-			// layer.debug = true;
-            mainLayer.resizeWorld();
-            
-            
-			
-			map.setCollisionBetween(0, 999, true, 'main_layer');
-			map.setCollisionBetween(0, 999, true, 'house_roof_layer');
-			map.setCollisionBetween(0, 999, true, 'elevation_layer');
+        secretLayer = map.createLayer('secret');
+		backgroundFarLayer = map.createLayer('background_far');
+		backgroundLayer = map.createLayer('background');
+		mainLayer = map.createLayer('main');
+		foregroundLayer = map.createLayer('foreground');
+
+		// uncomment to check layer collision boxes
+		// layer.debug = true;
+        mainLayer.resizeWorld();
+		
+		map.setCollisionBetween(0, 999, true, 'main');
+		map.setCollisionBetween(0, 999, true, 'secret');
 
 
+        // =======================================================================================================================================
+        //                                   MAP VARIABLES START
+        //=========================================================================================================================================
+        // =======================================================================================================================================
+        //                                   CONTROL VARIABLES START
+        //=========================================================================================================================================
 
-			// Set up player
-			player = this.add.sprite(100, 400, 'h2no');
-			player.anchor.setTo(0.5, 0.5);
-			// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
-			// Enable physics on player
-			this.physics.enable(player, Phaser.Physics.ARCADE);
-			// Ground and edges of the world
-			player.body.collideWorldBounds = true;
-			player.body.maxVelocity.y = 800;
-			this.camera.follow(player);
-			
-			player.animations.add('idle', [4], 10, true);
-			player.animations.add('left', [0, 1, 2, 3], 10, true);
-			player.animations.add('right', [5, 6, 7, 8], 10, true);
+		controls = {
+			up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+		};
 
-            
-
-			controls = {
-					up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-			};
-
-			cursors = this.input.keyboard.createCursorKeys();
+		cursors = this.input.keyboard.createCursorKeys();
 
 
-		  if (!game.device.desktop) {
-			mobile = true;
-			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+	    if (!game.device.desktop) {
+		mobile = true;
+		this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+		this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+		this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
 
-				
-			}
 
-			// This is a test to add an extra enemy sprite into game
+		}
 
-			timer = game.time.create(false);
-
-            timer.start();
+        // =======================================================================================================================================
+        //                                   CONTROL VARIABLES END
+        //=========================================================================================================================================
 
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE START
         //=========================================================================================================================================
 
-            sprinklersGroup = game.add.group();
-            sprinklersGroup2 = game.add.group();
-            sprinklersGroup3 = game.add.group();
-            boxGroup = game.add.group();
+		sprinklersGroup = game.add.group();
+		sprinklersGroup2 = game.add.group();
+		sprinklersGroup3 = game.add.group();
+		boxGroup = game.add.group();
 
-            //CREATE NEW SPRINKLERS HERE
-            //kevin - search purposes
-            createSprinkler(1, game, 467, 1256 + 12);
-            // createSprinkler(1, game, 1465, 1202);
-            // createSprinkler(1, game, 2192, 1064 + 12);
-            createSprinkler2(1, game, 2835, 936 + 12);
-            // createSprinkler(1, game, 2705, 1192 + 12);
-            // createSprinkler(1, game, 3400, 936 + 12);
-            // createSprinkler(1, game, 3855, 776 + 12);
-            // createSprinkler2(1, game, 3600, 1192 + 12);
-            // createSprinkler3(1, game, 4757, 1192 + 12);
-            // createSprinkler2(1, game, 5257, 1192 + 12);
-            // createSprinkler2(1, game, 6226, 1192 + 12);
-            // createSprinkler(1, game, 6984, 936 + 12);
-            // createSprinkler(1, game, 6436, 936 + 12);
-            // createSprinkler(1, game, 6367, 616 + 12);
-            // createSprinkler3(1, game, 7441, 1192 + 12);
-            // createSprinkler(1, game, 8393, 1192 + 12);
-            // createSprinkler(1, game, 9414, 1192 + 12);
-            // createSprinkler3(1, game, 10135, 1192 + 12);
-            
-
+		//CREATE NEW SPRINKLERS HERE
+		//kevin - search purposes
+		createSprinkler(1, game, 467, 1256 + 12);
+		// createSprinkler(1, game, 1465, 1202);
+		// createSprinkler(1, game, 2192, 1064 + 12);
+		createSprinkler2(1, game, 2835, 936 + 12);
+		// createSprinkler(1, game, 2705, 1192 + 12);
+		// createSprinkler(1, game, 3400, 936 + 12);
+		// createSprinkler(1, game, 3855, 776 + 12);
+		// createSprinkler2(1, game, 3600, 1192 + 12);
+		// createSprinkler3(1, game, 4757, 1192 + 12);
+		// createSprinkler2(1, game, 5257, 1192 + 12);
+		// createSprinkler2(1, game, 6226, 1192 + 12);
+		// createSprinkler(1, game, 6984, 936 + 12);
+		// createSprinkler(1, game, 6436, 936 + 12);
+		// createSprinkler(1, game, 6367, 616 + 12);
+		// createSprinkler3(1, game, 7441, 1192 + 12);
+		// createSprinkler(1, game, 8393, 1192 + 12);
+		// createSprinkler(1, game, 9414, 1192 + 12);
+		// createSprinkler3(1, game, 10135, 1192 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -454,56 +428,121 @@ Game.Level1.prototype = {
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
-			npc1 = new NPC(3, game, player.x + 128, player.y);
 
-			// TIMER //
-			timer = game.time.create(false);
-			timer.loop(1000, this.countdown, this);
-			timer.start();
-			timeLimit = 200;
-			timeText = game.add.text(610, 40, "500", {
-					font: "12pt press_start_2pregular",
-					fill: "#fff",
-					align: "center"
-			});
-			timeText.fixedToCamera = true;
-			
-			// LIFE // -- Die a certain amount of times before the game over screen pops up
-			life = 3;
-			lifeText = game.add.text(40, 40, life, {
-					font: "12pt press_start_2pregular",
-					fill: "#fff",
-					align: "center"
-			});
-			lifeText.fixedToCamera = true;
+        // =======================================================================================================================================
+        //                                   GAME UI START
+        //=========================================================================================================================================
 
-			// CLOCKS //
-			clocks = game.add.group();
-			clocks.enableBody = true;
-			this.createClock(300, 300);
-			this.createClock(500, 300);
-			this.createClock(900, 300);
+		// TIMER //
+		timer = game.time.create(false);
+		timer.loop(1000, this.countdown, this);
+		timer.start();
+		timeLimit = 200;
+		timeText = game.add.text(610, 40, timeLimit, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		timeText.fixedToCamera = true;
 
-			chris1 = new Chris(3, game, 4950, 0);
-			chris1.chris.scale.setTo(0.2, 0.2);
+		// LIFE // -- Die a certain amount of times before the game over screen pops up
+		life = 3;
+		lifeText = game.add.text(40, 40, life, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		lifeText.fixedToCamera = true;
+        // =======================================================================================================================================
+        //                                   GAME UI END
+        //=========================================================================================================================================
 
-			cat1 = new Cat(3, game, 8500, 0);
-			cat1.cat.scale.setTo(0.1, 0.1);
 
-			cat2 = new Cat(3, game, 4950, 0);
-			cat2.cat.scale.setTo(0.1, 0.1);
-			cat2.cat.alpha = 0;
+		
+		// =====================================
+		
+		
+		// THIS BOSS BUTTON IS FOR TESTING PURPOSES -- 
+		// WILL BE REMOVED FROM OFFICIAL GAME
+		
+		
+		// =======================================
+		
+	    bossButton = this.createButton(game, "Boss", 
+									   400, 350, 100, 50,
+									   function () {this.state.start('BossState');});
+		
+		// =========================================
 
-			// Tweens to make cat1 disappear, and cat2 appear next to Chris
-			tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
-			tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
-			tweenCatFound.chain(tweenCatReappear);
+		
+		// CLOCKS //
+		clocks = game.add.group();
+		clocks.enableBody = true;
+		this.createClock(300, 300);
+		this.createClock(500, 300);
+		this.createClock(900, 300);
+
+        // =======================================================================================================================================
+        //                                   LOLOLOL THIS EASTER EGG DOE
+        //=========================================================================================================================================
+
+		chris1 = new Chris(3, game, 4950, 0);
+		chris1.chris.scale.setTo(0.2, 0.2);
+
+		cat1 = new Cat(3, game, 500, 0);
+		cat1.cat.scale.setTo(0.1, 0.1);
+
+		cat2 = new Cat(3, game, 4950, 0);
+		cat2.cat.scale.setTo(0.1, 0.1);
+		cat2.cat.alpha = 0;
+
+		// Tweens to make cat1 disappear, and cat2 appear next to Chris
+		tweenCatFound = this.add.tween(cat1.cat).to({alpha: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+		tweenCatReappear = this.add.tween(cat2.cat).to({alpha: 1}, 500, Phaser.Easing.Linear.In, false, 500);
+		tweenCatFound.chain(tweenCatReappear);
+
+		
+        // =======================================================================================================================================
+        //                                   LAYER CONTROL START
+        //=========================================================================================================================================
 
             this.world.bringToTop(player);
-            this.world.bringToTop(grassForegroundFloorLayer);
-            this.world.bringToTop(grassForegroundRightLayer);
-            this.world.bringToTop(grassForegroundLeftLayer);
-            this.world.bringToTop(waterLayer);
+            this.world.bringToTop(foregroundLayer);
+        // =======================================================================================================================================
+        //                                   LAYER CONTROL END
+        //=========================================================================================================================================
+        // =======================================================================================================================================
+        //                                   NPC START
+        //=========================================================================================================================================
+
+
+        npcGroup = game.add.group();
+
+        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
+        createNPC(game, 200, 1220, 'chris', 200,
+            "Have you seen my cat?");
+
+        createNPC(game, 300, 1250, 'npc', 200,
+            "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
+
+        createNPC(game, 500, 1200, 'npc', 300,
+            "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
+            "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
+
+        createNPC(game, 700, 1250, 'npc', 200,
+            "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
+
+        createNPC(game, 900, 1250, 'npc', 200,
+            "He tried to run the dishwasher with only half a load, can you believe it? " +
+            "I almost lost it H2NO, what a water waster!");
+
+        createNPC(game, 1000, 1250, 'npc', 200,
+            "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
+        // =======================================================================================================================================
+        //                                  NPC END //=========================================================================================================================================
+
+
+
     },
 	
 	
@@ -513,20 +552,14 @@ Game.Level1.prototype = {
 
     update: function () {
 
-
-        //>>>>>>> Testing
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, houseRoofLayer);
-        this.physics.arcade.collide(player, elevationLayer);
-        // this will add physics to enemy
-        // this.physics.arcade.collide(enemy1.robot, layer);
-        this.physics.arcade.collide(npc1.npc, mainLayer);
+        this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(chris1.chris, mainLayer);
-
-        this.physics.arcade.collide(player, mainLayer);
+        this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -536,9 +569,6 @@ Game.Level1.prototype = {
        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
        this.physics.arcade.collide(player, boxGroup);
-
-       //var hitSprinklerCollision2 = this.physics.arcade.collide(player, sprinklerCollision2.sprinklerCollision);
-
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
@@ -550,6 +580,13 @@ Game.Level1.prototype = {
             var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
+        /////////////////////
+        ///NPC UPDATES
+        /////////////////////
+        for (var i = 0; i < npcGroup.children.length; i++) {
+            npcGroup.children[i].body.velocity.x = 0;
+        }
+
 
         for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
             var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
@@ -559,15 +596,16 @@ Game.Level1.prototype = {
         }
 
 
-       this.physics.arcade.collide(player, mainLayer);
-       this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-			this.physics.arcade.collide(player, frontLayer);
-			// this will add physics to enemy 
-			// this.physics.arcade.collide(enemy1.robot, layer);
-			 this.physics.arcade.collide(npc1.npc, mainLayer);
-			 this.physics.arcade.collide(cat1.cat, mainLayer);
-			 this.physics.arcade.collide(cat2.cat, mainLayer);
-			 this.physics.arcade.collide(chris1.chris, mainLayer);
+        for (var i = 0; i < npcGroup.children.length; i++) {
+            if (checkOverlap(player, npcGroup.children[i])) {
+                this.world.add(npcGroup.children[i].SpeechBubble);
+                npcJump(npcGroup.children[i]);
+            } else {
+                // Make SpeechBubble disappear
+                this.world.remove(npcGroup.children[i].SpeechBubble);
+            }
+        }
+
 
         //emitter2 direction
         for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
@@ -581,20 +619,6 @@ Game.Level1.prototype = {
         }
 
 
-
-        //if(emitter1.emitter !== null && this.physics.arcade.overlap(player, emitter1.emitter)) {
-        //  this.resetPlayer();
-        //}
-
-        /*if(emitter2.emitter !== null && this.physics.arcade.overlap(player, emitter2.emitter)) {
-          this.resetPlayer();
-        }*/
-			// this line will check if player overlaps with enemy
-//        if (checkOverlap(player, enemy1.robot)) {
-//            this.resetPlayer();
-//        }
-
-        //TEST FUNCTION
         function hitSprinklerFunction(player, sprinkler) {
             //sprinkler.animations.frame = 0;
             if (sprinkler.oneHit) {
@@ -616,24 +640,6 @@ Game.Level1.prototype = {
         //                                   SPRINKLER UPDATE END
         //========================================================================================================================================
 
-        player.body.velocity.x = 0;
-        npc1.npc.body.velocity.x = 0;
-
-
-        // NPC will jump if player stands on it
-        if (checkOverlap(player, npc1.npc)) {
-            npcJump();
-        }
-
-        // NPC will face the direction of the player
-        if (!checkOverlap(player, npc1.npc)) {
-
-            if (player.world.x > npc1.npc.world.x) {
-                npc1.npc.frame = 2;
-            } else {
-                npc1.npc.frame = 1;
-            }
-        }
 
         if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
@@ -648,39 +654,44 @@ Game.Level1.prototype = {
             moveRight();
             player.animations.play('right');
         } else {
+            if (player.body.velocity.x >= playerSlow) {
+                player.body.velocity.x -= playerSlow;
+            } else if (player.body.velocity.x < -playerSlow) {
+                player.body.velocity.x += playerSlow;
+            } else {
+                player.body.velocity.x = 0;
+            }
             player.animations.play('idle');
         }
 
 		if (mobile) {
-			
             if (this.button.isDown) {
                 jumpNow();
             }
             if (this.joystick.properties.right) {
-              moveRight();
-							player.animations.play('right');
+            	moveRight();
+				player.animations.play('right');
             } else if (this.joystick.properties.left) {
-              moveLeft();
-							player.animations.play('left');
+            	moveLeft();
+				player.animations.play('left');
             } else {
-							player.animations.play('idle');
-						}		
+				player.animations.play('idle');
+			}		
         }
 
         timeText.setText('Time: ' + timeLimit);
-			  lifeText.setText('Lives: ' + life);
+	    lifeText.setText('Lives: ' + life);
 
         this.timeUp();
-
-        
+		
         findCat();
         easterEgg();
 
     },
 
     render: function() {
-        game.debug.body(player);
-        game.debug.spriteInfo(player);
+        //game.debug.body(player);
+        //game.debug.spriteInfo(player);
     },
 
     // resetPlayer: function () {
@@ -702,7 +713,10 @@ Game.Level1.prototype = {
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;
         button1.height = h;
+
     },
+	
+    // for checkpoint create checkx/y
 
     countdown: function(){
         timeLimit--;
@@ -710,10 +724,28 @@ Game.Level1.prototype = {
 
     timeUp: function(){
         if (timeLimit == 0 || timeLimit < 0) {
-            //change this to something else later, like gameover or minus one life
-             timer.stop();
-					game.state.start('Gameover');
+            timer.stop();
+			game.state.start('Gameover');
         }
+    },
+    createButton:function(game, string, x, y, w, h, callBack) {
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
+
+        button1.anchor.setTo(0.5, 0.5);
+        button1.width = w;
+        button1.height = h;
+		button1.fixedToCamera = true;
+		button1.alpha = 0.5;
+
+        var txt = game.add.text(button1.x, button1.y, string, {
+            font: "10pt press_start_2pregular",
+            fill: "#fff",
+            align: "center"
+        });
+        txt.anchor.setTo(0.5, 0.5);
+		txt.fixedToCamera = true;
+		txt.alpha = 0.5;
+		
     },
     createClock: function(x, y) {
         var clock = clocks.create(x, y, 'clock');
@@ -728,11 +760,20 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-    player.body.velocity.x -= playerSpeed;
+    if (player.body.velocity.x > -playerMaxSpeed) {
+        player.body.velocity.x -= playerSpeed;
+		console.log(player.body.velocity.x);
+    } else {
+        player.body.velocity.x = -playerMaxSpeed;
+    }
 }
 
 function moveRight() {
-    player.body.velocity.x += playerSpeed;
+    if (player.body.velocity.x < playerMaxSpeed) {
+        player.body.velocity.x += playerSpeed;
+    } else {
+        player.body.velocity.x = playerMaxSpeed;
+    }
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -744,28 +785,24 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        player.body.velocity.y -= 600;
+        if (Math.abs(player.body.velocity.x) >= 125) {
+                player.body.velocity.y -= 600;
+            } else {
+                player.body.velocity.y -= 400;
+            }
         jumpTimer = game.time.now + 750;
     }
 }
 
 // Makes the NPC jump
-function npcJump() {
-    if (npc1.npc.body.blocked.down) {
-        npc1.npc.body.velocity.y = -300;
-        
-        let face;
-        if (player.world.x < npc1.npc.world.x) {
-            face = 'left';
-        } else {
-            face = 'right';
-        }
-        npc1.npc.animations.play(face);
+function npcJump(npc) {
+    if (npc.body.blocked.down) {
+        npc.body.velocity.y = -300;
     }
 }
 
 function collectClock(player, clock){
-    timeLimit += 5;
+    timeLimit += 10;
     clock.kill();
 }
 
@@ -773,6 +810,12 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        /*for(var i = 0; i < npcGroup.children.length; i++) {
+            if (npcGroup.children[i].isChris) {
+                npcGroup.children[i].destroy();
+            }
+        }*/
     }
 }
 
@@ -782,3 +825,97 @@ function easterEgg() {
     }
 }
 
+function createNPC(game, x, y, image, width, text) {
+    var npc = npcGroup.create(x,y,image);
+    game.physics.arcade.enable(npc);
+    npc.body.gravity.y = 600;
+    npc.body.collideWorldBounds = false;
+    npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
+
+    //easter egg NPC
+    /*if (image == 'chris') {
+        npc.isChris = true;
+    } else {
+        npc.isChris = false;
+    }*/
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+var SpeechBubble = function(game, x, y, width, text) {
+    Phaser.Sprite.call(this, game, x, y);
+
+    // Some sensible minimum defaults
+    var height = 18;
+
+    // Set up our text and run our custom wrapping routine on it
+    this.bitmapText = game.make.bitmapText(x + 12, y+10, 'carrier-command', text, 12);
+    SpeechBubble.wrapBitmapText(this.bitmapText, width);
+
+    // Calculate the width and height needed for the edges
+    var bounds = this.bitmapText.getLocalBounds();
+    if (bounds.width + 18 > width) {
+        width = bounds.width + 18;
+    }
+    if (bounds.height + 14 > height) {
+        height = bounds.height + 14;
+    }
+
+    // Create all of our corners and edges
+    this.borders = [
+        game.make.tileSprite(x + 9, y + 9, width - 9, height - 9, 'bubble-border', 4),
+        game.make.image(x, y, 'bubble-border', 0),
+        game.make.image(x + width, y, 'bubble-border', 2),
+        game.make.image(x + width, y + height, 'bubble-border', 8),
+        game.make.image(x, y + height, 'bubble-border', 6),
+        game.make.tileSprite(x + 9, y, width - 9, 9, 'bubble-border', 1),
+        game.make.tileSprite(x + 9, y + height, width - 9, 9, 'bubble-border', 7),
+        game.make.tileSprite(x, y + 9, 9, height - 9, 'bubble-border', 3),
+        game.make.tileSprite(x + width, y + 9, 9, height - 9, 'bubble-border', 5)
+    ];
+
+    // Add all of the above to this sprite
+    for (var b = 0, len = this.borders.length; b < len; b++) {
+        this.addChild(this.borders[b]);
+    }
+
+    // Add the tail
+    this.tail = this.addChild(game.make.image(x + 18, y + 3 + height, 'bubble-tail'));
+
+    // Add our text last so it's on top
+    this.addChild(this.bitmapText);
+    this.bitmapText.tint = 0x111111;
+
+    // Offset the position to be centered on the end of the tail
+    this.pivot.set(x + 25, y + height + 24);
+};
+
+SpeechBubble.prototype = Object.create(Phaser.Sprite.prototype);
+SpeechBubble.prototype.constructor = SpeechBubble;
+
+SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
+    var words = bitmapText.text.split(' '), output = "", test = "";
+
+    for (var w = 0, len = words.length; w < len; w++) {
+        test += words[w] + " ";
+        bitmapText.text = test;
+        bitmapText.updateText();
+        if (bitmapText.textWidth > maxWidth) {
+            output += "\n" + words[w] + " ";
+        }
+        else {
+            output += words[w] + " ";
+        }
+        test = output;
+    }
+
+    output = output.replace(/(\s)$/gm, ""); // remove trailing spaces
+    bitmapText.text = output;
+    bitmapText.updateText();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
