@@ -33,6 +33,9 @@ var bossPlayerSpawnX;
 var bossPlayerSpawnY;
 
 var bossAdd = 1000;
+var bossAlive;
+
+var finalBossScore;
 
 Game.BossState = function (game) { };
 
@@ -98,28 +101,6 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 		// SOUND END
-		
-		
-		
-		// CONTROLS START
-		// ========================================================================
-		
-		controls = {
-			up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-		};
-		cursors = this.input.keyboard.createCursorKeys();
-	    
-		if (!game.device.desktop) {
-		mobile = true;
-		this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-		this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-		this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
-		}
-		
-		// ========================================================================
-		
-		// CONTROLS END
-		
 		
 		// UI TEXT START
 		
@@ -189,6 +170,7 @@ Game.BossState.prototype = {
         bossCollision.body.immovable = true;
 
         boss = this.add.sprite(656, 430, 'faucet');
+		bossAlive = false;
 
         spring = this.add.sprite(598, 260, 'spring');
         this.physics.arcade.enable(spring, Phaser.Physics.ARCADE);
@@ -408,9 +390,10 @@ Game.BossState.prototype = {
             } else if (boss.frame == 2) {
                 this.lowerWaterB();
 				score += bossAdd;
+				finalBossScore = score;
             } else if (boss.frame == 3) {
                 this.lowerWaterC();
-				score += bossAdd;
+				score = finalBossScore + bossAdd;
             }
         }
     },

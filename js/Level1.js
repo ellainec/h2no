@@ -277,14 +277,22 @@ var backlayer;
 
 var player;
 var playerSpeed = 20;
-var playerMaxSpeed = 450;
-var playerSlow = 40;
+var playerMaxSpeed = 300;
+var playerSlow = 60;
+var Jump1 = 300; // NEW CONSTANT
+var Jump2 = 400; // NEW CONSTANT
+var maxY = 800; // NEW CONSTANT
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 var life;
 var lifeText;
+var gravityWorld = 1400; // NEW CONSTANT
+var initX = 100;
+var initY = 900;
+var respawnX = 100; // NEW CONSTANT (until checkpoints)
+var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
 var controls = {};
 var cursors;
@@ -296,6 +304,7 @@ var playerName;
 var bossButton;
 
 //TIMER//
+var initTime = 300;
 var timer;
 var timeLimit;
 var timeText;
@@ -338,13 +347,13 @@ Game.Level1.prototype = {
 		playerName = sessionStorage.getItem("playerName");
 
 		// Set up player
-		player = this.add.sprite(100, 400, 'h2no');
+		player = this.add.sprite(initX, initY, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
 		// Ground and edges of the world
 		player.body.collideWorldBounds = true;
-		player.body.maxVelocity.y = 800;
+		player.body.maxVelocity.y = maxY; // SET UP NEW CONSTANT
 		this.camera.follow(player);
 
 		player.animations.add('idle', [4], 10, true);
@@ -365,7 +374,7 @@ Game.Level1.prototype = {
 
 		this.stage.backgroundColor = '#3598db';
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		this.physics.arcade.gravity.y = 1400;
+		this.physics.arcade.gravity.y = gravityWorld;  // SET UP NEW CONSTANT HERE!
 
 		// add map with 'map id'
         map = this.add.tilemap('map');
@@ -465,7 +474,7 @@ Game.Level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeLimit = 200;
+		timeLimit = initTime;
 		timeText = game.add.text(610, 40, timeLimit, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -892,7 +901,7 @@ Game.Level1.prototype = {
     
 	resetPlayer: function() {
 
-        player.reset(100, 400);
+        player.reset(respawnX, respawnY);
         life--;
         console.log("died");
         if (life === 0) {
@@ -987,10 +996,10 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        if (Math.abs(player.body.velocity.x) >= 125) {
-                player.body.velocity.y -= 600;
+        if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed/2)) {
+                player.body.velocity.y -= Jump2;
             } else {
-                player.body.velocity.y -= 400;
+                player.body.velocity.y -= Jump1;
             }
         jumpTimer = game.time.now + 750;
     }
