@@ -312,6 +312,7 @@ var easterEggReward = false;
 
 // DRONE PARTS
 var clouds = null;
+var jumpTimer = 0;
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
@@ -332,7 +333,8 @@ Game.Level1.prototype = {
 		playerName = sessionStorage.getItem("playerName");
 
 		// Set up player
-		player = this.add.sprite(100, 400, 'h2no');
+		//player = this.add.sprite(100, 400, 'h2no');
+        player = this.add.sprite(11000, 0, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
@@ -571,23 +573,37 @@ Game.Level1.prototype = {
 
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
-        this.clouds = this.add.physicsGroup();
+        clouds = this.add.physicsGroup(true);
 
-        var cloud1 = new CloudPlatform(game, 100, 900, 'platform', this.clouds);
+        var cloud1 = new CloudPlatform(game, 10450, 860, 'platform', clouds);
 
         cloud1.addMotionPath([
             { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
             { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
-        var cloud2 = new CloudPlatform(this.game, 800, 1000, 'platform', this.clouds);
+        var cloud2 = new CloudPlatform(game, 12300, 860, 'platform', clouds);
 
-            cloud2.addMotionPath([
-                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
-                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 3000, yEase: "Sine.easeOut" }
-            ]);
+        cloud2.addMotionPath([
+            { x: "+400", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-400", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+        ]);
 
-        this.clouds.callAll('start');
+        var cloud3 = new CloudPlatform(game, 11150, 560, 'platform', clouds);
+
+        cloud3.addMotionPath([
+            { y: "-400", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "+400", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+        ]);
+
+        var cloud4 = new CloudPlatform(game, 11400, 180, 'platform', clouds);
+
+        cloud4.addMotionPath([
+            { y: "+0", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "-0", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+        ]);
+
+        clouds.callAll('start');
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
 
@@ -777,18 +793,12 @@ Game.Level1.prototype = {
         //  Do this AFTER the collide check, or we won't have blocked/touching set
         var standing = player.body.blocked.down || player.body.touching.down || this.locked;
 
-        //player.body.velocity.x = 0;
-
          if (standing && cursors.up.isDown && this.time.time > this.jumpTimer) {
              if (this.locked) {
                  this.cancelLock();
              }
 
              this.willJump = true;
-
-             if (this.locked) {
-                 this.checkLock();
-             }
          }
 
         if (this.locked) {
@@ -801,13 +811,13 @@ Game.Level1.prototype = {
         }
 
         if (this.locked || this.wasLocked) {
-            this.player.x += this.lockedTo.deltaX;
-            this.player.y = this.lockedTo.y - 48;
-            this.player.body.velocity.y = 0;
+            player.x += this.lockedTo.deltaX;
+            player.y = this.lockedTo.y - 22;
+            player.body.velocity.y = 0;
 
-            if (this.player.body.velocity.x !== 0)
+            if (player.body.velocity.x !== 0)
             {
-                this.player.body.velocity.y = 0;
+                player.body.velocity.y = 0;
             }
         }
 
