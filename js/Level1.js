@@ -425,24 +425,29 @@ Game.Level1.prototype = {
 
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-		createSprinkler(1, game, 467, 1256 + 12);
-		// createSprinkler(1, game, 1465, 1202);
-		// createSprinkler(1, game, 2192, 1064 + 12);
-		createSprinkler2(1, game, 2835, 936 + 12);
-		// createSprinkler(1, game, 2705, 1192 + 12);
-		// createSprinkler(1, game, 3400, 936 + 12);
-		// createSprinkler(1, game, 3855, 776 + 12);
-		// createSprinkler2(1, game, 3600, 1192 + 12);
-		// createSprinkler3(1, game, 4757, 1192 + 12);
-		// createSprinkler2(1, game, 5257, 1192 + 12);
-		// createSprinkler2(1, game, 6226, 1192 + 12);
-		// createSprinkler(1, game, 6984, 936 + 12);
-		// createSprinkler(1, game, 6436, 936 + 12);
-		// createSprinkler(1, game, 6367, 616 + 12);
-		// createSprinkler3(1, game, 7441, 1192 + 12);
-		// createSprinkler(1, game, 8393, 1192 + 12);
-		// createSprinkler(1, game, 9414, 1192 + 12);
-		// createSprinkler3(1, game, 10135, 1192 + 12);
+		createSprinkler(1, game, 557, 904 + 12);
+		createSprinkler(1, game, 1588, 840 + 12);
+		createSprinkler(1, game, 2190, 712 + 12);
+		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
+		createSprinkler2(1, game, 2835, 584 + 12);
+		createSprinkler(1, game, 3400, 584 + 12);
+		createSprinkler2(1, game, 3600, 840 + 12);
+		createSprinkler(1, game, 3855, 424 + 12);
+		createSprinkler3(1, game, 4950, 840 + 12);
+		createSprinkler2(1, game, 5257, 840 + 12);
+		createSprinkler2(1, game, 6226, 840 + 12);
+		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
+		createSprinkler3(1, game, 7540, 840 + 12);
+		createSprinkler(1, game, 8393, 840 + 12);
+		createSprinkler(1, game, 8785, 840 + 12);
+		createSprinkler(1, game, 9137, 840 + 12);
+		createSprinkler2(1, game, 9673, 840 + 12);
+		createSprinkler(1, game, 11453, 840 + 12);
+		// createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
+		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
+		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
+		createSprinkler3(1, game, 15650, 584 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -819,8 +824,8 @@ Game.Level1.prototype = {
 
 
     render: function() {
-        //game.debug.body(player);
-        //game.debug.spriteInfo(player);
+        // game.debug.body(player);
+        game.debug.spriteInfo(player);
     },
         ///////////////////Drone//////////////////
 
@@ -884,7 +889,7 @@ Game.Level1.prototype = {
             // }
 
 
-    /*
+    
 	resetPlayer: function() {
 
         player.reset(100, 400);
@@ -894,7 +899,7 @@ Game.Level1.prototype = {
             this.state.start('Gameover');
         }
     },
-	*/
+	
 
     // for checkpoint create checkx/y
 
