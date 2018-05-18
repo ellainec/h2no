@@ -371,7 +371,9 @@ Game.BossState.prototype = {
 		}
 		
 		// TODO: When reaching player.x = 848, player.y = 640, start win state!
-		
+		if (player.y > 635) {
+			this.state.start('Win');
+		}
 		
         // console.log(player.body.velocity.x);
     },
