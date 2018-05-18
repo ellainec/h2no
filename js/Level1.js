@@ -269,7 +269,7 @@ var playerSpeed = 40;
 var playerMaxSpeed = 350;
 var playerSlow = 60;
 var Jump1 = 400; // NEW CONSTANT
-var Jump2 = 450; // NEW CONSTANT
+var Jump2 = 550; // NEW CONSTANT
 var maxY = 800; // NEW CONSTANT
 var jumpTimer = 0;
 var jumpTrue = false;
@@ -968,7 +968,7 @@ function jumpNow() {
             } else {
                 player.body.velocity.y -= Jump1;
             }
-        jumpTimer = game.time.now + 750;
+        jumpTimer = game.time.now + 500;
     }
 }
 
