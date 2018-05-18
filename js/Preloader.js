@@ -13,8 +13,7 @@ Game.Preloader.prototype = {
 
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// load player sprite
-		this.load.image('WaterBot', 'assets/WaterBot.png');
-		this.load.image('WaterBotSkin', 'assets/WaterBotSkin.png');
+		this.load.spritesheet('h2no_chris', 'assets/characters/H2NObit_chris.PNG', 32, 48);
 		// load map
 		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v4.json', null, Phaser.Tilemap.TILED_JSON);        
 		// load tiles

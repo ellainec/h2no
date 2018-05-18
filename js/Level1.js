@@ -241,15 +241,6 @@ Cat = function (index, game, x, y) {
     this.cat.body.collideWorldBounds = false;
 };
 
-Chris = function (index, game, x, y) {
-    this.chris = game.add.sprite(x, y, 'chris');
-    this.chris.name = index.toString();
-    game.physics.enable(this.chris, Phaser.Physics.ARCADE);
-    this.chris.body.immovable = false;
-    this.chris.body.allowGravity = true;
-    this.chris.body.collideWorldBounds = true;
-};
-
 // ==================================
 // VARIABLES BELOW
 // ==================================
@@ -258,7 +249,6 @@ var enemy1;
 var npc1;
 var cat1;
 var cat2;
-var chris1;
 
 var sprinklersGroup;
 var sprinklersGroup2;
@@ -275,11 +265,11 @@ var frontLayer;
 var backlayer;
 
 var player;
-var playerSpeed = 20;
-var playerMaxSpeed = 300;
+var playerSpeed = 40;
+var playerMaxSpeed = 350;
 var playerSlow = 60;
-var Jump1 = 300; // NEW CONSTANT
-var Jump2 = 400; // NEW CONSTANT
+var Jump1 = 400; // NEW CONSTANT
+var Jump2 = 450; // NEW CONSTANT
 var maxY = 800; // NEW CONSTANT
 var jumpTimer = 0;
 var jumpTrue = false;
@@ -301,6 +291,8 @@ var playerName;
 
 // BOSS
 var bossButton;
+var easterButton;
+var chrisButton;
 
 //TIMER//
 var initTime = 300;
@@ -320,12 +312,8 @@ var easterEggReward = false;
 
 
 // DRONE PARTS
-var bg = null;
-var stationary = null;
 var clouds = null;
-
-var facing = 'left';
-
+var jumpTimer = 0;
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
@@ -350,7 +338,7 @@ Game.Level1.prototype = {
 		//assignment of playerName can't be outside in global scope
 		playerName = sessionStorage.getItem("playerName");
 
-		// Set up player
+		// Set up players
 		player = this.add.sprite(initX, initY, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
 		// Enable physics on player
@@ -522,6 +510,26 @@ Game.Level1.prototype = {
 									   function () {this.state.start('BossState');});
 		
 		// =========================================
+		
+		// =====================================
+		
+		
+		// THIS EASTEREGG BUTTON IS FOR TESTING PURPOSES -- 
+		// WILL BE REMOVED FROM OFFICIAL GAME
+		
+		
+		// =======================================
+		
+	    easterButton = this.createButton(game, "Cat", 
+									   200, 350, 100, 50,
+									   function () {player.x = 11000;
+												    player.y = 0;});
+		chrisButton = this.createButton(game, "Owner", 
+									   600, 350, 100, 50,
+									   function () {player.x = 7855
+													player.y = 800;});
+		
+		// =========================================
 
 		
 		// CLOCKS //
@@ -535,13 +543,10 @@ Game.Level1.prototype = {
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		chris1 = new Chris(3, game, 4950, 0);
-		chris1.chris.scale.setTo(0.2, 0.2);
-
-		cat1 = new Cat(3, game, 500, 0);
+		cat1 = new Cat(3, game, 11150, 0);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 4950, 0);
+		cat2 = new Cat(3, game, 7845, 800);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -595,23 +600,37 @@ Game.Level1.prototype = {
 
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
-        this.clouds = this.add.physicsGroup();
+        clouds = this.add.physicsGroup(true);
 
-        var cloud1 = new CloudPlatform(game, 10500, 1200, 'platform', this.clouds);
+        var cloud1 = new CloudPlatform(game, 10450, 860, 'platform', clouds);
 
         cloud1.addMotionPath([
             { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
             { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
-        var cloud2 = new CloudPlatform(this.game, 800, 1000, 'platform', this.clouds);
+        var cloud2 = new CloudPlatform(game, 12300, 860, 'platform', clouds);
 
-            cloud2.addMotionPath([
-                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
-                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 3000, yEase: "Sine.easeOut" }
-            ]);
+        cloud2.addMotionPath([
+            { x: "+400", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-400", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+        ]);
 
-        this.clouds.callAll('start');
+        var cloud3 = new CloudPlatform(game, 11150, 560, 'platform', clouds);
+
+        cloud3.addMotionPath([
+            { y: "-400", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "+400", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+        ]);
+
+        var cloud4 = new CloudPlatform(game, 11400, 180, 'platform', clouds);
+
+        cloud4.addMotionPath([
+            { y: "+0", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "-0", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+        ]);
+
+        clouds.callAll('start');
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
 
@@ -624,23 +643,20 @@ Game.Level1.prototype = {
 
 
     customSep: function (player, platform) {
-
         if (!this.locked && player.body.velocity.y > 0) {
             this.locked = true;
             this.lockedTo = platform;
             platform.playerLocked = true;
-
             player.body.velocity.y = 0;
         }
-
     },
 
     checkLock: function () {
 
-        this.player.body.velocity.y = 0;
+        player.body.velocity.y = 0;
 
         //  If the player has walked off either side of the platform then they're no longer locked to it
-        if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
+        if (player.body.right < this.lockedTo.body.x || player.body.x > this.lockedTo.body.right) {
             this.cancelLock();
         }
 
@@ -653,47 +669,6 @@ Game.Level1.prototype = {
 
     },
 
-    preRender: function () {
-
-        if (this.game.paused) {
-            //  Because preRender still runs even if your game pauses!
-            return;
-        }
-
-        if (this.locked || this.wasLocked) {
-            this.player.x += this.lockedTo.deltaX;
-            this.player.y = this.lockedTo.y - 48;
-
-            if (this.player.body.velocity.x !== 0) {
-                this.player.body.velocity.y = 0;
-            }
-        }
-
-        if (this.willJump) {
-            this.willJump = false;
-
-            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
-                //  If the platform is moving up we add its velocity to the players jump
-                this.player.body.velocity.y = -500 + (this.lockedTo.deltaY * 10);
-            }
-            else {
-                this.player.body.velocity.y = -500;
-            }
-
-            this.jumpTimer = this.time.time + 750;
-        }
-
-        if (this.wasLocked) {
-            this.wasLocked = false;
-            this.lockedTo.playerLocked = false;
-            this.lockedTo = null;
-        }
-
-    },
-
-
-
-
     // ==================================
     // UPDATE FUNCTION BELOW
     // ==================================
@@ -703,21 +678,12 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
-        this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.collide(cat1.cat, clouds);
+        this.physics.arcade.collide(cat2.cat, clouds);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
-
-
-
-      /*  secretLayer = map.createLayer('secret');
-        backgroundFarLayer = map.createLayer('background_far');
-        backgroundLayer = map.createLayer('background');
-        mainLayer = map.createLayer('main');
-        foregroundLayer = map.createLayer('foreground');*/
 
 
         // =======================================================================================================================================
@@ -832,11 +798,11 @@ Game.Level1.prototype = {
                 jumpNow();
             }
             if (this.joystick.properties.right) {
-            	moveRight();
 				player.animations.play('right');
+            	moveRight();
             } else if (this.joystick.properties.left) {
-            	moveLeft();
 				player.animations.play('left');
+            	moveLeft();
             } else {
 				player.animations.play('idle');
 			}		
@@ -850,72 +816,67 @@ Game.Level1.prototype = {
 		
         findCat();
         easterEgg();
-	},
+
+        // =======================================================================================================================================
+        //                                   DRONE UPDATE
+        //========================================================================================================================================
+
+        //  Do this AFTER the collide check, or we won't have blocked/touching set
+        var standing = player.body.blocked.down || player.body.touching.down || this.locked;
+
+         if (standing && cursors.up.isDown && this.time.time > this.jumpTimer) {
+             if (this.locked) {
+                 this.cancelLock();
+             }
+
+             this.willJump = true;
+         }
+
+        if (this.locked) {
+            this.checkLock();
+        }
+
+        if (this.game.paused) {
+            //  Because preRender still runs even if your game pauses!
+            return;
+        }
+
+        if (this.locked || this.wasLocked) {
+            player.x += this.lockedTo.deltaX;
+            player.y = this.lockedTo.y - 22;
+            player.body.velocity.y = 0;
+
+            if (player.body.velocity.x !== 0)
+            {
+                player.body.velocity.y = 0;
+            }
+        }
+
+        if (this.willJump) {
+            this.willJump = false;
+
+            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
+                //  If the platform is moving up we add its velocity to the players jump
+                this.player.body.velocity.y = -300 + (this.lockedTo.deltaY * 10);
+            }
+            else {
+                this.player.body.velocity.y = -300;
+            }
+
+            this.jumpTimer = this.time.time + 750;
+        }
+
+        if (this.wasLocked) {
+            this.wasLocked = false;
+            this.lockedTo.playerLocked = false;
+            this.lockedTo = null;
+        }
+
+        },
 
 
     render: function() {
     },
-        ///////////////////Drone//////////////////
-
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
-
-            // this.player.body.velocity.x = 0;
-
-            // if (this.cursors.left.isDown)
-            // {
-            //     this.player.body.velocity.x = -150;
-
-            //     if (this.facing !== 'left')
-            //     {
-            //         this.player.play('left');
-            //         this.facing = 'left';
-            //     }
-            // }
-            // else if (this.cursors.right.isDown)
-            // {
-            //     this.player.body.velocity.x = 150;
-
-            //     if (this.facing !== 'right')
-            //     {
-            //         this.player.play('right');
-            //         this.facing = 'right';
-            //     }
-            // }
-            // else
-            // {
-            //     if (this.facing !== 'idle')
-            //     {
-            //         this.player.animations.stop();
-
-            //         if (this.facing === 'left')
-            //         {
-            //             this.player.frame = 0;
-            //         }
-            //         else
-            //         {
-            //             this.player.frame = 5;
-            //         }
-
-            //         this.facing = 'idle';
-            //     }
-            // }
-            
-            // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer)
-            // {
-            //     if (this.locked)
-            //     {
-            //         this.cancelLock();
-            //     }
-
-            //     this.willJump = true;
-            // }
-
-            // if (this.locked)
-            // {
-            //     this.checkLock();
-            // }
-
 
     
 	resetPlayer: function() {
@@ -1027,7 +988,9 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
-        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y -20, 400,
+            "Thanks for finding my cat! I am a Java Developer. I am also a cat lover. AND I'm a bearded man! Isn't polymorphism COOL?" +
+            "I love beards.. I think you would look GREAT with one. Here, have this!");
         /*for(var i = 0; i < npcGroup.children.length; i++) {
             if (npcGroup.children[i].isChris) {
                 npcGroup.children[i].destroy();
@@ -1037,8 +1000,8 @@ function findCat() {
 }
 
 function easterEgg() {
-    if (checkOverlap(player, chris1.chris) && easterEggReward) {
-        player.loadTexture('WaterBotSkin');
+    if (checkOverlap(player, npcGroup.children[0]) && easterEggReward) {
+        player.loadTexture('h2no_chris', 4);
     }
 }
 
