@@ -311,12 +311,7 @@ var easterEggReward = false;
 
 
 // DRONE PARTS
-var bg = null;
-var stationary = null;
 var clouds = null;
-
-var facing = 'left';
-
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
@@ -578,7 +573,7 @@ Game.Level1.prototype = {
         //////////////////////////////////////////Drones//////////////////////////////////////////
         this.clouds = this.add.physicsGroup();
 
-        var cloud1 = new CloudPlatform(game, 10500, 1200, 'platform', this.clouds);
+        var cloud1 = new CloudPlatform(game, 100, 900, 'platform', this.clouds);
 
         cloud1.addMotionPath([
             { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
@@ -602,23 +597,21 @@ Game.Level1.prototype = {
 
 
     customSep: function (player, platform) {
-
+        console.log("hit!");
         if (!this.locked && player.body.velocity.y > 0) {
             this.locked = true;
             this.lockedTo = platform;
             platform.playerLocked = true;
-
             player.body.velocity.y = 0;
         }
-
     },
 
     checkLock: function () {
 
-        this.player.body.velocity.y = 0;
+        player.body.velocity.y = 0;
 
         //  If the player has walked off either side of the platform then they're no longer locked to it
-        if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
+        if (player.body.right < this.lockedTo.body.x || player.body.x > this.lockedTo.body.right) {
             this.cancelLock();
         }
 
@@ -630,47 +623,6 @@ Game.Level1.prototype = {
         this.locked = false;
 
     },
-
-    preRender: function () {
-
-        if (this.game.paused) {
-            //  Because preRender still runs even if your game pauses!
-            return;
-        }
-
-        if (this.locked || this.wasLocked) {
-            this.player.x += this.lockedTo.deltaX;
-            this.player.y = this.lockedTo.y - 48;
-
-            if (this.player.body.velocity.x !== 0) {
-                this.player.body.velocity.y = 0;
-            }
-        }
-
-        if (this.willJump) {
-            this.willJump = false;
-
-            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
-                //  If the platform is moving up we add its velocity to the players jump
-                this.player.body.velocity.y = -500 + (this.lockedTo.deltaY * 10);
-            }
-            else {
-                this.player.body.velocity.y = -500;
-            }
-
-            this.jumpTimer = this.time.time + 750;
-        }
-
-        if (this.wasLocked) {
-            this.wasLocked = false;
-            this.lockedTo.playerLocked = false;
-            this.lockedTo = null;
-        }
-
-    },
-
-
-
 
     // ==================================
     // UPDATE FUNCTION BELOW
@@ -684,18 +636,8 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
-
-
-
-      /*  secretLayer = map.createLayer('secret');
-        backgroundFarLayer = map.createLayer('background_far');
-        backgroundLayer = map.createLayer('background');
-        mainLayer = map.createLayer('main');
-        foregroundLayer = map.createLayer('foreground');*/
 
 
         // =======================================================================================================================================
@@ -827,74 +769,75 @@ Game.Level1.prototype = {
 		
         findCat();
         easterEgg();
-	},
+
+        // =======================================================================================================================================
+        //                                   DRONE UPDATE
+        //========================================================================================================================================
+
+        //  Do this AFTER the collide check, or we won't have blocked/touching set
+        var standing = player.body.blocked.down || player.body.touching.down || this.locked;
+
+        //player.body.velocity.x = 0;
+
+         if (standing && cursors.up.isDown && this.time.time > this.jumpTimer) {
+             if (this.locked) {
+                 this.cancelLock();
+             }
+
+             this.willJump = true;
+
+             if (this.locked) {
+                 this.checkLock();
+             }
+         }
+
+        if (this.locked) {
+            this.checkLock();
+        }
+
+        if (this.game.paused) {
+            //  Because preRender still runs even if your game pauses!
+            return;
+        }
+
+        if (this.locked || this.wasLocked) {
+            this.player.x += this.lockedTo.deltaX;
+            this.player.y = this.lockedTo.y - 48;
+            this.player.body.velocity.y = 0;
+
+            if (this.player.body.velocity.x !== 0)
+            {
+                this.player.body.velocity.y = 0;
+            }
+        }
+
+        if (this.willJump) {
+            this.willJump = false;
+
+            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
+                //  If the platform is moving up we add its velocity to the players jump
+                this.player.body.velocity.y = -300 + (this.lockedTo.deltaY * 10);
+            }
+            else {
+                this.player.body.velocity.y = -300;
+            }
+
+            this.jumpTimer = this.time.time + 750;
+        }
+
+        if (this.wasLocked) {
+            this.wasLocked = false;
+            this.lockedTo.playerLocked = false;
+            this.lockedTo = null;
+        }
+
+        },
 
 
     render: function() {
         //game.debug.body(player);
         game.debug.spriteInfo(player);
     },
-        ///////////////////Drone//////////////////
-
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
-
-            // this.player.body.velocity.x = 0;
-
-            // if (this.cursors.left.isDown)
-            // {
-            //     this.player.body.velocity.x = -150;
-
-            //     if (this.facing !== 'left')
-            //     {
-            //         this.player.play('left');
-            //         this.facing = 'left';
-            //     }
-            // }
-            // else if (this.cursors.right.isDown)
-            // {
-            //     this.player.body.velocity.x = 150;
-
-            //     if (this.facing !== 'right')
-            //     {
-            //         this.player.play('right');
-            //         this.facing = 'right';
-            //     }
-            // }
-            // else
-            // {
-            //     if (this.facing !== 'idle')
-            //     {
-            //         this.player.animations.stop();
-
-            //         if (this.facing === 'left')
-            //         {
-            //             this.player.frame = 0;
-            //         }
-            //         else
-            //         {
-            //             this.player.frame = 5;
-            //         }
-
-            //         this.facing = 'idle';
-            //     }
-            // }
-            
-            // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer)
-            // {
-            //     if (this.locked)
-            //     {
-            //         this.cancelLock();
-            //     }
-
-            //     this.willJump = true;
-            // }
-
-            // if (this.locked)
-            // {
-            //     this.checkLock();
-            // }
-
 
     resetPlayer: function() {
 
