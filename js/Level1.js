@@ -966,24 +966,11 @@ Game.Level1.prototype = {
 
 function moveLeft() {
 	player.body.velocity.x = -playerMaxSpeed
-	
-//    if (player.body.velocity.x > -playerMaxSpeed) {
-//        player.body.velocity.x -= playerSpeed;
-//    } else {
-//        player.body.velocity.x = -playerMaxSpeed;
-//    }
-	
 	console.log(player.body.velocity.x);
 }
 
 function moveRight() {
 	player.body.velocity.x = playerMaxSpeed;
-//    if (player.body.velocity.x < playerMaxSpeed) {
-//        player.body.velocity.x += playerSpeed;
-//    } else {
-//        player.body.velocity.x = playerMaxSpeed;
-//    }
-	
 	console.log(player.body.velocity.x);
 }
 
