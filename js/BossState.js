@@ -262,7 +262,8 @@ Game.BossState.prototype = {
 		// ========================================================================
 		if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
-            jumpNow();
+			jumpNow();
+			jumpSound.play();
         }
 
         // controls
