@@ -276,14 +276,22 @@ var backlayer;
 
 var player;
 var playerSpeed = 20;
-var playerMaxSpeed = 450;
-var playerSlow = 40;
+var playerMaxSpeed = 300;
+var playerSlow = 60;
+var Jump1 = 300; // NEW CONSTANT
+var Jump2 = 400; // NEW CONSTANT
+var maxY = 800; // NEW CONSTANT
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 var life;
 var lifeText;
+var gravityWorld = 1400; // NEW CONSTANT
+var initX = 100;
+var initY = 900;
+var respawnX = 100; // NEW CONSTANT (until checkpoints)
+var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
 var controls = {};
 var cursors;
@@ -295,6 +303,7 @@ var playerName;
 var bossButton;
 
 //TIMER//
+var initTime = 300;
 var timer;
 var timeLimit;
 var timeText;
@@ -342,13 +351,13 @@ Game.Level1.prototype = {
 		playerName = sessionStorage.getItem("playerName");
 
 		// Set up player
-		player = this.add.sprite(100, 400, 'h2no');
+		player = this.add.sprite(initX, initY, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
 		// Ground and edges of the world
 		player.body.collideWorldBounds = true;
-		player.body.maxVelocity.y = 800;
+		player.body.maxVelocity.y = maxY; // SET UP NEW CONSTANT
 		this.camera.follow(player);
 
 		player.animations.add('idle', [4], 10, true);
@@ -369,7 +378,7 @@ Game.Level1.prototype = {
 
 		this.stage.backgroundColor = '#3598db';
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		this.physics.arcade.gravity.y = 1400;
+		this.physics.arcade.gravity.y = gravityWorld;  // SET UP NEW CONSTANT HERE!
 
 		// add map with 'map id'
         map = this.add.tilemap('map');
@@ -429,24 +438,29 @@ Game.Level1.prototype = {
 
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-		createSprinkler(1, game, 467, 1256 + 12);
-		// createSprinkler(1, game, 1465, 1202);
-		// createSprinkler(1, game, 2192, 1064 + 12);
-		createSprinkler2(1, game, 2835, 936 + 12);
-		// createSprinkler(1, game, 2705, 1192 + 12);
-		// createSprinkler(1, game, 3400, 936 + 12);
-		// createSprinkler(1, game, 3855, 776 + 12);
-		// createSprinkler2(1, game, 3600, 1192 + 12);
-		// createSprinkler3(1, game, 4757, 1192 + 12);
-		// createSprinkler2(1, game, 5257, 1192 + 12);
-		// createSprinkler2(1, game, 6226, 1192 + 12);
-		// createSprinkler(1, game, 6984, 936 + 12);
-		// createSprinkler(1, game, 6436, 936 + 12);
-		// createSprinkler(1, game, 6367, 616 + 12);
-		// createSprinkler3(1, game, 7441, 1192 + 12);
-		// createSprinkler(1, game, 8393, 1192 + 12);
-		// createSprinkler(1, game, 9414, 1192 + 12);
-		// createSprinkler3(1, game, 10135, 1192 + 12);
+		createSprinkler(1, game, 557, 904 + 12);
+		createSprinkler(1, game, 1588, 840 + 12);
+		createSprinkler(1, game, 2190, 712 + 12);
+		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
+		createSprinkler2(1, game, 2835, 584 + 12);
+		createSprinkler(1, game, 3400, 584 + 12);
+		createSprinkler2(1, game, 3600, 840 + 12);
+		createSprinkler(1, game, 3855, 424 + 12);
+		createSprinkler3(1, game, 4950, 840 + 12);
+		createSprinkler2(1, game, 5257, 840 + 12);
+		createSprinkler2(1, game, 6145, 840 + 12);
+		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
+		createSprinkler(1, game, 7455, 840 + 12);
+		createSprinkler(1, game, 8393, 840 + 12);
+		createSprinkler(1, game, 8785, 840 + 12);
+		createSprinkler(1, game, 9137, 840 + 12);
+		// createSprinkler2(1, game, 9673, 840 + 12);
+		// createSprinkler(1, game, 11453, 840 + 12);
+		createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
+		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
+		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
+		// createSprinkler3(1, game, 15650, 584 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -464,7 +478,7 @@ Game.Level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeLimit = 200;
+		timeLimit = initTime;
 		timeText = game.add.text(610, 40, timeLimit, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -473,7 +487,7 @@ Game.Level1.prototype = {
 		timeText.fixedToCamera = true;
 
 		// LIFE // -- Die a certain amount of times before the game over screen pops up
-		life = 3;
+		life = 10;
 		lifeText = game.add.text(40, 40, life, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -840,8 +854,6 @@ Game.Level1.prototype = {
 
 
     render: function() {
-        //game.debug.body(player);
-        game.debug.spriteInfo(player);
     },
         ///////////////////Drone//////////////////
 
@@ -905,15 +917,17 @@ Game.Level1.prototype = {
             // }
 
 
-    resetPlayer: function() {
+    
+	resetPlayer: function() {
 
-        player.reset(100, 400);
+        player.reset(respawnX, respawnY);
         life--;
         console.log("died");
         if (life === 0) {
-            this.state.start('Gameover');
+            game.state.start('Gameover');
         }
     },
+	
 
     // for checkpoint create checkx/y
 
@@ -970,20 +984,13 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-    if (player.body.velocity.x > -playerMaxSpeed) {
-        player.body.velocity.x -= playerSpeed;
-		console.log(player.body.velocity.x);
-    } else {
-        player.body.velocity.x = -playerMaxSpeed;
-    }
+	player.body.velocity.x = -playerMaxSpeed
+	console.log(player.body.velocity.x);
 }
 
 function moveRight() {
-    if (player.body.velocity.x < playerMaxSpeed) {
-        player.body.velocity.x += playerSpeed;
-    } else {
-        player.body.velocity.x = playerMaxSpeed;
-    }
+	player.body.velocity.x = playerMaxSpeed;
+	console.log(player.body.velocity.x);
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -995,10 +1002,10 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        if (Math.abs(player.body.velocity.x) >= 125) {
-                player.body.velocity.y -= 600;
+        if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed/2)) {
+                player.body.velocity.y -= Jump2;
             } else {
-                player.body.velocity.y -= 400;
+                player.body.velocity.y -= Jump1;
             }
         jumpTimer = game.time.now + 750;
     }
