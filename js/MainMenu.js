@@ -1,3 +1,4 @@
+var gameover;
 Game.MainMenu = function(game) {
     
     
@@ -7,7 +8,7 @@ Game.MainMenu = function(game) {
 
 Game.MainMenu.prototype = {
     preload:function(){
-        postScores();
+       postScores();
     },
 	create:function(game) {
 
@@ -15,8 +16,7 @@ Game.MainMenu.prototype = {
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
 											180, 50,
-											function() {
-			this.state.start('DailyLeaderboard');});
+											function() {this.state.start('DailyLeaderboard');});
 
 		this.createPlayButton(game, "Play", 
 											game.world.centerX, 
@@ -26,6 +26,7 @@ Game.MainMenu.prototype = {
 
 		//titleScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'titleScreen');
 		//titleScreen.anchor.setTo(0.5, 0.5);
+		gameover = false;
 
 	}, 
 	update:function(game) {
@@ -36,7 +37,7 @@ Game.MainMenu.prototype = {
 	},
     
 	createPlayButton:function(game, string, x, y, w, h, callBack) {
-			var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+			var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
 
 			button1.anchor.setTo(0.5, 0.5);
 			button1.width = w;
@@ -52,7 +53,7 @@ Game.MainMenu.prototype = {
 	},
 	
 	createLeaderButton:function(game, string, x, y, w, h, callBack) {
-        var button1 = game.add.button(x, y, 'logo', callBack, this, 2, 1, 0);
+        var button1 = game.add.button(x, y, 'button', callBack, this, 2, 1, 0);
         
         button1.anchor.setTo(0.5, 0.5);
         button1.width = w;

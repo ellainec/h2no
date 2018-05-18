@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "h2no4thewin";
+    $password = "";
     $dbname = "h2no";
 
     $methodType = $_SERVER['REQUEST_METHOD'];
@@ -46,8 +46,8 @@
         $sql = "delete from monthly where month(datePlayed) < month(curdate())";
         $statement = $conn->query($sql);
         //delete the lowest score entry from alltime table
-        $sql = "delete from alltime order by score asc limit 1";
-        $statement = $conn->query($sql);
+        //$sql = "delete from alltime order by score asc limit 1";
+        //$statement = $conn->query($sql);
 
         //grab weekly, monthly, and all time highscores
         $sql2 = "SELECT * FROM weekly WHERE date(datePlayed) > date_add(CURDATE(), interval 1-dayofweek(curdate()) day) ORDER BY score DESC";

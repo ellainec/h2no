@@ -16,16 +16,16 @@ Game.Boot.prototype = {
     },
     create:function() {
         this.state.start('Preloader');
-        
+        this.game.plugins.add(Phaser.Plugin.TilemapPlus);
     }
     
     
 }
-function postScores() {
+/*function postScores() {
     $.ajax({
         url: "db/postScore.php",
         dataType: "json",
-        data: {score: total, name: playerName},
+        data: {score: completeTotalScore, name: playerName},
         type: "POST",
         success: function (data) {
             console.log(data);
@@ -38,4 +38,4 @@ function postScores() {
             console.log(jqXHR.statusText);
         }
     });
-}
+}*/
