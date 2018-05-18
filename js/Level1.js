@@ -518,16 +518,16 @@ Game.Level1.prototype = {
         npcGroup = game.add.group();
 
         //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
-        createNPC(game, 250, 800, 'chris', 200,
+        createNPC(game, 7855, 800, 'chris', 200,
             "Have you seen my cat?");
 
         createNPC(game, 200, 880, 'npc', 200,
             "Why don't you make yourself useful and turn off some sprinklers huh?");
 
-        createNPC(game, 300, 800, 'npc', 200,
+        createNPC(game, 3745, 550, 'npc', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 500, 800, 'npc', 300,
+        createNPC(game, 5555, 800, 'npc', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
@@ -703,7 +703,7 @@ Game.Level1.prototype = {
 
     render: function() {
         //game.debug.body(player);
-        //game.debug.spriteInfo(player);
+        game.debug.spriteInfo(player);
     },
     resetPlayer: function () {
         player.reset(100, 400);
