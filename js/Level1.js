@@ -295,8 +295,14 @@ var timer;
 var timeLimit;
 var timeText;
 
+// SCORE//
+var sprinklerAdd = 10;
+var score;
+var scoreText;
+
 //CLOCKS FOR EXTRA TIME
 var clocks;
+var clockAdd = 10;
 var easterEggReward = false;
 
 
@@ -453,6 +459,14 @@ Game.Level1.prototype = {
 				align: "center"
 		});
 		lifeText.fixedToCamera = true;
+		
+		score = 0;
+		scoreText = game.add.text(300, 40, score, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		scoreText.fixedToCamera = true;
         // =======================================================================================================================================
         //                                   GAME UI END
         //=========================================================================================================================================
@@ -622,15 +636,16 @@ Game.Level1.prototype = {
         function hitSprinklerFunction(player, sprinkler) {
             //sprinkler.animations.frame = 0;
             if (sprinkler.oneHit) {
-                    sprinkler.oneHit = false;
-                    sprinkler.emitter.destroy();
+				sprinkler.oneHit = false;
+				sprinkler.emitter.destroy();
+				score += sprinklerAdd;
                     if ('emitter2' in sprinkler) {
                         sprinkler.emitter2.destroy();
                     }      
-                    sprinkler.animations.frame = 1;
-                    sprinkler.body.setSize(16, 8, 25, 18);
-                    sprinkler.sprinklerCollision.destroy();
-                    player.body.velocity.y = -500;
+				sprinkler.animations.frame = 1;
+				sprinkler.body.setSize(16, 8, 25, 18);
+				sprinkler.sprinklerCollision.destroy();
+				player.body.velocity.y = -500;
             }
 
         }
@@ -681,6 +696,7 @@ Game.Level1.prototype = {
 
         timeText.setText('Time: ' + timeLimit);
 	    lifeText.setText('Lives: ' + life);
+		scoreText.setText('Score: ' + score);
 
         this.timeUp();
 		
@@ -802,7 +818,7 @@ function npcJump(npc) {
 }
 
 function collectClock(player, clock){
-    timeLimit += 10;
+    timeLimit += clockAdd;
     clock.kill();
 }
 
