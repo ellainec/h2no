@@ -21,11 +21,11 @@ Game.Boot.prototype = {
     
     
 }
-function postScores() {
+/*function postScores() {
     $.ajax({
         url: "db/postScore.php",
         dataType: "json",
-        data: {score: timeLimit, name: playerName},
+        data: {score: completeTotalScore, name: playerName},
         type: "POST",
         success: function (data) {
             console.log(data);
@@ -38,4 +38,4 @@ function postScores() {
             console.log(jqXHR.statusText);
         }
     });
-}
+}*/

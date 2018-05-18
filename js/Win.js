@@ -9,8 +9,6 @@ Game.Win = function(game) {};
 Game.Win.prototype = {
 
     create:function() {
-		postScores();
-		console.log(timeLimit + " " + playerName);
 		gameover = true;
 		this.createButton(game, "CONGRATULATIONS!", 400, 100,
 				500, 80,
@@ -23,6 +21,7 @@ Game.Win.prototype = {
 				fill: "#fff",
 				align: "center"
 		});
+        postScores();
     },
     update:function(){
 		completeTotalScoreText.setText('You Scored: ' + completeTotalScore);
@@ -45,11 +44,11 @@ Game.Win.prototype = {
     },
 }
 
-function getScores() {
+function postScores() {
     $.ajax({
-        url: "db/highscores.php",
+        url: "db/postScore.php",
         dataType: "json",
-        data: {period:1},
+        data: {name: playerName, score: completeTotalScore, period:1},
         type: "POST",
         success: function(data) {
             daily = data[0];
