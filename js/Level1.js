@@ -322,6 +322,11 @@ var lockedTo = null;
 var wasLocked = false;
 var willJump = false;
 
+// SOUND EFFECTS
+var jumpSound = null;
+var robotDeath = null;
+var buttonStomp = null;
+
 // ==================================
 // CREATE FUNCTION BELOW
 // ==================================
@@ -596,6 +601,9 @@ Game.Level1.prototype = {
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
 
+        // AUDIO STUFF
+        jumpSound = this.add.audio('jump');
+
     },
 
     /////////////Drone Functions////////////
@@ -782,6 +790,7 @@ Game.Level1.prototype = {
         if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
             && (player.body.onFloor() || player.body.touching.down)) {
             jumpNow();
+            jumpSound.play();
         }
 
         // controls
