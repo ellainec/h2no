@@ -312,6 +312,7 @@ var easterEggReward = false;
 
 
 // DRONE PARTS
+var bg = null;
 var stationary = null;
 var clouds = null;
 
@@ -575,12 +576,19 @@ Game.Level1.prototype = {
         //////////////////////////////////////////Drones//////////////////////////////////////////
         this.clouds = this.add.physicsGroup();
 
-        var cloud1 = new CloudPlatform(this.game, 400, 400, 'platform', this.clouds);
+        var cloud1 = new CloudPlatform(game, 10500, 1200, 'platform', this.clouds);
 
         cloud1.addMotionPath([
             { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
             { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
+
+        var cloud2 = new CloudPlatform(this.game, 800, 1000, 'platform', this.clouds);
+
+            cloud2.addMotionPath([
+                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
+                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 3000, yEase: "Sine.easeOut" }
+            ]);
 
         this.clouds.callAll('start');
 
@@ -814,57 +822,67 @@ Game.Level1.prototype = {
         //game.debug.body(player);
         //game.debug.spriteInfo(player);
     },
-        ///////////////////Drone///////////////////
+        ///////////////////Drone//////////////////
 
-        //  Do this AFTER the collide check, or we won't have blocked/touching set
-        // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
+            //  Do this AFTER the collide check, or we won't have blocked/touching set
+            // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
 
-        // this.player.body.velocity.x = 0;
+            // this.player.body.velocity.x = 0;
 
-        // if (this.cursors.left.isDown) {
-        //     this.player.body.velocity.x = -150;
+            // if (this.cursors.left.isDown)
+            // {
+            //     this.player.body.velocity.x = -150;
 
-        //     if (this.facing !== 'left') {
-        //         this.player.play('left');
-        //         this.facing = 'left';
-        //     }
-        // }
-        // else if (this.cursors.right.isDown) {
-        //     this.player.body.velocity.x = 150;
+            //     if (this.facing !== 'left')
+            //     {
+            //         this.player.play('left');
+            //         this.facing = 'left';
+            //     }
+            // }
+            // else if (this.cursors.right.isDown)
+            // {
+            //     this.player.body.velocity.x = 150;
 
-        //     if (this.facing !== 'right') {
-        //         this.player.play('right');
-        //         this.facing = 'right';
-        //     }
-        // }
-        // else {
-        //     if (this.facing !== 'idle') {
-        //         this.player.animations.stop();
+            //     if (this.facing !== 'right')
+            //     {
+            //         this.player.play('right');
+            //         this.facing = 'right';
+            //     }
+            // }
+            // else
+            // {
+            //     if (this.facing !== 'idle')
+            //     {
+            //         this.player.animations.stop();
 
-        //         if (this.facing === 'left') {
-        //             this.player.frame = 0;
-        //         }
-        //         else {
-        //             this.player.frame = 5;
-        //         }
+            //         if (this.facing === 'left')
+            //         {
+            //             this.player.frame = 0;
+            //         }
+            //         else
+            //         {
+            //             this.player.frame = 5;
+            //         }
 
-        //         this.facing = 'idle';
-        //     }
-        // }
+            //         this.facing = 'idle';
+            //     }
+            // }
+            
+            // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer)
+            // {
+            //     if (this.locked)
+            //     {
+            //         this.cancelLock();
+            //     }
 
-        // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer) {
-        //     if (this.locked) {
-        //         this.cancelLock();
-        //     }
+            //     this.willJump = true;
+            // }
 
-        //     this.willJump = true;
-        // }
+            // if (this.locked)
+            // {
+            //     this.checkLock();
+            // }
 
-        // if (this.locked) {
-        //     this.checkLock();
-        // }
-
-        ///////////////////////Drone///////////////////////////
 
     resetPlayer: function() {
 
@@ -1091,7 +1109,7 @@ SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
 /////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+////////////////////////////////////////////////////////////////////////////
 /////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
 
 CloudPlatform = function (game, x, y, key, group) {
@@ -1153,3 +1171,4 @@ CloudPlatform.prototype.stop = function () {
 };
 
 /////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
+////////////////////////////////////////////////////////////////////////////

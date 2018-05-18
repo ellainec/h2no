@@ -42,7 +42,7 @@
         var clouds = null;
 
         var facing = 'left';
-        // var jumpTimer = 0;
+        var jumpTimer = 0;
         var cursors;
         var locked = false;
         var lockedTo = null;
@@ -59,11 +59,11 @@
 
             // this.game.renderer.renderSession.roundPixels = true;
 
-            // this.world.resize(640*2, 480);
+            game.world.resize(640*2, 480);
 
             // this.physics.startSystem(Phaser.Physics.ARCADE);
 
-            this.physics.arcade.gravity.y = 600;
+            game.physics.arcade.gravity.y = 600;
 
         },
 
@@ -219,21 +219,21 @@
             {
                 this.player.body.velocity.x = -150;
 
-                // if (this.facing !== 'left')
-                // {
-                //     this.player.play('left');
-                //     this.facing = 'left';
-                // }
+                if (this.facing !== 'left')
+                {
+                    this.player.play('left');
+                    this.facing = 'left';
+                }
             }
             else if (this.cursors.right.isDown)
             {
                 this.player.body.velocity.x = 150;
 
-                // if (this.facing !== 'right')
-                // {
-                //     this.player.play('right');
-                //     this.facing = 'right';
-                // }
+                if (this.facing !== 'right')
+                {
+                    this.player.play('right');
+                    this.facing = 'right';
+                }
             }
             else
             {
