@@ -884,7 +884,8 @@ Game.Level1.prototype = {
             // }
 
 
-    resetPlayer: function() {
+    /*
+	resetPlayer: function() {
 
         player.reset(100, 400);
         life--;
@@ -893,6 +894,7 @@ Game.Level1.prototype = {
             this.state.start('Gameover');
         }
     },
+	*/
 
     // for checkpoint create checkx/y
 
