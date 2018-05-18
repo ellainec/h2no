@@ -267,7 +267,6 @@ var npcGroup;
 
 Game.Level1 = function (game) {
 
-    // this.jumpTimer = 0;
 };
 
 var map;
