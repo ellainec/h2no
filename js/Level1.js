@@ -710,16 +710,14 @@ Game.Level1.prototype = {
         //game.debug.spriteInfo(player);
     },
 
-    // resetPlayer: function () {
-
-    //     player.reset(100, 400);
-	// 		  life--;
-	// 			console.log("died");
-	// 			if (life === 0) {
-	// 				game.state.start('Gameover');
-	// 			}
-
-    // },
+    resetPlayer: function () {
+		player.reset(100, 400);
+		life--;
+	 	console.log("died");
+	 	if (life === 0) {
+	 		game.state.start('Gameover');
+	 	}
+    },
 
     // for checkpoint create checkx/y
 
