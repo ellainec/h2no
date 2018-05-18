@@ -582,18 +582,18 @@ Game.Level1.prototype = {
         createNPC(game, 3745, 550, 'npc', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 800, 'npc', 300,
+        createNPC(game, 5555, 900, 'npc', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 800, 'npc', 200,
+        createNPC(game, 700, 900, 'npc', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 800, 'npc', 200,
+        createNPC(game, 900, 900, 'npc', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 800, 'npc', 200,
+        createNPC(game, 1000, 900, 'npc', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
