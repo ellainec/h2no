@@ -435,19 +435,19 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, 3855, 424 + 12);
 		createSprinkler3(1, game, 4950, 840 + 12);
 		createSprinkler2(1, game, 5257, 840 + 12);
-		createSprinkler2(1, game, 6226, 840 + 12);
+		createSprinkler2(1, game, 6145, 840 + 12);
 		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
-		createSprinkler3(1, game, 7540, 840 + 12);
+		createSprinkler(1, game, 7455, 840 + 12);
 		createSprinkler(1, game, 8393, 840 + 12);
 		createSprinkler(1, game, 8785, 840 + 12);
 		createSprinkler(1, game, 9137, 840 + 12);
-		createSprinkler2(1, game, 9673, 840 + 12);
-		createSprinkler(1, game, 11453, 840 + 12);
-		// createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		// createSprinkler2(1, game, 9673, 840 + 12);
+		// createSprinkler(1, game, 11453, 840 + 12);
+		createSprinkler(1, game, 13253, 840 + 12); // test dont delete
 		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
 		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
 		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
-		createSprinkler3(1, game, 15650, 584 + 12);
+		// createSprinkler3(1, game, 15650, 584 + 12);
 
 
         this.world.bringToTop(sprinklersGroup);
@@ -474,7 +474,7 @@ Game.Level1.prototype = {
 		timeText.fixedToCamera = true;
 
 		// LIFE // -- Die a certain amount of times before the game over screen pops up
-		life = 3;
+		life = 10;
 		lifeText = game.add.text(40, 40, life, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
