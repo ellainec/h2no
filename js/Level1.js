@@ -241,15 +241,6 @@ Cat = function (index, game, x, y) {
     this.cat.body.collideWorldBounds = false;
 };
 
-Chris = function (index, game, x, y) {
-    this.chris = game.add.sprite(x, y, 'chris');
-    this.chris.name = index.toString();
-    game.physics.enable(this.chris, Phaser.Physics.ARCADE);
-    this.chris.body.immovable = false;
-    this.chris.body.allowGravity = true;
-    this.chris.body.collideWorldBounds = true;
-};
-
 // ==================================
 // VARIABLES BELOW
 // ==================================
@@ -258,7 +249,6 @@ var enemy1;
 var npc1;
 var cat1;
 var cat2;
-var chris1;
 
 var sprinklersGroup;
 var sprinklersGroup2;
@@ -513,13 +503,10 @@ Game.Level1.prototype = {
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		chris1 = new Chris(3, game, 4950, 0);
-		chris1.chris.scale.setTo(0.2, 0.2);
-
-		cat1 = new Cat(3, game, 500, 0);
+		cat1 = new Cat(3, game, 11150, 0);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 4950, 0);
+		cat2 = new Cat(3, game, 7845, 800);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -613,7 +600,6 @@ Game.Level1.prototype = {
 
 
     customSep: function (player, platform) {
-        console.log("hit!");
         if (!this.locked && player.body.velocity.y > 0) {
             this.locked = true;
             this.lockedTo = platform;
@@ -649,10 +635,11 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
         this.physics.arcade.collide(cat2.cat, mainLayer);
-        this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.collide(cat1.cat, clouds);
+        this.physics.arcade.collide(cat2.cat, clouds);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
 
 
@@ -964,7 +951,9 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
-        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y -20, 400,
+            "Thanks for finding my cat! I am a Java Developer. I am also a cat lover. AND I'm a bearded man! Isn't polymorphism COOL?" +
+            "I love beards.. I think you would look GREAT with one. Here, have this!");
         /*for(var i = 0; i < npcGroup.children.length; i++) {
             if (npcGroup.children[i].isChris) {
                 npcGroup.children[i].destroy();
@@ -974,7 +963,7 @@ function findCat() {
 }
 
 function easterEgg() {
-    if (checkOverlap(player, chris1.chris) && easterEggReward) {
+    if (checkOverlap(player, npcGroup.children[0]) && easterEggReward) {
         player.loadTexture('WaterBotSkin');
     }
 }
