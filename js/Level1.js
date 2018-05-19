@@ -313,11 +313,12 @@ var easterEggReward = false;
 
 // DRONE PARTS
 var clouds = null;
-var jumpTimer = 0;
+//var jumpTimer = 0;
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
 var willJump = false;
+var standing;
 
 // SOUND EFFECTS
 var jumpSound = null;
@@ -610,24 +611,16 @@ Game.Level1.prototype = {
         ]);
 
         var cloud2 = new CloudPlatform(game, 12300, 860, 'platform', clouds);
-
         cloud2.addMotionPath([
             { x: "+400", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
             { x: "-400", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
-        var cloud3 = new CloudPlatform(game, 11150, 560, 'platform', clouds);
-
+        var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
+        cloud3.alpha = 0.01;
         cloud3.addMotionPath([
-            { y: "-400", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
-            { y: "+400", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
-        ]);
-
-        var cloud4 = new CloudPlatform(game, 11400, 180, 'platform', clouds);
-
-        cloud4.addMotionPath([
-            { y: "+0", ySpeed: 3000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
-            { y: "-0", ySpeed: 3000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+            { y: "-400", ySpeed: 6000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "+400", ySpeed: 4000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
         ]);
 
         clouds.callAll('start');
@@ -643,10 +636,10 @@ Game.Level1.prototype = {
 
 
     customSep: function (player, platform) {
-        if (!this.locked && player.body.velocity.y > 0) {
-            this.locked = true;
-            this.lockedTo = platform;
-            platform.playerLocked = true;
+        if (!locked && player.body.velocity.y > 0) {
+            locked = true;
+            lockedTo = platform;
+            //platform.playerLocked = true;
             player.body.velocity.y = 0;
         }
     },
@@ -656,7 +649,7 @@ Game.Level1.prototype = {
         player.body.velocity.y = 0;
 
         //  If the player has walked off either side of the platform then they're no longer locked to it
-        if (player.body.right < this.lockedTo.body.x || player.body.x > this.lockedTo.body.right) {
+        if (player.body.right < lockedTo.body.x || player.body.x > lockedTo.body.right) {
             this.cancelLock();
         }
 
@@ -664,8 +657,8 @@ Game.Level1.prototype = {
 
     cancelLock: function () {
 
-        this.wasLocked = true;
-        this.locked = false;
+        wasLocked = true;
+        locked = false;
 
     },
 
@@ -674,6 +667,7 @@ Game.Level1.prototype = {
     // ==================================
 
     update: function () {
+        console.log(locked)
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
@@ -821,55 +815,56 @@ Game.Level1.prototype = {
         //                                   DRONE UPDATE
         //========================================================================================================================================
 
-        //  Do this AFTER the collide check, or we won't have blocked/touching set
-        var standing = player.body.blocked.down || player.body.touching.down || this.locked;
-
-         if (standing && cursors.up.isDown && this.time.time > this.jumpTimer) {
-             if (this.locked) {
-                 this.cancelLock();
-             }
-
-             this.willJump = true;
-         }
-
-        if (this.locked) {
-            this.checkLock();
-        }
 
         if (this.game.paused) {
             //  Because preRender still runs even if your game pauses!
             return;
         }
 
-        if (this.locked || this.wasLocked) {
-            player.x += this.lockedTo.deltaX;
-            player.y = this.lockedTo.y - 22;
-            player.body.velocity.y = 0;
+        //if (locked || wasLocked) {
+        if (locked) {
+            player.x += lockedTo.deltaX;
+            player.y = lockedTo.y - 30;
 
-            if (player.body.velocity.x !== 0)
+           if (player.body.velocity.x !== 0)
             {
                 player.body.velocity.y = 0;
             }
         }
 
-        if (this.willJump) {
-            this.willJump = false;
+        if (willJump) {
+            willJump = false;
 
-            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
+            if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
+
                 //  If the platform is moving up we add its velocity to the players jump
-                this.player.body.velocity.y = -300 + (this.lockedTo.deltaY * 10);
+                player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
             }
             else {
-                this.player.body.velocity.y = -300;
+                player.body.velocity.y -= Jump2;
             }
 
-            this.jumpTimer = this.time.time + 750;
+            jumpTimer = game.time.now + 500;
         }
 
-        if (this.wasLocked) {
-            this.wasLocked = false;
-            this.lockedTo.playerLocked = false;
-            this.lockedTo = null;
+        if (wasLocked) {
+            wasLocked = false;
+            lockedTo.playerLocked = false;
+            lockedTo = null;
+        }
+
+        //  Do this AFTER the collide check, or we won't have blocked/touching set
+        standing = player.body.blocked.down || player.body.touching.down || locked;
+
+        if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
+            if (locked) {
+                this.cancelLock();
+            }
+            willJump = true;
+        }
+
+        if (locked) {
+            this.checkLock();
         }
 
         },
@@ -963,12 +958,13 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed/2)) {
-                player.body.velocity.y -= Jump2;
-            } else {
-                player.body.velocity.y -= Jump1;
-            }
+        if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed / 2)) {
+            player.body.velocity.y -= Jump2;
+        } else {
+            player.body.velocity.y -= Jump1;
+        }
         jumpTimer = game.time.now + 500;
+        console.log(jumpTimer + "vs" + game.time.now);
     }
 }
 
