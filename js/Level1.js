@@ -820,7 +820,6 @@ Game.Level1.prototype = {
             return;
         }
 
-        //if (locked || wasLocked) {
         if (locked) {
             player.x += lockedTo.deltaX;
             player.y = lockedTo.y - 30;
@@ -986,11 +985,6 @@ function findCat() {
         npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y, 340,
             "Thanks for finding my cat! I am also a cat lover. But I'm also a Java Developer. And I'm a bearded man! Isn't polymorphism COOL?" +
             "I love beards.. I think you would look GREAT with one. Here, have this!");
-        /*for(var i = 0; i < npcGroup.children.length; i++) {
-            if (npcGroup.children[i].isChris) {
-                npcGroup.children[i].destroy();
-            }
-        }*/
     }
 }
 
@@ -1007,17 +1001,6 @@ function createNPC(game, x, y, image, width, text) {
     npc.body.allowGravity = true;
     npc.body.collideWorldBounds = true;
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
-
-   /* game.physics.enable(this.cat, Phaser.Physics.ARCADE);
-    this.cat.body.immovable = false;
-    this.cat.body.allowGravity = true;
-    this.cat.body.collideWorldBounds = false;*/
-    //easter egg NPC
-    /*if (image == 'chris') {
-        npc.isChris = true;
-    } else {
-        npc.isChris = false;
-    }*/
 
 }
 
