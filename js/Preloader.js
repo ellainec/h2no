@@ -73,6 +73,7 @@ Game.Preloader.prototype = {
 	    // ==========================
 
 		this.load.image('platform', 'assets/droneTwo.png');
+        this.load.image('invisibleDrone', 'assets/bluedrone.png');
     },
     
     create:function() {
