@@ -331,6 +331,8 @@ var buttonStomp = null;
 Game.Level1.prototype = {
 
     create: function (game) {
+        //DEBUG
+        game.time.advancedTiming = true;
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES START
         //=========================================================================================================================================
@@ -423,7 +425,7 @@ Game.Level1.prototype = {
 		sprinklersGroup2 = game.add.group();
 		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
-
+		
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
 		createSprinkler(1, game, 557, 904 + 12);
@@ -609,10 +611,10 @@ Game.Level1.prototype = {
             { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
-        var cloud2 = new CloudPlatform(game, 12300, 860, 'platform', clouds);
+        var cloud2 = new CloudPlatform(game, 12280, 860, 'platform', clouds);
         cloud2.addMotionPath([
-            { x: "+400", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
-            { x: "-400", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+            { x: "+480", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-480", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
         var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
@@ -869,6 +871,7 @@ Game.Level1.prototype = {
 
 
     render: function() {
+        game.debug.text(game.time.fps, 10, 10, "#000000");
     },
 
     
