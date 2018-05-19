@@ -332,6 +332,12 @@ var lockedTo = null;
 var wasLocked = false;
 var willJump = false;
 
+//TEST SPRINKLERS//
+var sprinklerX = [557, 1588];
+var sprinklerY = [904 + 12, 840 + 12];
+var currentSprinklerPosition = 0;
+var currentSprinkler;
+
 // ==================================
 // CREATE FUNCTION BELOW
 // ==================================
@@ -434,25 +440,25 @@ Game.Level1.prototype = {
 
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-		createSprinkler(1, game, 557, 904 + 12);
-		createSprinkler(1, game, 1588, 840 + 12);
-		createSprinkler(1, game, 2190, 712 + 12);
+		currentSprinkler = createSprinkler(1, game, 557, 904 + 12);
+		//createSprinkler(1, game, 1588, 840 + 12);
+		//createSprinkler(1, game, 2190, 712 + 12);
 		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
-		createSprinkler2(1, game, 2835, 584 + 12);
-		createSprinkler(1, game, 3400, 584 + 12);
-		createSprinkler2(1, game, 3600, 840 + 12);
-		createSprinkler(1, game, 3855, 424 + 12);
-		createSprinkler3(1, game, 4950, 840 + 12);
-		createSprinkler2(1, game, 5257, 840 + 12);
-		createSprinkler2(1, game, 6145, 840 + 12);
+		//createSprinkler2(1, game, 2835, 584 + 12);
+		//createSprinkler(1, game, 3400, 584 + 12);
+		//createSprinkler2(1, game, 3600, 840 + 12);
+		//createSprinkler(1, game, 3855, 424 + 12);
+		//createSprinkler3(1, game, 4950, 840 + 12);
+		//createSprinkler2(1, game, 5257, 840 + 12);
+		//createSprinkler2(1, game, 6145, 840 + 12);
 		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
-		createSprinkler(1, game, 7455, 840 + 12);
-		createSprinkler(1, game, 8393, 840 + 12);
-		createSprinkler(1, game, 8785, 840 + 12);
-		createSprinkler(1, game, 9137, 840 + 12);
+		//createSprinkler(1, game, 7455, 840 + 12);
+		//createSprinkler(1, game, 8393, 840 + 12);
+		//createSprinkler(1, game, 8785, 840 + 12);
+		//createSprinkler(1, game, 9137, 840 + 12);
 		// createSprinkler2(1, game, 9673, 840 + 12);
 		// createSprinkler(1, game, 11453, 840 + 12);
-		createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		//createSprinkler(1, game, 13253, 840 + 12); // test dont delete
 		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
 		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
 		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
@@ -829,6 +835,13 @@ Game.Level1.prototype = {
 		
         findCat();
         easterEgg();
+
+        /*//TEST SPRINKLER RECYCLE//
+        if (!currentSprinkler.inCamera) {
+            if (player.x > currentSprinkler.x) {
+                currentSprinkler = createSprinkler()
+            }
+        }*/
 	},
 
 
