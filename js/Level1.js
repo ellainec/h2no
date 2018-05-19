@@ -425,7 +425,7 @@ Game.Level1.prototype = {
 		sprinklersGroup2 = game.add.group();
 		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
-		
+		/*
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
 		createSprinkler(1, game, 557, 904 + 12);
@@ -451,7 +451,7 @@ Game.Level1.prototype = {
 		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
 		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
 		// createSprinkler3(1, game, 15650, 584 + 12);
-
+    */
 
         this.world.bringToTop(sprinklersGroup);
         this.world.bringToTop(sprinklersGroup2);
