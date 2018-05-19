@@ -313,7 +313,6 @@ var easterEggReward = false;
 
 // DRONE PARTS
 var clouds = null;
-//var jumpTimer = 0;
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
