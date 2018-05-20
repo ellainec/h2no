@@ -256,10 +256,15 @@ var sprinklersGroup3
 var boxGroup;
 var npcGroup;
 var sprinkler1;
-var sprinklerX1 = [557, 2400, 3400, 3855];
-var sprinklerY1 = [916, 671, 596, 436];
+var sprinklerX1 = [575, 2190, 3400, 6436];
+var sprinklerY1 = [916, 724, 596, 596];
 var sprinklerHit1 = [true, true, true, true];
 var currentSprinkler1 = 0;
+var sprinkler2;
+var sprinklerX2 = [2835, 3600, 5257];
+var sprinklerY2 = [596, 852, 852];
+var sprinklerHit2 = [true, true, true, true];
+var currentSprinkler2 = 0;
 
 Game.Level1 = function (game) {
 
@@ -437,6 +442,8 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
+        createSprinkler2(1, game, 2835, 584 + 12);
+        sprinkler2 = sprinklersGroup2.children[0];
 
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
@@ -758,7 +765,6 @@ Game.Level1.prototype = {
                     }      
 				sprinkler.animations.frame = 1;
 				sprinkler.body.setSize(16, 8, 25, 18);
-				//ellaine set to kill instead of destroy
 				sprinkler.sprinklerCollision.kill();
 				player.body.velocity.y = -500;
             }
@@ -791,7 +797,33 @@ Game.Level1.prototype = {
                 sprinkler1.animations.frame = 1;
                 sprinkler1.emitter.on = false;
             }
+        }
 
+        if (!sprinkler2.inCamera) {
+            if (sprinkler2.oneHit === false) {
+                sprinklerHit2[currentSprinkler2] = false;
+            }
+            if (player.x > sprinkler2.x && currentSprinkler2 +1 < sprinklerX2.length) {
+                currentSprinkler2++;
+            }
+            if (player.x < sprinkler2.x && currentSprinkler2 > 0) {
+                currentSprinkler2--;
+            }
+            sprinkler2.x = sprinklerX2[currentSprinkler2];
+            sprinkler2.y = sprinklerY2[currentSprinkler2];
+            sprinkler2.emitter.x = sprinklerX2[currentSprinkler2];
+            sprinkler2.emitter.y = sprinklerY2[currentSprinkler2];
+            if (sprinklerHit2[currentSprinkler2]) {
+                sprinkler2.oneHit = sprinklerHit2[currentSprinkler2];
+                sprinkler2.sprinklerCollision.revive();
+                sprinkler2.sprinklerCollision.x = sprinklerX2[currentSprinkler2];
+                sprinkler2.sprinklerCollision.y = sprinklerY2[currentSprinkler2] + 5;
+                sprinkler2.animations.frame = 0;
+                sprinkler2.emitter.on = true;
+            } else {
+                sprinkler2.animations.frame = 1;
+                sprinkler2.emitter.on = false;
+            }
         }
 
 
