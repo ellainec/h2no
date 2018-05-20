@@ -252,8 +252,14 @@ var cat2;
 
 var sprinklersGroup;
 var sprinklersGroup2;
+var sprinklersGroup3
 var boxGroup;
 var npcGroup;
+var sprinkler1;
+var sprinklerX1 = [557, 1588];
+var sprinklerY1 = [916, 852];
+var sprinklerHit1 = [true, true];
+var currentSprinkler1 = 0;
 
 Game.Level1 = function (game) {
 
@@ -425,10 +431,14 @@ Game.Level1.prototype = {
 		sprinklersGroup2 = game.add.group();
 		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
-		/*
+
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-		createSprinkler(1, game, 557, 904 + 12);
+		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
+		sprinkler1 = sprinklersGroup.children[0];
+
+
+		/*
 		createSprinkler(1, game, 1588, 840 + 12);
 		createSprinkler(1, game, 2190, 712 + 12);
 		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
@@ -668,7 +678,6 @@ Game.Level1.prototype = {
     // ==================================
 
     update: function () {
-        console.log(locked)
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(cat1.cat, mainLayer);
@@ -743,18 +752,48 @@ Game.Level1.prototype = {
             //sprinkler.animations.frame = 0;
             if (sprinkler.oneHit) {
 				sprinkler.oneHit = false;
-				sprinkler.emitter.destroy();
+				//ellaine set to turn off instead of destroy
+				sprinkler.emitter.on = false;
 				score += sprinklerAdd;
                     if ('emitter2' in sprinkler) {
-                        sprinkler.emitter2.destroy();
+                        sprinkler.emitter2.on = false;
                     }      
 				sprinkler.animations.frame = 1;
 				sprinkler.body.setSize(16, 8, 25, 18);
-				sprinkler.sprinklerCollision.destroy();
+				//ellaine set to kill instead of destroy
+				sprinkler.sprinklerCollision.kill();
 				player.body.velocity.y = -500;
             }
 
         }
+
+        //TESTING RECYCLING//
+        if (!sprinkler1.inCamera && game.time.now > 10000) {
+            if (sprinkler1.oneHit === false) {
+                sprinklerHit1[currentSprinkler1] = false;
+            }
+            if (player.x > sprinkler1.x && currentSprinkler1 +1 < sprinklerX1.length) {
+                currentSprinkler1++;
+            }
+            if (player.x < sprinkler1.x && currentSprinkler1 > 0) {
+                currentSprinkler1--;
+            }
+            sprinkler1.x = sprinklerX1[currentSprinkler1];
+            sprinkler1.y = sprinklerY1[currentSprinkler1];
+            sprinkler1.emitter.x = sprinklerX1[currentSprinkler1];
+            sprinkler1.emitter.y = sprinklerY1[currentSprinkler1];
+            if (sprinklerHit1[currentSprinkler1]) {
+                sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
+                sprinkler1.sprinklerCollision.revive();
+                sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
+                sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
+                sprinkler1.animations.frame = 0;
+                sprinkler1.emitter.on = true;
+            }
+
+        }
+
+
 
 
         // =======================================================================================================================================
@@ -942,12 +981,10 @@ Game.Level1.prototype = {
 
 function moveLeft() {
 	player.body.velocity.x = -playerMaxSpeed
-	console.log(player.body.velocity.x);
 }
 
 function moveRight() {
 	player.body.velocity.x = playerMaxSpeed;
-	console.log(player.body.velocity.x);
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -965,7 +1002,6 @@ function jumpNow() {
             player.body.velocity.y -= Jump1;
         }
         jumpTimer = game.time.now + 500;
-        console.log(jumpTimer + "vs" + game.time.now);
     }
 }
 
