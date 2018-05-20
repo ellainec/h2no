@@ -256,9 +256,9 @@ var sprinklersGroup3
 var boxGroup;
 var npcGroup;
 var sprinkler1;
-var sprinklerX1 = [557, 1588];
-var sprinklerY1 = [916, 852];
-var sprinklerHit1 = [true, true];
+var sprinklerX1 = [557, 2400, 3400, 3855];
+var sprinklerY1 = [916, 671, 596, 436];
+var sprinklerHit1 = [true, true, true, true];
 var currentSprinkler1 = 0;
 
 Game.Level1 = function (game) {
@@ -749,10 +749,8 @@ Game.Level1.prototype = {
 
 
         function hitSprinklerFunction(player, sprinkler) {
-            //sprinkler.animations.frame = 0;
             if (sprinkler.oneHit) {
 				sprinkler.oneHit = false;
-				//ellaine set to turn off instead of destroy
 				sprinkler.emitter.on = false;
 				score += sprinklerAdd;
                     if ('emitter2' in sprinkler) {
@@ -789,6 +787,9 @@ Game.Level1.prototype = {
                 sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
                 sprinkler1.animations.frame = 0;
                 sprinkler1.emitter.on = true;
+            } else {
+                sprinkler1.animations.frame = 1;
+                sprinkler1.emitter.on = false;
             }
 
         }
