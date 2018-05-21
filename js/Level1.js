@@ -776,55 +776,37 @@ Game.Level1.prototype = {
             if (sprinkler1.oneHit === false) {
                 sprinklerHit1[currentSprinkler1] = false;
             }
-            if (player.x > sprinkler1.x && currentSprinkler1 +1 < sprinklerX1.length) {
+            if (player.x > sprinkler1.x && currentSprinkler1 +1 < sprinklerX1.length && player.body.velocity.x > 0) {
                 currentSprinkler1++;
+                var on = sprinklerHit1[currentSprinkler1];
+                if (on) {
+                    sprinkler1.emitter.on = sprinklerHit1[currentSprinkler1];
+                    sprinkler1.animations.frame = 0;
+                    sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
+                    sprinkler1.sprinklerCollision.revive();
+                    sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
+                    sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
+                }
             }
-            if (player.x < sprinkler1.x && currentSprinkler1 > 0) {
+            if (player.x < sprinkler1.x && currentSprinkler1 > 0 && player.body.velocity.x < 0) {
                 currentSprinkler1--;
+                var on = sprinklerHit1[currentSprinkler1];
+                if (on) {
+                    sprinkler1.emitter.on = sprinklerHit1[currentSprinkler1];
+                    sprinkler1.animations.frame = 0;
+                    sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
+                    sprinkler1.sprinklerCollision.revive();
+                    sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
+                    sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
+                }
             }
             sprinkler1.x = sprinklerX1[currentSprinkler1];
             sprinkler1.y = sprinklerY1[currentSprinkler1];
             sprinkler1.emitter.x = sprinklerX1[currentSprinkler1];
             sprinkler1.emitter.y = sprinklerY1[currentSprinkler1];
-            if (sprinklerHit1[currentSprinkler1]) {
-                sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
-                sprinkler1.sprinklerCollision.revive();
-                sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
-                sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
-                sprinkler1.animations.frame = 0;
-                sprinkler1.emitter.on = true;
-            } else {
-                sprinkler1.animations.frame = 1;
-                sprinkler1.emitter.on = false;
-            }
         }
 
-        if (!sprinkler2.inCamera) {
-            if (sprinkler2.oneHit === false) {
-                sprinklerHit2[currentSprinkler2] = false;
-            }
-            if (player.x > sprinkler2.x && currentSprinkler2 +1 < sprinklerX2.length) {
-                currentSprinkler2++;
-            }
-            if (player.x < sprinkler2.x && currentSprinkler2 > 0) {
-                currentSprinkler2--;
-            }
-            sprinkler2.x = sprinklerX2[currentSprinkler2];
-            sprinkler2.y = sprinklerY2[currentSprinkler2];
-            sprinkler2.emitter.x = sprinklerX2[currentSprinkler2];
-            sprinkler2.emitter.y = sprinklerY2[currentSprinkler2];
-            if (sprinklerHit2[currentSprinkler2]) {
-                sprinkler2.oneHit = sprinklerHit2[currentSprinkler2];
-                sprinkler2.sprinklerCollision.revive();
-                sprinkler2.sprinklerCollision.x = sprinklerX2[currentSprinkler2];
-                sprinkler2.sprinklerCollision.y = sprinklerY2[currentSprinkler2] + 5;
-                sprinkler2.animations.frame = 0;
-                sprinkler2.emitter.on = true;
-            } else {
-                sprinkler2.animations.frame = 1;
-                sprinkler2.emitter.on = false;
-            }
-        }
+
 
 
 
@@ -1075,6 +1057,7 @@ function createNPC(game, x, y, image, width, text) {
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
 
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
