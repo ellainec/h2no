@@ -237,7 +237,7 @@ Cat = function (index, game, x, y) {
     this.cat.name = index.toString();
     game.physics.enable(this.cat, Phaser.Physics.ARCADE);
     this.cat.body.immovable = false;
-    this.cat.body.allowGravity = true;
+    this.cat.body.allowGravity = false;
     this.cat.body.collideWorldBounds = false;
 };
 
@@ -562,10 +562,10 @@ Game.Level1.prototype = {
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		cat1 = new Cat(3, game, 11150, 0);
+		cat1 = new Cat(3, game, 11150, 174);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 7845, 800);
+		cat2 = new Cat(3, game, 7830, 814);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -687,13 +687,9 @@ Game.Level1.prototype = {
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
         this.physics.arcade.collide(player, secretLayer);
-        this.physics.arcade.collide(cat1.cat, mainLayer);
-        this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
         this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-        this.physics.arcade.collide(cat1.cat, clouds);
-        this.physics.arcade.collide(cat2.cat, clouds);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
 
 
