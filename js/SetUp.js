@@ -7,6 +7,7 @@ game.state.add('MainMenu', Game.MainMenu);
 game.state.add('Level1', Game.Level1);
 game.state.add('BossState', Game.BossState);
 game.state.add('Gameover', Game.Gameover);
+game.state.add('Win', Game.Win);
 game.state.add('DailyLeaderboard', Game.DailyLeaderboard);
 game.state.add('MonthlyLeaderboard', Game.MonthlyLeaderboard);
 game.state.add('AllTimeLeaderboard', Game.AllTimeLeaderboard);
