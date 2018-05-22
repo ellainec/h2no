@@ -31,7 +31,7 @@ createSprinkler = function (index, game, x, y) {
     game.physics.enable(thisSprinkler, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler.oneHit = true;
+    thisSprinkler.hit = false;
     thisSprinkler.name = index.toString();
     thisSprinkler.anchor.setTo(0.5, 0.6);
     thisSprinkler.scale.setTo(0.5, 0.5);
@@ -85,7 +85,7 @@ createSprinkler2 = function (index, game, x, y) {
     game.physics.enable(thisSprinkler2, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler2.oneHit = true;
+    thisSprinkler2.hit = false;
     thisSprinkler2.name = index.toString();
     thisSprinkler2.anchor.setTo(0.5, 0.6);
     thisSprinkler2.scale.setTo(0.5, 0.5);
@@ -139,7 +139,7 @@ createSprinkler3 = function (index, game, x, y) {
     game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler3.oneHit = true;
+    thisSprinkler3.hit = false;
     thisSprinkler3.name = index.toString();
     thisSprinkler3.anchor.setTo(0.5, 0.6);
     thisSprinkler3.scale.setTo(0.5, 0.5);
@@ -258,12 +258,12 @@ var npcGroup;
 var sprinkler1;
 var sprinklerX1 = [575, 2190, 3400, 6436];
 var sprinklerY1 = [916, 724, 596, 596];
-var sprinklerHit1 = [true, true, true, true];
+var sprinklerHit1 = [false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
 var sprinklerX2 = [2835, 3600, 5257];
 var sprinklerY2 = [596, 852, 852];
-var sprinklerHit2 = [true, true, true, true];
+var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
 
 Game.Level1 = function (game) {
@@ -701,10 +701,10 @@ Game.Level1.prototype = {
         //                                   SPRINKLER UPDATE START
         //=========================================================================================================================================
         //Collide Player with Sprinkler and SprinkerCollision
-       this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
-       this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
-       this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
-       this.physics.arcade.collide(player, boxGroup);
+        this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
+        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
+        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
+        this.physics.arcade.collide(player, boxGroup);
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
@@ -756,172 +756,165 @@ Game.Level1.prototype = {
 
 
         function hitSprinklerFunction(player, sprinkler) {
-            if (sprinkler.oneHit) {
-				sprinkler.oneHit = false;
-				sprinkler.emitter.on = false;
-				score += sprinklerAdd;
-                    if ('emitter2' in sprinkler) {
-                        sprinkler.emitter2.on = false;
-                    }      
-				sprinkler.animations.frame = 1;
-				sprinkler.body.setSize(16, 8, 25, 18);
-				sprinkler.sprinklerCollision.kill();
-				player.body.velocity.y = -500;
+            if (!sprinkler.hit) {
+                sprinkler.hit = true;
+                sprinkler.emitter.on = false;
+                score += sprinklerAdd;
+                if ('emitter2' in sprinkler) {
+                    sprinkler.emitter2.on = false;
+                }
+                sprinkler.animations.frame = 1;
+                sprinkler.body.setSize(16, 8, 25, 18);
+                sprinkler.sprinklerCollision.kill();
+                player.body.velocity.y = -500;
             }
 
         }
 
-        //TESTING RECYCLING//
+        //RECYCLE SPRINKLERS//
         if (!sprinkler1.inCamera && game.time.now > 10000) {
-            if (sprinkler1.oneHit === false) {
-                sprinklerHit1[currentSprinkler1] = false;
+            if (sprinkler1.hit === true) {
+                sprinklerHit1[currentSprinkler1] = true;
             }
-            if (player.x > sprinkler1.x && currentSprinkler1 +1 < sprinklerX1.length && player.body.velocity.x > 0) {
+            if (player.x > sprinkler1.x && currentSprinkler1 + 1 < sprinklerX1.length && player.body.velocity.x > 0) {
                 currentSprinkler1++;
-                var on = sprinklerHit1[currentSprinkler1];
-                if (on) {
-                    sprinkler1.emitter.on = sprinklerHit1[currentSprinkler1];
-                    sprinkler1.animations.frame = 0;
-                    sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
-                    sprinkler1.sprinklerCollision.revive();
-                    sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
-                    sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
-                }
+                sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
             }
+
             if (player.x < sprinkler1.x && currentSprinkler1 > 0 && player.body.velocity.x < 0) {
                 currentSprinkler1--;
-                var on = sprinklerHit1[currentSprinkler1];
-                if (on) {
-                    sprinkler1.emitter.on = sprinklerHit1[currentSprinkler1];
-                    sprinkler1.animations.frame = 0;
-                    sprinkler1.oneHit = sprinklerHit1[currentSprinkler1];
-                    sprinkler1.sprinklerCollision.revive();
-                    sprinkler1.sprinklerCollision.x = sprinklerX1[currentSprinkler1];
-                    sprinkler1.sprinklerCollision.y = sprinklerY1[currentSprinkler1] + 5;
+                sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
+            }
+
+            repositionSprinkler(sprinkler1, sprinklerX1, sprinklerY1, currentSprinkler1);
+        }
+
+        if (!sprinkler2.inCamera && game.time.now > 10000) {
+            if (sprinkler2.hit === true) {
+                sprinklerHit2[currentSprinkler1] = true;
+            }
+            if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
+                currentSprinkler2++;
+                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+            }
+
+            if (player.x < sprinkler2.x && currentSprinkler2 > 0 && player.body.velocity.x < 0) {
+                currentSprinkler2--;
+                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+            }
+            repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+        }
+
+
+            // =======================================================================================================================================
+            //                                   SPRINKLER UPDATE END
+            //========================================================================================================================================
+
+
+            if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
+                && (player.body.onFloor() || player.body.touching.down)) {
+                jumpNow();
+                jumpSound.play();
+            }
+
+            // controls
+            if (cursors.left.isDown || leftTrue) {
+                moveLeft();
+                player.animations.play('left');
+            } else if (cursors.right.isDown || rightTrue) {
+                moveRight();
+                player.animations.play('right');
+            } else {
+                if (player.body.velocity.x >= playerSlow) {
+                    player.body.velocity.x -= playerSlow;
+                } else if (player.body.velocity.x < -playerSlow) {
+                    player.body.velocity.x += playerSlow;
+                } else {
+                    player.body.velocity.x = 0;
+                }
+                player.animations.play('idle');
+            }
+
+
+            if (mobile) {
+                if (this.button.isDown) {
+                    jumpNow();
+                }
+                if (this.joystick.properties.right) {
+                    player.animations.play('right');
+                    moveRight();
+                } else if (this.joystick.properties.left) {
+                    player.animations.play('left');
+                    moveLeft();
+                } else {
+                    player.animations.play('idle');
                 }
             }
-            sprinkler1.x = sprinklerX1[currentSprinkler1];
-            sprinkler1.y = sprinklerY1[currentSprinkler1];
-            sprinkler1.emitter.x = sprinklerX1[currentSprinkler1];
-            sprinkler1.emitter.y = sprinklerY1[currentSprinkler1];
-        }
+
+            timeText.setText('Time: ' + timeLimit);
+            lifeText.setText('Lives: ' + life);
+            scoreText.setText('Score: ' + score);
+
+            this.timeUp();
+
+            findCat();
+            easterEgg();
+
+            // =======================================================================================================================================
+            //                                   DRONE UPDATE
+            //========================================================================================================================================
 
 
-
-
-
-
-        // =======================================================================================================================================
-        //                                   SPRINKLER UPDATE END
-        //========================================================================================================================================
-
-
-        if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
-            && (player.body.onFloor() || player.body.touching.down)) {
-            jumpNow();
-            jumpSound.play();
-        }
-
-        // controls
-        if (cursors.left.isDown || leftTrue) {
-            moveLeft();
-            player.animations.play('left');
-        } else if (cursors.right.isDown || rightTrue) {
-            moveRight();
-            player.animations.play('right');
-        } else {
-            if (player.body.velocity.x >= playerSlow) {
-                player.body.velocity.x -= playerSlow;
-            } else if (player.body.velocity.x < -playerSlow) {
-                player.body.velocity.x += playerSlow;
-            } else {
-                player.body.velocity.x = 0;
-            }
-            player.animations.play('idle');
-        }
-
-
-
-        if (mobile) {
-            if (this.button.isDown) {
-                jumpNow();
-            }
-            if (this.joystick.properties.right) {
-				player.animations.play('right');
-            	moveRight();
-            } else if (this.joystick.properties.left) {
-				player.animations.play('left');
-            	moveLeft();
-            } else {
-				player.animations.play('idle');
-			}		
-        }
-
-        timeText.setText('Time: ' + timeLimit);
-	    lifeText.setText('Lives: ' + life);
-		scoreText.setText('Score: ' + score);
-
-        this.timeUp();
-		
-        findCat();
-        easterEgg();
-
-        // =======================================================================================================================================
-        //                                   DRONE UPDATE
-        //========================================================================================================================================
-
-
-        if (this.game.paused) {
-            //  Because preRender still runs even if your game pauses!
-            return;
-        }
-
-        if (locked) {
-            player.x += lockedTo.deltaX;
-            player.y = lockedTo.y - 30;
-
-           if (player.body.velocity.x !== 0)
-            {
-                player.body.velocity.y = 0;
-            }
-        }
-
-        if (willJump) {
-            willJump = false;
-
-            if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
-
-                //  If the platform is moving up we add its velocity to the players jump
-                player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
-            }
-            else {
-                player.body.velocity.y -= Jump2;
+            if (this.game.paused) {
+                //  Because preRender still runs even if your game pauses!
+                return;
             }
 
-            jumpTimer = game.time.now + 500;
-        }
-
-        if (wasLocked) {
-            wasLocked = false;
-            lockedTo.playerLocked = false;
-            lockedTo = null;
-        }
-
-        //  Do this AFTER the collide check, or we won't have blocked/touching set
-        standing = player.body.blocked.down || player.body.touching.down || locked;
-
-        if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
             if (locked) {
-                this.cancelLock();
+                player.x += lockedTo.deltaX;
+                player.y = lockedTo.y - 30;
+
+                if (player.body.velocity.x !== 0) {
+                    player.body.velocity.y = 0;
+                }
             }
-            willJump = true;
-        }
 
-        if (locked) {
-            this.checkLock();
-        }
+            if (willJump) {
+                willJump = false;
 
-        },
+                if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
+
+                    //  If the platform is moving up we add its velocity to the players jump
+                    player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
+                }
+                else {
+                    player.body.velocity.y -= Jump2;
+                }
+
+                jumpTimer = game.time.now + 500;
+            }
+
+            if (wasLocked) {
+                wasLocked = false;
+                lockedTo.playerLocked = false;
+                lockedTo = null;
+            }
+
+            //  Do this AFTER the collide check, or we won't have blocked/touching set
+            standing = player.body.blocked.down || player.body.touching.down || locked;
+
+            if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
+                if (locked) {
+                    this.cancelLock();
+                }
+                willJump = true;
+            }
+
+            if (locked) {
+                this.checkLock();
+            }
+
+    },
 
 
     render: function() {
@@ -937,9 +930,18 @@ Game.Level1.prototype = {
         if (life === 0) {
             game.state.start('Gameover');
         }
-    },
-	
 
+        //ellaine - RESET SPRINKLERS
+        currentSprinkler1 = 0;
+        currentSprinkler2 = 0;
+
+        repositionSprinkler(sprinkler1, sprinklerX1, sprinklerY1, currentSprinkler1);
+        repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+
+        sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
+        sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+
+    },
     // for checkpoint create checkx/y
 
     // creating buttons
@@ -1025,6 +1027,31 @@ function npcJump(npc) {
     if (npc.body.blocked.down) {
         npc.body.velocity.y = -300;
     }
+}
+
+function sprinklerOn(sprinkler, sprinklerHit, currentSprinkler) {
+    if (sprinklerHit[currentSprinkler]) {
+        sprinkler.emitter.on = false;
+        sprinkler.animations.frame = 1;
+        sprinkler.body.setSize(16, 8, 25, 18);
+        sprinkler.sprinklerCollision.kill();
+    } else {
+        sprinkler.emitter.on = true;
+        sprinkler.animations.frame = 0;
+        sprinkler.hit = false;
+        sprinkler.sprinklerCollision.revive();
+        sprinkler.sprinklerCollision.x = sprinkler.x;
+        sprinkler.sprinklerCollision.y = sprinkler.y + 5;
+    }
+}
+
+
+
+function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler) {
+    sprinkler.x = sprinklerX[currentSprinkler];
+    sprinkler.y = sprinklerY[currentSprinkler];
+    sprinkler.emitter.x = sprinklerX[currentSprinkler];
+    sprinkler.emitter.y = sprinklerY[currentSprinkler];
 }
 
 function collectClock(player, clock) {
