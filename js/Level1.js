@@ -843,8 +843,9 @@ Game.Level1.prototype = {
 
 
         if (mobile) {
-            if (this.button.isDown) {
+            if ((this.button.isDown || jumpTrue) && (player.body.onFloor() || player.body.touching.down)) {
                 jumpNow();
+				jumpSound.play();
             }
             if (this.joystick.properties.right) {
 				player.animations.play('right');
@@ -853,6 +854,13 @@ Game.Level1.prototype = {
 				player.animations.play('left');
             	moveLeft();
             } else {
+				if (player.body.velocity.x >= playerSlow) {
+                	player.body.velocity.x -= playerSlow;
+				} else if (player.body.velocity.x < -playerSlow) {
+					player.body.velocity.x += playerSlow;
+				} else {
+					player.body.velocity.x = 0;
+				}
 				player.animations.play('idle');
 			}		
         }
