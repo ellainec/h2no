@@ -80,7 +80,7 @@ createSprinkler = function (index, game, x, y) {
 };
 
 createSprinkler2 = function (index, game, x, y) {
-    var thisSprinkler2 = sprinklersGroup2.create(x, y, 'sprinkler');
+    var thisSprinkler2 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler2, Phaser.Physics.ARCADE);
 
@@ -134,7 +134,7 @@ createSprinkler2 = function (index, game, x, y) {
 
 };
 createSprinkler3 = function (index, game, x, y) {
-    var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
+    var thisSprinkler3 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
 
@@ -251,8 +251,6 @@ var cat1;
 var cat2;
 
 var sprinklersGroup;
-var sprinklersGroup2;
-var sprinklersGroup3
 var boxGroup;
 var npcGroup;
 var sprinkler1;
@@ -433,8 +431,6 @@ Game.Level1.prototype = {
         //=========================================================================================================================================
 
 		sprinklersGroup = game.add.group();
-		sprinklersGroup2 = game.add.group();
-		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
 
 		//CREATE NEW SPRINKLERS HERE
@@ -443,7 +439,7 @@ Game.Level1.prototype = {
 		sprinkler1 = sprinklersGroup.children[0];
 
         createSprinkler2(1, game, 2835, 584 + 12);
-        sprinkler2 = sprinklersGroup2.children[0];
+        sprinkler2 = sprinklersGroup.children[1];
 
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
@@ -471,8 +467,6 @@ Game.Level1.prototype = {
     */
 
         this.world.bringToTop(sprinklersGroup);
-        this.world.bringToTop(sprinklersGroup2);
-        this.world.bringToTop(sprinklersGroup3);
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -686,20 +680,16 @@ Game.Level1.prototype = {
 
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, secretLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
-
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
         //=========================================================================================================================================
         //Collide Player with Sprinkler and SprinkerCollision
         this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
-        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
-        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
         this.physics.arcade.collide(player, boxGroup);
 
         //emitter physics
@@ -708,10 +698,6 @@ Game.Level1.prototype = {
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
         }
 
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-        }
         /////////////////////
         ///NPC UPDATES
         /////////////////////
@@ -719,14 +705,14 @@ Game.Level1.prototype = {
             npcGroup.children[i].body.velocity.x = 0;
         }
 
-
+        /* ellaine
         for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
             var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
             var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
             this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
         }
-
+        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
@@ -738,17 +724,12 @@ Game.Level1.prototype = {
             }
         }
 
-
-        //emitter2 direction
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinkler = sprinklersGroup2.children[i];
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            if (player.position.x > sprinkler.position.x) {
-                sprinklerEmitter.setXSpeed(500, 450);
-            } else {
-                sprinklerEmitter.setXSpeed(-500, -450);
-            }
+        if (player.position.x > sprinkler2.x) {
+            sprinkler2.emitter.setXSpeed(500, 450);
+        } else {
+            sprinkler2.emitter.setXSpeed(-500, -450);
         }
+
 
 
         function hitSprinklerFunction(player, sprinkler) {
