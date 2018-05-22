@@ -635,7 +635,7 @@ Game.Level1.prototype = {
         ]);
 
         var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
-        cloud3.alpha = 0.01;
+        cloud3.alpha = 0.02;
         cloud3.addMotionPath([
             { y: "-400", ySpeed: 6000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
             { y: "+400", ySpeed: 4000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
