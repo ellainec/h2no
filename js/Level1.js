@@ -338,6 +338,12 @@ var jumpSound = null;
 var robotDeath = null;
 var buttonStomp = null;
 
+//TEST SPRINKLERS//
+var sprinklerX = [557, 1588];
+var sprinklerY = [904 + 12, 840 + 12];
+var currentSprinklerPosition = 0;
+var currentSprinkler;
+
 // ==================================
 // CREATE FUNCTION BELOW
 // ==================================
@@ -453,21 +459,21 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, 1588, 840 + 12);
 		createSprinkler(1, game, 2190, 712 + 12);
 		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
-		createSprinkler2(1, game, 2835, 584 + 12);
-		createSprinkler(1, game, 3400, 584 + 12);
-		createSprinkler2(1, game, 3600, 840 + 12);
-		createSprinkler(1, game, 3855, 424 + 12);
-		createSprinkler3(1, game, 4950, 840 + 12);
-		createSprinkler2(1, game, 5257, 840 + 12);
-		createSprinkler2(1, game, 6145, 840 + 12);
+		//createSprinkler2(1, game, 2835, 584 + 12);
+		//createSprinkler(1, game, 3400, 584 + 12);
+		//createSprinkler2(1, game, 3600, 840 + 12);
+		//createSprinkler(1, game, 3855, 424 + 12);
+		//createSprinkler3(1, game, 4950, 840 + 12);
+		//createSprinkler2(1, game, 5257, 840 + 12);
+		//createSprinkler2(1, game, 6145, 840 + 12);
 		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
-		createSprinkler(1, game, 7455, 840 + 12);
-		createSprinkler(1, game, 8393, 840 + 12);
-		createSprinkler(1, game, 8785, 840 + 12);
-		createSprinkler(1, game, 9137, 840 + 12);
+		//createSprinkler(1, game, 7455, 840 + 12);
+		//createSprinkler(1, game, 8393, 840 + 12);
+		//createSprinkler(1, game, 8785, 840 + 12);
+		//createSprinkler(1, game, 9137, 840 + 12);
 		// createSprinkler2(1, game, 9673, 840 + 12);
 		// createSprinkler(1, game, 11453, 840 + 12);
-		createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		//createSprinkler(1, game, 13253, 840 + 12); // test dont delete
 		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
 		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
 		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
@@ -597,24 +603,24 @@ Game.Level1.prototype = {
         createNPC(game, 7855, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 200, 880, 'npc', 200,
-            "Why don't you make yourself useful and turn off some sprinklers huh?");
-
-        createNPC(game, 3745, 550, 'npc', 200,
+        createNPC(game, 200, 880, 'npc_b1', 200,
+        "Why don't you make yourself useful and turn off some sprinklers huh?");
+        
+        createNPC(game, 3745, 550, 'npc_b2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 900, 'npc', 300,
+        createNPC(game, 5555, 900, 'npc_b3', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 900, 'npc', 200,
+        createNPC(game, 700, 900, 'npc_g1', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 900, 'npc', 200,
+        createNPC(game, 900, 900, 'npc_g2', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 900, 'npc', 200,
+        createNPC(game, 1000, 900, 'npc_g3', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
