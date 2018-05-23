@@ -80,7 +80,7 @@ createSprinkler = function (index, game, x, y) {
 };
 
 createSprinkler2 = function (index, game, x, y) {
-    var thisSprinkler2 = sprinklersGroup2.create(x, y, 'sprinkler');
+    var thisSprinkler2 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler2, Phaser.Physics.ARCADE);
 
@@ -134,7 +134,7 @@ createSprinkler2 = function (index, game, x, y) {
 
 };
 createSprinkler3 = function (index, game, x, y) {
-    var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
+    var thisSprinkler3 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
 
@@ -237,7 +237,7 @@ Cat = function (index, game, x, y) {
     this.cat.name = index.toString();
     game.physics.enable(this.cat, Phaser.Physics.ARCADE);
     this.cat.body.immovable = false;
-    this.cat.body.allowGravity = true;
+    this.cat.body.allowGravity = false;
     this.cat.body.collideWorldBounds = false;
 };
 
@@ -251,8 +251,6 @@ var cat1;
 var cat2;
 
 var sprinklersGroup;
-var sprinklersGroup2;
-var sprinklersGroup3
 var boxGroup;
 var npcGroup;
 var sprinkler1;
@@ -261,10 +259,15 @@ var sprinklerY1 = [916, 724, 596, 596];
 var sprinklerHit1 = [false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
-var sprinklerX2 = [2835, 3600, 5257];
+var sprinklerX2 = [2835, 4200, 5257];
 var sprinklerY2 = [596, 852, 852];
 var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
+var sprinkler3;
+var sprinklerX3 = [1675, 1000, 4950];
+var sprinklerY3 = [1916, 916, 852];
+var sprinklerHit3 = [false, false, false];
+var currentSprinkler3 = 0;
 
 Game.Level1 = function (game) {
 
@@ -433,8 +436,6 @@ Game.Level1.prototype = {
         //=========================================================================================================================================
 
 		sprinklersGroup = game.add.group();
-		sprinklersGroup2 = game.add.group();
-		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
 
 		//CREATE NEW SPRINKLERS HERE
@@ -442,8 +443,11 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
-        createSprinkler2(1, game, 2835, 584 + 12);
-        sprinkler2 = sprinklersGroup2.children[0];
+        createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
+        sprinkler2 = sprinklersGroup.children[1];
+
+        createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
+        sprinkler3 = sprinklersGroup.children[2];
 
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
@@ -471,8 +475,6 @@ Game.Level1.prototype = {
     */
 
         this.world.bringToTop(sprinklersGroup);
-        this.world.bringToTop(sprinklersGroup2);
-        this.world.bringToTop(sprinklersGroup3);
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -562,10 +564,10 @@ Game.Level1.prototype = {
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		cat1 = new Cat(3, game, 11150, 0);
+		cat1 = new Cat(3, game, 11150, 174);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 7845, 800);
+		cat2 = new Cat(3, game, 7830, 814);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -635,7 +637,7 @@ Game.Level1.prototype = {
         ]);
 
         var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
-        cloud3.alpha = 0.01;
+        cloud3.alpha = 0.02;
         cloud3.addMotionPath([
             { y: "-400", ySpeed: 6000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
             { y: "+400", ySpeed: 4000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
@@ -686,36 +688,27 @@ Game.Level1.prototype = {
 
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, secretLayer);
-        this.physics.arcade.collide(cat1.cat, mainLayer);
-        this.physics.arcade.collide(cat2.cat, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-        this.physics.arcade.collide(cat1.cat, clouds);
-        this.physics.arcade.collide(cat2.cat, clouds);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
-
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
         //=========================================================================================================================================
         //Collide Player with Sprinkler and SprinkerCollision
         this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
-        this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
-        this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
         this.physics.arcade.collide(player, boxGroup);
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
+            var sprinkler = sprinklersGroup.children[i];
+            this.physics.arcade.overlap(player, sprinkler.emitter, this.resetPlayer);
+            if ('emitter2' in sprinkler) {
+                this.physics.arcade.overlap(player, sprinkler.emitter2, this.resetPlayer);
+            }
         }
 
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-        }
         /////////////////////
         ///NPC UPDATES
         /////////////////////
@@ -723,14 +716,14 @@ Game.Level1.prototype = {
             npcGroup.children[i].body.velocity.x = 0;
         }
 
-
+        /* ellaine
         for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
             var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
             var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
             this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
         }
-
+        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
@@ -742,17 +735,12 @@ Game.Level1.prototype = {
             }
         }
 
-
-        //emitter2 direction
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinkler = sprinklersGroup2.children[i];
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            if (player.position.x > sprinkler.position.x) {
-                sprinklerEmitter.setXSpeed(500, 450);
-            } else {
-                sprinklerEmitter.setXSpeed(-500, -450);
-            }
+        if (player.position.x > sprinkler2.x) {
+            sprinkler2.emitter.setXSpeed(500, 450);
+        } else {
+            sprinkler2.emitter.setXSpeed(-500, -450);
         }
+
 
 
         function hitSprinklerFunction(player, sprinkler) {
@@ -791,7 +779,7 @@ Game.Level1.prototype = {
 
         if (!sprinkler2.inCamera && game.time.now > 10000) {
             if (sprinkler2.hit === true) {
-                sprinklerHit2[currentSprinkler1] = true;
+                sprinklerHit2[currentSprinkler2] = true;
             }
             if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
                 currentSprinkler2++;
