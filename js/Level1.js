@@ -322,7 +322,7 @@ var scoreText;
 //CLOCKS FOR EXTRA TIME
 var clocks;
 var clockAdd = 10;
-var easterEggReward = false;
+var easterEggReward;
 
 
 // DRONE PARTS
@@ -352,6 +352,9 @@ Game.Level1.prototype = {
 
     create: function (game) {
         //DEBUG
+		easterEggReward = false;
+		
+		console.log(easterEggReward);
         game.time.advancedTiming = true;
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES START
