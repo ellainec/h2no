@@ -1,0 +1,36 @@
+#entry {
+	margin: auto;
+	width: 80%;
+}
+
+.outer {
+	margin-top: 40px;
+	margin-bottom: 40px;
+	font-size: 20pt;
+	line-height: 1.3em;
+}
+
+.innerPhoto {
+	display: inline;
+	border-radius: 5%;
+	margin: 0;
+	padding: 0;
+}
+
+.photo {
+	display: inline;
+	width: 40%;
+	height: auto;
+	border-radius: 5%;
+}
+
+.inner {
+	width: 55%;
+	float: right;
+	padding: 2%;
+}
+
+.name {
+	font-size: 20pt;
+	color: crimson;
+}
