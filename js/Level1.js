@@ -823,21 +823,29 @@ Game.Level1.prototype = {
                 player.animations.play('idle');
             }
 
-
-            if (mobile) {
-                if (this.button.isDown) {
-                    jumpNow();
-                }
-                if (this.joystick.properties.right) {
-                    player.animations.play('right');
-                    moveRight();
-                } else if (this.joystick.properties.left) {
-                    player.animations.play('left');
-                    moveLeft();
-                } else {
-                    player.animations.play('idle');
-                }
+        if (mobile) {
+            if ((this.button.isDown || jumpTrue) && (player.body.onFloor() || player.body.touching.down)) {
+                jumpNow();
+				jumpSound.play();
             }
+            if (this.joystick.properties.right) {
+				player.animations.play('right');
+            	moveRight();
+            } else if (this.joystick.properties.left) {
+				player.animations.play('left');
+            	moveLeft();
+            } else {
+				if (player.body.velocity.x >= playerSlow) {
+                	player.body.velocity.x -= playerSlow;
+				} else if (player.body.velocity.x < -playerSlow) {
+					player.body.velocity.x += playerSlow;
+				} else {
+					player.body.velocity.x = 0;
+				}
+				player.animations.play('idle');
+			}		
+        }
+
 
             timeText.setText('Time: ' + timeLimit);
             lifeText.setText('Lives: ' + life);
