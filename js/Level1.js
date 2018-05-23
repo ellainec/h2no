@@ -445,11 +445,6 @@ Game.Level1.prototype = {
 
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-<<<<<<< HEAD
-		currentSprinkler = createSprinkler(1, game, 557, 904 + 12);
-		//createSprinkler(1, game, 1588, 840 + 12);
-		//createSprinkler(1, game, 2190, 712 + 12);
-=======
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
@@ -459,7 +454,6 @@ Game.Level1.prototype = {
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
 		createSprinkler(1, game, 2190, 712 + 12);
->>>>>>> fd3f9099b3518c539625129fea3f20aa62aa8fb8
 		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
 		//createSprinkler2(1, game, 2835, 584 + 12);
 		//createSprinkler(1, game, 3400, 584 + 12);
@@ -607,24 +601,24 @@ Game.Level1.prototype = {
         createNPC(game, 7855, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 200, 880, 'npc', 200,
-            "Why don't you make yourself useful and turn off some sprinklers huh?");
-
-        createNPC(game, 3745, 550, 'npc', 200,
+        createNPC(game, 200, 880, 'npc1', 200,
+        "Why don't you make yourself useful and turn off some sprinklers huh?");
+        
+        createNPC(game, 3745, 550, 'npc2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 900, 'npc', 300,
+        createNPC(game, 5555, 900, 'npc1', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 900, 'npc', 200,
+        createNPC(game, 700, 900, 'npc2', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 900, 'npc', 200,
+        createNPC(game, 900, 900, 'npc1', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 900, 'npc', 200,
+        createNPC(game, 1000, 900, 'npc2', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
@@ -878,15 +872,6 @@ Game.Level1.prototype = {
         findCat();
         easterEgg();
 
-<<<<<<< HEAD
-        /*//TEST SPRINKLER RECYCLE//
-        if (!currentSprinkler.inCamera) {
-            if (player.x > currentSprinkler.x) {
-                currentSprinkler = createSprinkler()
-            }
-        }*/
-	},
-=======
         // =======================================================================================================================================
         //                                   DRONE UPDATE
         //========================================================================================================================================
@@ -943,7 +928,6 @@ Game.Level1.prototype = {
         }
 
         },
->>>>>>> ef3e8aa3ca4b392ff17a5c912cf2592516a755f6
 
 
     render: function() {
