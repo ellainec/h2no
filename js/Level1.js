@@ -259,10 +259,15 @@ var sprinklerY1 = [916, 724, 596, 596];
 var sprinklerHit1 = [false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
-var sprinklerX2 = [2835, 3600, 5257];
+var sprinklerX2 = [2835, 4200, 5257];
 var sprinklerY2 = [596, 852, 852];
 var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
+var sprinkler3;
+var sprinklerX3 = [1675, 1000, 4950];
+var sprinklerY3 = [1916, 916, 852];
+var sprinklerHit3 = [false, false, false];
+var currentSprinkler3 = 0;
 
 Game.Level1 = function (game) {
 
@@ -438,8 +443,11 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
-        createSprinkler2(1, game, 2835, 584 + 12);
+        createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
         sprinkler2 = sprinklersGroup.children[1];
+
+        createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
+        sprinkler3 = sprinklersGroup.children[2];
 
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
@@ -694,8 +702,11 @@ Game.Level1.prototype = {
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
+            var sprinkler = sprinklersGroup.children[i];
+            this.physics.arcade.overlap(player, sprinkler.emitter, this.resetPlayer);
+            if ('emitter2' in sprinkler) {
+                this.physics.arcade.overlap(player, sprinkler.emitter2, this.resetPlayer);
+            }
         }
 
         /////////////////////
@@ -768,7 +779,7 @@ Game.Level1.prototype = {
 
         if (!sprinkler2.inCamera && game.time.now > 10000) {
             if (sprinkler2.hit === true) {
-                sprinklerHit2[currentSprinkler1] = true;
+                sprinklerHit2[currentSprinkler2] = true;
             }
             if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
                 currentSprinkler2++;
