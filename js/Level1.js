@@ -263,11 +263,11 @@ var sprinklerX2 = [2835, 4200, 5257];
 var sprinklerY2 = [596, 852, 852];
 var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
-var sprinkler3;
-var sprinklerX3 = [1675, 1000, 4950];
-var sprinklerY3 = [1916, 916, 852];
-var sprinklerHit3 = [false, false, false];
-var currentSprinkler3 = 0;
+//var sprinkler3;
+//var sprinklerX3 = [1675, 1000, 4950];
+//var sprinklerY3 = [1916, 916, 852];
+//var sprinklerHit3 = [false, false, false];
+//var currentSprinkler3 = 0;
 
 Game.Level1 = function (game) {
 
@@ -455,8 +455,12 @@ Game.Level1.prototype = {
         createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
         sprinkler2 = sprinklersGroup.children[1];
 
-        createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
-        sprinkler3 = sprinklersGroup.children[2];
+        //createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
+        //sprinkler3 = sprinklersGroup.children[2];
+        createSprinkler3(1, game, 7374, 840 + 12);
+        createSprinkler3(1, game, 9374, 840 + 12);
+        createSprinkler3(1, game, 4950, 840 + 12);
+        createSprinkler3(1, game, 15650, 584 + 12);
 
 		/*
 		createSprinkler(1, game, 1588, 840 + 12);
@@ -478,7 +482,7 @@ Game.Level1.prototype = {
 		// createSprinkler(1, game, 11453, 840 + 12);
 		//createSprinkler(1, game, 13253, 840 + 12); // test dont delete
 		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
-		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
+		// createSprinkler3(1, game, 4950, 840 + 12);
 		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
 		// createSprinkler3(1, game, 15650, 584 + 12);
     */
@@ -612,11 +616,11 @@ Game.Level1.prototype = {
         createNPC(game, 3745, 550, 'npc_b2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 900, 'npc_b3', 300,
+        createNPC(game, 5555, 880, 'npc_b3', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 900, 'npc_g1', 200,
+        createNPC(game, 700, 880, 'npc_g1', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
         createNPC(game, 900, 900, 'npc_g2', 200,
@@ -1040,6 +1044,7 @@ function sprinklerOn(sprinkler, sprinklerHit, currentSprinkler) {
         sprinkler.animations.frame = 1;
         sprinkler.body.setSize(16, 8, 25, 18);
         sprinkler.sprinklerCollision.kill();
+        sprinkler.hit = true;
     } else {
         sprinkler.emitter.on = true;
         sprinkler.animations.frame = 0;
