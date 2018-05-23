@@ -4,45 +4,42 @@
     <head>
     <meta charset="UTF-8"/>
     <title>H2NO - About the Team</title>
-	  <link rel="stylesheet" media="(min-width: 800px)" href="../css/Team/original.css">
-  	<link rel="stylesheet" media="(min-width: 400px) and (max-width: 800px)" href="../css/Team/mid.css">
-  	<link rel="stylesheet" media="(max-width: 400px)" href="../css/Team/small.css">
+	  	<!-- <link rel="stylesheet" media="(min-width: 800px)" href="../css/Team/original.css">
+  		<link rel="stylesheet" media="(min-width: 400px) and (max-width: 800px)" href="../css/Team/mid.css">
+	  	<link rel="stylesheet" media="(max-width: 400px)" href="../css/Team/small.css"> -->
+	  
+	  	<link rel="stylesheet"  href="../css/Team/hamburger.css">
+    	<link rel="stylesheet"  href="../css/Team/og.css">
   </head>
     
-  <body>
-		<div id="top">
-			
-    	<img id="logo" src='../assets/logo.png' alt='H2NO! Logo'> 
-			
-      <ul id="nav">
-        <li><a href="../index.html">Game</a></li>
-				<li><a href="AboutTheCharacters.html">Characters</a></li>
-		<li><a href="DevDiary.html">Dev Diary</a></li>
-		<li><a href="Social.html">Social</a></li>
-        <li class="active"><a href="AboutTheTeam.html">About Us</a></li>
-      </ul>
-		
-		</div> 
+  <body>	
+    <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <a href="Home.html" class=menulinks><li>Home</li></a>
+                <a href="../index.html" class=menulinks><li>PLAY</li></a>
+                <a href="Story.html" class=menulinks><li>Story</li></a>
+                <a href="AboutTheCharacters.html" class=menulinks><li>Characters</li></a>
+                <a href="DevDiary.html" class=menulinks><li>Dev Diary</li></a>
+                <a href="Social.html" class=menulinks><li>Social</li></a>
+                <a href="AboutTheTeam.html" class=menulinks><li>About Us</li></a>
+            </ul>
+        </div>
+	</nav>
+	<div id=title>H2NO</div>
 		
 		<div id="entry">
-			<div id=Names>
-				Team Members: Ellaine Chan, Kevin Vizconde, Johnny Kim, Stephen Thompson, Gloria Ngo
-			</div>
-
-			<div id=circPhotos>
-				<img class="circlePhotos" src="../assets/team/doodle.png" alt="Ellaine"/>
-				<img class="circlePhotos" src="../assets/team/NC.png"/ alt="Kevin">
-				<img class="circlePhotos" src="../assets/team/NC.png" alt="Johnny"/>
-				<img class="circlePhotos" src="../assets/team/NC.png" alt="Stephen"/>
-				<img class="circlePhotos" src="../assets/team/Glowy.png" alt="Gloria"/>
-			</div>
 
 			<div class=outer>
 				<div class=innerPhoto>
 					<img class="photo" src="../assets/team/doodle.png" alt="Ellaine"/>
 				</div>
 				<div id="Ellaine" class=inner>
-					Ellaine Chan: Project Manager, Server and Database Specialist, Coding
+					<span class="name">Ellaine Chan: </span>Project Manager, Server and Database Specialist, Coding
 				</div>
 			</div>
 
@@ -51,7 +48,7 @@
 					<img class="photo" src="../assets/team/NC.png" alt="Kevin"/>
 				</div>
 				<div id="Kevin" class=inner>
-					Kevin Vizconde: Graphics Designer, Particle Emission and Effects Specialist, Coding, Testing
+					<span class="name">Kevin Vizconde: </span>Graphics Designer, Particle Emission and Effects Specialist, Coding, Testing
 				</div>
 			</div>
 
@@ -60,7 +57,7 @@
 					<img class="photo" src="../assets/team/NC.png"/ alt="Johnny"/>
 				</div>
 				<div id="Johnny" class=inner>
-					Johnny Kim: Concept Artist, Coding, Testing
+					<span class="name">Johnny Kim: </span>Concept Artist, Front End Development, Coding, Testing
 				</div>
 			</div>
 
@@ -69,7 +66,7 @@
 					<img class="photo" src="../assets/team/NC.png"/ alt="Stephen"/>
 				</div>
 				<div id="Stephen" class=inner>
-					Stephen Thompson: Research, Sound Effects, Music Composition, Coding, Testing
+					<span class="name">Stephen Thompson: </span>Research, Sound Effects, Music Composition, Coding, Testing
 				</div>
 			</div>	
 
@@ -77,7 +74,7 @@
 				<div class=innerPhoto>
 					<img class="photo" src="../assets/team/Glowy.png"/ alt="Gloria"/></div>
 				<div id="Gloria" class=inner>
-					Gloria Ngo: Lead Developer, Graphics Designer
+					<span class="name">Gloria Ngo: </span>Lead Developer, Graphics Designer
 				</div>
 			</div>	
         
