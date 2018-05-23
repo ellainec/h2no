@@ -1,0 +1,32 @@
+function startFire(emitX, emitY, scale) {
+    if (fireRenderTexture == undefined) {
+        smokeEmitter = game.add.emitter(emitX, emitY - 15, 50);
+        smokeEmitter.makeParticles(['smoke-puff']);
+        smokeEmitter.gravity = -300;
+        smokeEmitter.setAlpha(.7, 0, 3000);
+        smokeEmitter.setScale(scale, 0, scale, 0, 3000);
+        smokeEmitter.minRotation = 0;
+        smokeEmitter.maxRotation = 0;
+        smokeEmitter.start(false, 1000, 30);
+        fireEmitter = game.add.emitter(emitX, emitY, 50);
+        fireEmitter.makeParticles(['fire1', 'fire2', 'fire3']);
+        fireEmitter.gravity = -2000;
+        fireEmitter.setAlpha(.4, 0, 800);
+        fireEmitter.setScale(scale, 0, scale, 0, 3000);
+        fireEmitter.minRotation = 0;
+        fireEmitter.maxRotation = 0;
+        fireEmitter.start(false, 1000, 30);
+        fireRenderTexture = game.add.renderTexture(600, 600);
+    } else {
+        var fire = game.add.sprite(600, 600, fireRenderTexture);
+        fire.scale.set(scale);
+        fire.anchor.set(.5);
+        fire.x = emitX;
+        fire.y = emitY;
+    }
+}
+
+function updateFire() {
+    fireRenderTexture.renderXY(smokeEmitter, 0, 0, true);
+    fireRenderTexture.renderXY(fireEmitter, 0, 0, false);
+}

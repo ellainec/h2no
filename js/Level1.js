@@ -31,7 +31,7 @@ createSprinkler = function (index, game, x, y) {
     game.physics.enable(thisSprinkler, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler.oneHit = true;
+    thisSprinkler.hit = false;
     thisSprinkler.name = index.toString();
     thisSprinkler.anchor.setTo(0.5, 0.6);
     thisSprinkler.scale.setTo(0.5, 0.5);
@@ -80,12 +80,12 @@ createSprinkler = function (index, game, x, y) {
 };
 
 createSprinkler2 = function (index, game, x, y) {
-    var thisSprinkler2 = sprinklersGroup2.create(x, y, 'sprinkler');
+    var thisSprinkler2 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler2, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler2.oneHit = true;
+    thisSprinkler2.hit = false;
     thisSprinkler2.name = index.toString();
     thisSprinkler2.anchor.setTo(0.5, 0.6);
     thisSprinkler2.scale.setTo(0.5, 0.5);
@@ -134,12 +134,12 @@ createSprinkler2 = function (index, game, x, y) {
 
 };
 createSprinkler3 = function (index, game, x, y) {
-    var thisSprinkler3 = sprinklersGroup3.create(x, y, 'sprinkler');
+    var thisSprinkler3 = sprinklersGroup.create(x, y, 'sprinkler');
 
     game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
 
     //hit
-    thisSprinkler3.oneHit = true;
+    thisSprinkler3.hit = false;
     thisSprinkler3.name = index.toString();
     thisSprinkler3.anchor.setTo(0.5, 0.6);
     thisSprinkler3.scale.setTo(0.5, 0.5);
@@ -237,17 +237,8 @@ Cat = function (index, game, x, y) {
     this.cat.name = index.toString();
     game.physics.enable(this.cat, Phaser.Physics.ARCADE);
     this.cat.body.immovable = false;
-    this.cat.body.allowGravity = true;
+    this.cat.body.allowGravity = false;
     this.cat.body.collideWorldBounds = false;
-};
-
-Chris = function (index, game, x, y) {
-    this.chris = game.add.sprite(x, y, 'chris');
-    this.chris.name = index.toString();
-    game.physics.enable(this.chris, Phaser.Physics.ARCADE);
-    this.chris.body.immovable = false;
-    this.chris.body.allowGravity = true;
-    this.chris.body.collideWorldBounds = true;
 };
 
 // ==================================
@@ -258,12 +249,25 @@ var enemy1;
 var npc1;
 var cat1;
 var cat2;
-var chris1;
 
 var sprinklersGroup;
-var sprinklersGroup2;
 var boxGroup;
 var npcGroup;
+var sprinkler1;
+var sprinklerX1 = [575, 2190, 3400, 6436];
+var sprinklerY1 = [916, 724, 596, 596];
+var sprinklerHit1 = [false, false, false, false];
+var currentSprinkler1 = 0;
+var sprinkler2;
+var sprinklerX2 = [2835, 4200, 5257];
+var sprinklerY2 = [596, 852, 852];
+var sprinklerHit2 = [false, false, false];
+var currentSprinkler2 = 0;
+var sprinkler3;
+var sprinklerX3 = [1675, 1000, 4950];
+var sprinklerY3 = [1916, 916, 852];
+var sprinklerHit3 = [false, false, false];
+var currentSprinkler3 = 0;
 
 Game.Level1 = function (game) {
 
@@ -275,15 +279,23 @@ var frontLayer;
 var backlayer;
 
 var player;
-var playerSpeed = 20;
-var playerMaxSpeed = 450;
-var playerSlow = 40;
+var playerSpeed = 40;
+var playerMaxSpeed = 350;
+var playerSlow = 60;
+var Jump1 = 400; // NEW CONSTANT
+var Jump2 = 550; // NEW CONSTANT
+var maxY = 800; // NEW CONSTANT
 var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
 var life;
 var lifeText;
+var gravityWorld = 1400; // NEW CONSTANT
+var initX = 100;
+var initY = 900;
+var respawnX = 100; // NEW CONSTANT (until checkpoints)
+var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
 var controls = {};
 var cursors;
@@ -293,8 +305,11 @@ var playerName;
 
 // BOSS
 var bossButton;
+var easterButton;
+var chrisButton;
 
 //TIMER//
+var initTime = 300;
 var timer;
 var timeLimit;
 var timeText;
@@ -311,16 +326,23 @@ var easterEggReward = false;
 
 
 // DRONE PARTS
-var bg = null;
-var stationary = null;
 var clouds = null;
-
-var facing = 'left';
-
 var locked = false;
 var lockedTo = null;
 var wasLocked = false;
 var willJump = false;
+var standing;
+
+// SOUND EFFECTS
+var jumpSound = null;
+var robotDeath = null;
+var buttonStomp = null;
+
+//TEST SPRINKLERS//
+var sprinklerX = [557, 1588];
+var sprinklerY = [904 + 12, 840 + 12];
+var currentSprinklerPosition = 0;
+var currentSprinkler;
 
 // ==================================
 // CREATE FUNCTION BELOW
@@ -329,6 +351,8 @@ var willJump = false;
 Game.Level1.prototype = {
 
     create: function (game) {
+        //DEBUG
+        game.time.advancedTiming = true;
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES START
         //=========================================================================================================================================
@@ -336,14 +360,14 @@ Game.Level1.prototype = {
 		//assignment of playerName can't be outside in global scope
 		playerName = sessionStorage.getItem("playerName");
 
-		// Set up player
-		player = this.add.sprite(100, 400, 'h2no');
+		// Set up players
+		player = this.add.sprite(initX, initY, 'h2no');
 		player.anchor.setTo(0.5, 0.5);
 		// Enable physics on player
 		this.physics.enable(player, Phaser.Physics.ARCADE);
 		// Ground and edges of the world
 		player.body.collideWorldBounds = true;
-		player.body.maxVelocity.y = 800;
+		player.body.maxVelocity.y = maxY; // SET UP NEW CONSTANT
 		this.camera.follow(player);
 
 		player.animations.add('idle', [4], 10, true);
@@ -364,7 +388,7 @@ Game.Level1.prototype = {
 
 		this.stage.backgroundColor = '#3598db';
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		this.physics.arcade.gravity.y = 1400;
+		this.physics.arcade.gravity.y = gravityWorld;  // SET UP NEW CONSTANT HERE!
 
 		// add map with 'map id'
         map = this.add.tilemap('map');
@@ -418,35 +442,45 @@ Game.Level1.prototype = {
         //=========================================================================================================================================
 
 		sprinklersGroup = game.add.group();
-		sprinklersGroup2 = game.add.group();
-		sprinklersGroup3 = game.add.group();
 		boxGroup = game.add.group();
 
 		//CREATE NEW SPRINKLERS HERE
 		//kevin - search purposes
-		createSprinkler(1, game, 467, 1256 + 12);
-		// createSprinkler(1, game, 1465, 1202);
-		// createSprinkler(1, game, 2192, 1064 + 12);
-		createSprinkler2(1, game, 2835, 936 + 12);
-		// createSprinkler(1, game, 2705, 1192 + 12);
-		// createSprinkler(1, game, 3400, 936 + 12);
-		// createSprinkler(1, game, 3855, 776 + 12);
-		// createSprinkler2(1, game, 3600, 1192 + 12);
-		// createSprinkler3(1, game, 4757, 1192 + 12);
-		// createSprinkler2(1, game, 5257, 1192 + 12);
-		// createSprinkler2(1, game, 6226, 1192 + 12);
-		// createSprinkler(1, game, 6984, 936 + 12);
-		// createSprinkler(1, game, 6436, 936 + 12);
-		// createSprinkler(1, game, 6367, 616 + 12);
-		// createSprinkler3(1, game, 7441, 1192 + 12);
-		// createSprinkler(1, game, 8393, 1192 + 12);
-		// createSprinkler(1, game, 9414, 1192 + 12);
-		// createSprinkler3(1, game, 10135, 1192 + 12);
+		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
+		sprinkler1 = sprinklersGroup.children[0];
 
+        createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
+        sprinkler2 = sprinklersGroup.children[1];
+
+        createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
+        sprinkler3 = sprinklersGroup.children[2];
+
+		/*
+		createSprinkler(1, game, 1588, 840 + 12);
+		createSprinkler(1, game, 2190, 712 + 12);
+		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
+		//createSprinkler2(1, game, 2835, 584 + 12);
+		//createSprinkler(1, game, 3400, 584 + 12);
+		//createSprinkler2(1, game, 3600, 840 + 12);
+		//createSprinkler(1, game, 3855, 424 + 12);
+		//createSprinkler3(1, game, 4950, 840 + 12);
+		//createSprinkler2(1, game, 5257, 840 + 12);
+		//createSprinkler2(1, game, 6145, 840 + 12);
+		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
+		//createSprinkler(1, game, 7455, 840 + 12);
+		//createSprinkler(1, game, 8393, 840 + 12);
+		//createSprinkler(1, game, 8785, 840 + 12);
+		//createSprinkler(1, game, 9137, 840 + 12);
+		// createSprinkler2(1, game, 9673, 840 + 12);
+		// createSprinkler(1, game, 11453, 840 + 12);
+		//createSprinkler(1, game, 13253, 840 + 12); // test dont delete
+		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
+		// createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
+		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
+		// createSprinkler3(1, game, 15650, 584 + 12);
+    */
 
         this.world.bringToTop(sprinklersGroup);
-        this.world.bringToTop(sprinklersGroup2);
-        this.world.bringToTop(sprinklersGroup3);
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -459,7 +493,7 @@ Game.Level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeLimit = 200;
+		timeLimit = initTime;
 		timeText = game.add.text(610, 40, timeLimit, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -468,7 +502,7 @@ Game.Level1.prototype = {
 		timeText.fixedToCamera = true;
 
 		// LIFE // -- Die a certain amount of times before the game over screen pops up
-		life = 3;
+		life = 10;
 		lifeText = game.add.text(40, 40, life, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -503,6 +537,26 @@ Game.Level1.prototype = {
 									   function () {this.state.start('BossState');});
 		
 		// =========================================
+		
+		// =====================================
+		
+		
+		// THIS EASTEREGG BUTTON IS FOR TESTING PURPOSES -- 
+		// WILL BE REMOVED FROM OFFICIAL GAME
+		
+		
+		// =======================================
+		
+	    easterButton = this.createButton(game, "Cat", 
+									   200, 350, 100, 50,
+									   function () {player.x = 11000;
+												    player.y = 0;});
+		chrisButton = this.createButton(game, "Owner", 
+									   600, 350, 100, 50,
+									   function () {player.x = 7855
+													player.y = 800;});
+		
+		// =========================================
 
 		
 		// CLOCKS //
@@ -516,13 +570,10 @@ Game.Level1.prototype = {
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		chris1 = new Chris(3, game, 4950, 0);
-		chris1.chris.scale.setTo(0.2, 0.2);
-
-		cat1 = new Cat(3, game, 500, 0);
+		cat1 = new Cat(3, game, 11150, 174);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 4950, 0);
+		cat2 = new Cat(3, game, 7830, 814);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -552,49 +603,58 @@ Game.Level1.prototype = {
         createNPC(game, 7855, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 200, 880, 'npc', 200,
-            "Why don't you make yourself useful and turn off some sprinklers huh?");
-
-        createNPC(game, 3745, 550, 'npc', 200,
+        createNPC(game, 200, 880, 'npc_b1', 200,
+        "Why don't you make yourself useful and turn off some sprinklers huh?");
+        
+        createNPC(game, 3745, 550, 'npc_b2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 800, 'npc', 300,
+        createNPC(game, 5555, 900, 'npc_b3', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 800, 'npc', 200,
+        createNPC(game, 700, 900, 'npc_g1', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 800, 'npc', 200,
+        createNPC(game, 900, 900, 'npc_g2', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 800, 'npc', 200,
+        createNPC(game, 1000, 900, 'npc_g3', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         //                                  NPC END //=========================================================================================================================================
 
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
-        this.clouds = this.add.physicsGroup();
+        clouds = this.add.physicsGroup(true);
 
-        var cloud1 = new CloudPlatform(game, 10500, 1200, 'platform', this.clouds);
+        var cloud1 = new CloudPlatform(game, 10450, 860, 'platform', clouds);
 
         cloud1.addMotionPath([
             { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
             { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
         ]);
 
-        var cloud2 = new CloudPlatform(this.game, 800, 1000, 'platform', this.clouds);
+        var cloud2 = new CloudPlatform(game, 12280, 860, 'platform', clouds);
+        cloud2.addMotionPath([
+            { x: "+480", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
+            { x: "-480", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
+        ]);
 
-            cloud2.addMotionPath([
-                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 3000, yEase: "Sine.easeIn" },
-                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 3000, yEase: "Sine.easeOut" }
-            ]);
+        var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
+        cloud3.alpha = 0.02;
+        cloud3.addMotionPath([
+            { y: "-400", ySpeed: 6000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
+            { y: "+400", ySpeed: 4000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
+        ]);
 
-        this.clouds.callAll('start');
+        clouds.callAll('start');
 
         //////////////////////////////////////////Drones//////////////////////////////////////////
+
+        // AUDIO STUFF
+        jumpSound = this.add.audio('jump');
 
     },
 
@@ -602,23 +662,20 @@ Game.Level1.prototype = {
 
 
     customSep: function (player, platform) {
-
-        if (!this.locked && player.body.velocity.y > 0) {
-            this.locked = true;
-            this.lockedTo = platform;
-            platform.playerLocked = true;
-
+        if (!locked && player.body.velocity.y > 0) {
+            locked = true;
+            lockedTo = platform;
+            //platform.playerLocked = true;
             player.body.velocity.y = 0;
         }
-
     },
 
     checkLock: function () {
 
-        this.player.body.velocity.y = 0;
+        player.body.velocity.y = 0;
 
         //  If the player has walked off either side of the platform then they're no longer locked to it
-        if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
+        if (player.body.right < lockedTo.body.x || player.body.x > lockedTo.body.right) {
             this.cancelLock();
         }
 
@@ -626,51 +683,10 @@ Game.Level1.prototype = {
 
     cancelLock: function () {
 
-        this.wasLocked = true;
-        this.locked = false;
+        wasLocked = true;
+        locked = false;
 
     },
-
-    preRender: function () {
-
-        if (this.game.paused) {
-            //  Because preRender still runs even if your game pauses!
-            return;
-        }
-
-        if (this.locked || this.wasLocked) {
-            this.player.x += this.lockedTo.deltaX;
-            this.player.y = this.lockedTo.y - 48;
-
-            if (this.player.body.velocity.x !== 0) {
-                this.player.body.velocity.y = 0;
-            }
-        }
-
-        if (this.willJump) {
-            this.willJump = false;
-
-            if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
-                //  If the platform is moving up we add its velocity to the players jump
-                this.player.body.velocity.y = -500 + (this.lockedTo.deltaY * 10);
-            }
-            else {
-                this.player.body.velocity.y = -500;
-            }
-
-            this.jumpTimer = this.time.time + 750;
-        }
-
-        if (this.wasLocked) {
-            this.wasLocked = false;
-            this.lockedTo.playerLocked = false;
-            this.lockedTo = null;
-        }
-
-    },
-
-
-
 
     // ==================================
     // UPDATE FUNCTION BELOW
@@ -678,45 +694,27 @@ Game.Level1.prototype = {
 
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(player, secretLayer);
-        this.physics.arcade.collide(cat1.cat, mainLayer);
-        this.physics.arcade.collide(cat2.cat, mainLayer);
-        this.physics.arcade.collide(chris1.chris, mainLayer);
         this.physics.arcade.collide(npcGroup, mainLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.collide(npcGroup, backgroundLayer);
+        //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
         this.physics.arcade.overlap(player, clocks, collectClock, null, this);
         this.physics.arcade.collide(player, clouds, this.customSep, null, this);
-
-
-
-      /*  secretLayer = map.createLayer('secret');
-        backgroundFarLayer = map.createLayer('background_far');
-        backgroundLayer = map.createLayer('background');
-        mainLayer = map.createLayer('main');
-        foregroundLayer = map.createLayer('foreground');*/
-
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
         //=========================================================================================================================================
         //Collide Player with Sprinkler and SprinkerCollision
-       this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
-       this.physics.arcade.collide(player, sprinklersGroup2, hitSprinklerFunction);
-       this.physics.arcade.collide(player, sprinklersGroup3, hitSprinklerFunction);
-       this.physics.arcade.collide(player, boxGroup);
+        this.physics.arcade.collide(player, sprinklersGroup, hitSprinklerFunction);
+        this.physics.arcade.collide(player, boxGroup);
 
         //emitter physics
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
+            var sprinkler = sprinklersGroup.children[i];
+            this.physics.arcade.overlap(player, sprinkler.emitter, this.resetPlayer);
+            if ('emitter2' in sprinkler) {
+                this.physics.arcade.overlap(player, sprinkler.emitter2, this.resetPlayer);
+            }
         }
 
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-        }
         /////////////////////
         ///NPC UPDATES
         /////////////////////
@@ -724,14 +722,14 @@ Game.Level1.prototype = {
             npcGroup.children[i].body.velocity.x = 0;
         }
 
-
+        /* ellaine
         for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
             var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
             var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
             this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
             this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
         }
-
+        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
@@ -743,169 +741,209 @@ Game.Level1.prototype = {
             }
         }
 
-
-        //emitter2 direction
-        for (var i = 0, len = sprinklersGroup2.children.length; i < len; i++) {
-            var sprinkler = sprinklersGroup2.children[i];
-            var sprinklerEmitter = sprinklersGroup2.children[i].emitter;
-            if (player.position.x > sprinkler.position.x) {
-                sprinklerEmitter.setXSpeed(500, 450);
-            } else {
-                sprinklerEmitter.setXSpeed(-500, -450);
-            }
+        if (player.position.x > sprinkler2.x) {
+            sprinkler2.emitter.setXSpeed(500, 450);
+        } else {
+            sprinkler2.emitter.setXSpeed(-500, -450);
         }
+
 
 
         function hitSprinklerFunction(player, sprinkler) {
-            //sprinkler.animations.frame = 0;
-            if (sprinkler.oneHit) {
-				sprinkler.oneHit = false;
-				sprinkler.emitter.destroy();
-				score += sprinklerAdd;
-                    if ('emitter2' in sprinkler) {
-                        sprinkler.emitter2.destroy();
-                    }      
-				sprinkler.animations.frame = 1;
-				sprinkler.body.setSize(16, 8, 25, 18);
-				sprinkler.sprinklerCollision.destroy();
-				player.body.velocity.y = -500;
+            if (!sprinkler.hit) {
+                sprinkler.hit = true;
+                sprinkler.emitter.on = false;
+                score += sprinklerAdd;
+                if ('emitter2' in sprinkler) {
+                    sprinkler.emitter2.on = false;
+                }
+                sprinkler.animations.frame = 1;
+                sprinkler.body.setSize(16, 8, 25, 18);
+                sprinkler.sprinklerCollision.kill();
+                player.body.velocity.y = -500;
             }
 
         }
 
+        //RECYCLE SPRINKLERS//
+        if (!sprinkler1.inCamera && game.time.now > 10000) {
+            if (sprinkler1.hit === true) {
+                sprinklerHit1[currentSprinkler1] = true;
+            }
+            if (player.x > sprinkler1.x && currentSprinkler1 + 1 < sprinklerX1.length && player.body.velocity.x > 0) {
+                currentSprinkler1++;
+                sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
+            }
 
-        // =======================================================================================================================================
-        //                                   SPRINKLER UPDATE END
-        //========================================================================================================================================
+            if (player.x < sprinkler1.x && currentSprinkler1 > 0 && player.body.velocity.x < 0) {
+                currentSprinkler1--;
+                sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
+            }
 
-
-        if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
-            && (player.body.onFloor() || player.body.touching.down)) {
-            jumpNow();
+            repositionSprinkler(sprinkler1, sprinklerX1, sprinklerY1, currentSprinkler1);
         }
 
-        // controls
-        if (cursors.left.isDown || leftTrue) {
-            moveLeft();
-            player.animations.play('left');
-        } else if (cursors.right.isDown || rightTrue) {
-            moveRight();
-            player.animations.play('right');
-        } else {
-            if (player.body.velocity.x >= playerSlow) {
-                player.body.velocity.x -= playerSlow;
-            } else if (player.body.velocity.x < -playerSlow) {
-                player.body.velocity.x += playerSlow;
+        if (!sprinkler2.inCamera && game.time.now > 10000) {
+            if (sprinkler2.hit === true) {
+                sprinklerHit2[currentSprinkler2] = true;
+            }
+            if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
+                currentSprinkler2++;
+                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+            }
+
+            if (player.x < sprinkler2.x && currentSprinkler2 > 0 && player.body.velocity.x < 0) {
+                currentSprinkler2--;
+                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+            }
+            repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+        }
+
+
+            // =======================================================================================================================================
+            //                                   SPRINKLER UPDATE END
+            //========================================================================================================================================
+
+
+            if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
+                && (player.body.onFloor() || player.body.touching.down)) {
+                jumpNow();
+                jumpSound.play();
+            }
+
+            // controls
+            if (cursors.left.isDown || leftTrue) {
+                moveLeft();
+                player.animations.play('left');
+            } else if (cursors.right.isDown || rightTrue) {
+                moveRight();
+                player.animations.play('right');
             } else {
-                player.body.velocity.x = 0;
+                if (player.body.velocity.x >= playerSlow) {
+                    player.body.velocity.x -= playerSlow;
+                } else if (player.body.velocity.x < -playerSlow) {
+                    player.body.velocity.x += playerSlow;
+                } else {
+                    player.body.velocity.x = 0;
+                }
+                player.animations.play('idle');
             }
-            player.animations.play('idle');
-        }
-
-
 
         if (mobile) {
-            if (this.button.isDown) {
+            if ((this.button.isDown || jumpTrue) && (player.body.onFloor() || player.body.touching.down)) {
                 jumpNow();
+				jumpSound.play();
             }
             if (this.joystick.properties.right) {
-            	moveRight();
 				player.animations.play('right');
+            	moveRight();
             } else if (this.joystick.properties.left) {
-            	moveLeft();
 				player.animations.play('left');
+            	moveLeft();
             } else {
+				if (player.body.velocity.x >= playerSlow) {
+                	player.body.velocity.x -= playerSlow;
+				} else if (player.body.velocity.x < -playerSlow) {
+					player.body.velocity.x += playerSlow;
+				} else {
+					player.body.velocity.x = 0;
+				}
 				player.animations.play('idle');
 			}		
         }
 
-        timeText.setText('Time: ' + timeLimit);
-	    lifeText.setText('Lives: ' + life);
-		scoreText.setText('Score: ' + score);
 
-        this.timeUp();
-		
-        findCat();
-        easterEgg();
-	},
+            timeText.setText('Time: ' + timeLimit);
+            lifeText.setText('Lives: ' + life);
+            scoreText.setText('Score: ' + score);
+
+            this.timeUp();
+
+            findCat();
+            easterEgg();
+
+            // =======================================================================================================================================
+            //                                   DRONE UPDATE
+            //========================================================================================================================================
+
+
+            if (this.game.paused) {
+                //  Because preRender still runs even if your game pauses!
+                return;
+            }
+
+            if (locked) {
+                player.x += lockedTo.deltaX;
+                player.y = lockedTo.y - 30;
+
+                if (player.body.velocity.x !== 0) {
+                    player.body.velocity.y = 0;
+                }
+            }
+
+            if (willJump) {
+                willJump = false;
+
+                if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
+
+                    //  If the platform is moving up we add its velocity to the players jump
+                    player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
+                }
+                else {
+                    player.body.velocity.y -= Jump2;
+                }
+
+                jumpTimer = game.time.now + 500;
+            }
+
+            if (wasLocked) {
+                wasLocked = false;
+                lockedTo.playerLocked = false;
+                lockedTo = null;
+            }
+
+            //  Do this AFTER the collide check, or we won't have blocked/touching set
+            standing = player.body.blocked.down || player.body.touching.down || locked;
+
+            if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
+                if (locked) {
+                    this.cancelLock();
+                }
+                willJump = true;
+            }
+
+            if (locked) {
+                this.checkLock();
+            }
+
+    },
 
 
     render: function() {
-        //game.debug.body(player);
-        game.debug.spriteInfo(player);
+        game.debug.text(game.time.fps, 10, 10, "#000000");
     },
-        ///////////////////Drone//////////////////
 
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            // var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
+    
+	resetPlayer: function() {
 
-            // this.player.body.velocity.x = 0;
-
-            // if (this.cursors.left.isDown)
-            // {
-            //     this.player.body.velocity.x = -150;
-
-            //     if (this.facing !== 'left')
-            //     {
-            //         this.player.play('left');
-            //         this.facing = 'left';
-            //     }
-            // }
-            // else if (this.cursors.right.isDown)
-            // {
-            //     this.player.body.velocity.x = 150;
-
-            //     if (this.facing !== 'right')
-            //     {
-            //         this.player.play('right');
-            //         this.facing = 'right';
-            //     }
-            // }
-            // else
-            // {
-            //     if (this.facing !== 'idle')
-            //     {
-            //         this.player.animations.stop();
-
-            //         if (this.facing === 'left')
-            //         {
-            //             this.player.frame = 0;
-            //         }
-            //         else
-            //         {
-            //             this.player.frame = 5;
-            //         }
-
-            //         this.facing = 'idle';
-            //     }
-            // }
-            
-            // if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer)
-            // {
-            //     if (this.locked)
-            //     {
-            //         this.cancelLock();
-            //     }
-
-            //     this.willJump = true;
-            // }
-
-            // if (this.locked)
-            // {
-            //     this.checkLock();
-            // }
-
-
-    resetPlayer: function() {
-
-        player.reset(100, 400);
+        player.reset(respawnX, respawnY);
         life--;
         console.log("died");
         if (life === 0) {
-            this.state.start('Gameover');
+            game.state.start('Gameover');
         }
-    },
 
+        //ellaine - RESET SPRINKLERS
+        currentSprinkler1 = 0;
+        currentSprinkler2 = 0;
+
+        repositionSprinkler(sprinkler1, sprinklerX1, sprinklerY1, currentSprinkler1);
+        repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+
+        sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
+        sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
+
+    },
     // for checkpoint create checkx/y
 
     // creating buttons
@@ -961,20 +999,11 @@ Game.Level1.prototype = {
 // ==================================
 
 function moveLeft() {
-    if (player.body.velocity.x > -playerMaxSpeed) {
-        player.body.velocity.x -= playerSpeed;
-		console.log(player.body.velocity.x);
-    } else {
-        player.body.velocity.x = -playerMaxSpeed;
-    }
+	player.body.velocity.x = -playerMaxSpeed
 }
 
 function moveRight() {
-    if (player.body.velocity.x < playerMaxSpeed) {
-        player.body.velocity.x += playerSpeed;
-    } else {
-        player.body.velocity.x = playerMaxSpeed;
-    }
+	player.body.velocity.x = playerMaxSpeed;
 }
 
 function checkOverlap(spriteA, spriteB) {
@@ -986,12 +1015,12 @@ function checkOverlap(spriteA, spriteB) {
 
 function jumpNow() {
     if (game.time.now > jumpTimer) {
-        if (Math.abs(player.body.velocity.x) >= 125) {
-                player.body.velocity.y -= 600;
-            } else {
-                player.body.velocity.y -= 400;
-            }
-        jumpTimer = game.time.now + 750;
+        if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed / 2)) {
+            player.body.velocity.y -= Jump2;
+        } else {
+            player.body.velocity.y -= Jump1;
+        }
+        jumpTimer = game.time.now + 500;
     }
 }
 
@@ -1000,6 +1029,31 @@ function npcJump(npc) {
     if (npc.body.blocked.down) {
         npc.body.velocity.y = -300;
     }
+}
+
+function sprinklerOn(sprinkler, sprinklerHit, currentSprinkler) {
+    if (sprinklerHit[currentSprinkler]) {
+        sprinkler.emitter.on = false;
+        sprinkler.animations.frame = 1;
+        sprinkler.body.setSize(16, 8, 25, 18);
+        sprinkler.sprinklerCollision.kill();
+    } else {
+        sprinkler.emitter.on = true;
+        sprinkler.animations.frame = 0;
+        sprinkler.hit = false;
+        sprinkler.sprinklerCollision.revive();
+        sprinkler.sprinklerCollision.x = sprinkler.x;
+        sprinkler.sprinklerCollision.y = sprinkler.y + 5;
+    }
+}
+
+
+
+function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler) {
+    sprinkler.x = sprinklerX[currentSprinkler];
+    sprinkler.y = sprinklerY[currentSprinkler];
+    sprinkler.emitter.x = sprinklerX[currentSprinkler];
+    sprinkler.emitter.y = sprinklerY[currentSprinkler];
 }
 
 function collectClock(player, clock) {
@@ -1011,18 +1065,15 @@ function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
-        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, 1200, 200, "Thanks for finding my cat!");
-        /*for(var i = 0; i < npcGroup.children.length; i++) {
-            if (npcGroup.children[i].isChris) {
-                npcGroup.children[i].destroy();
-            }
-        }*/
+        npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y, 340,
+            "Thanks for finding my cat! I am also a cat lover. But I'm also a Java Developer. And I'm a bearded man! Isn't polymorphism COOL?" +
+            "I love beards.. I think you would look GREAT with one. Here, have this!");
     }
 }
 
 function easterEgg() {
-    if (checkOverlap(player, chris1.chris) && easterEggReward) {
-        player.loadTexture('WaterBotSkin');
+    if (checkOverlap(player, npcGroup.children[0]) && easterEggReward) {
+        player.loadTexture('h2no_chris', 4);
     }
 }
 
@@ -1034,18 +1085,8 @@ function createNPC(game, x, y, image, width, text) {
     npc.body.collideWorldBounds = true;
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
 
-   /* game.physics.enable(this.cat, Phaser.Physics.ARCADE);
-    this.cat.body.immovable = false;
-    this.cat.body.allowGravity = true;
-    this.cat.body.collideWorldBounds = false;*/
-    //easter egg NPC
-    /*if (image == 'chris') {
-        npc.isChris = true;
-    } else {
-        npc.isChris = false;
-    }*/
-
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////

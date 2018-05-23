@@ -33,6 +33,9 @@ var bossPlayerSpawnX;
 var bossPlayerSpawnY;
 
 var bossAdd = 1000;
+var bossAlive;
+
+var finalBossScore;
 
 Game.BossState = function (game) { };
 
@@ -46,7 +49,6 @@ Game.BossState.prototype = {
 	create: function () {
 		
 		this.physics.startSystem(Phaser.Physics.ARCADE);
-		
 		
 		// ========================================================================
 		// MAP VAR START 
@@ -69,7 +71,12 @@ Game.BossState.prototype = {
 		bossPlayerSpawnX = 360;
 		bossPlayerSpawnY = 60;
 		
-		player = this.add.sprite(bossPlayerSpawnX, bossPlayerSpawnY, 'h2no');
+		if (easterEggReward) {
+			player = this.add.sprite(bossPlayerSpawnX, bossPlayerSpawnY, 'h2no_chris');
+		} else {
+			player = this.add.sprite(bossPlayerSpawnX, bossPlayerSpawnY, 'h2no');
+		}
+		
 		player.anchor.setTo(0.5, 0.5);
 		// player.animations.add('idle',[0, 1], 1, true); (make a sprite sheet)
 		// Enable physics on player
@@ -98,28 +105,6 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 		// SOUND END
-		
-		
-		
-		// CONTROLS START
-		// ========================================================================
-		
-		controls = {
-			up: this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-		};
-		cursors = this.input.keyboard.createCursorKeys();
-	    
-		if (!game.device.desktop) {
-		mobile = true;
-		this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-		this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
-		this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
-		}
-		
-		// ========================================================================
-		
-		// CONTROLS END
-		
 		
 		// UI TEXT START
 		
@@ -189,6 +174,7 @@ Game.BossState.prototype = {
         bossCollision.body.immovable = true;
 
         boss = this.add.sprite(656, 430, 'faucet');
+		bossAlive = false;
 
         spring = this.add.sprite(598, 260, 'spring');
         this.physics.arcade.enable(spring, Phaser.Physics.ARCADE);
@@ -231,6 +217,15 @@ Game.BossState.prototype = {
 		
 		this.lockCamera();
 		
+		
+		if (!game.device.desktop) {
+			mobile = true;
+			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
+			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
+		}
+		
+		
 
 		
 	},
@@ -257,52 +252,51 @@ Game.BossState.prototype = {
 
 		
 		// ========================================================================
-		// CONTROL MOVEMENT PHYSICS
+		// MOBILE CONTROL MOVEMENT PHYSICS WITH JOYSTICK
 		
 		// ========================================================================
-		if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
-            && (player.body.onFloor() || player.body.touching.down)) {
-            jumpNow();
-        }
 
-        // controls
-        if (cursors.left.isDown || leftTrue) {
-            moveLeft();
-            player.animations.play('left');
-        } else if (cursors.right.isDown || rightTrue) {
-            moveRight();
-            player.animations.play('right');
-        } else {
-            if (player.body.velocity.x >= playerSlow) {
-                player.body.velocity.x -= playerSlow;
-            } else if (player.body.velocity.x < -playerSlow) {
-                player.body.velocity.x += playerSlow;
-            } else {
-                player.body.velocity.x = 0;
-            }
-            player.animations.play('idle');
-        }
 
 		if (mobile) {
-            if (this.button.isDown) {
-                jumpNow();
-            }
-            if (this.joystick.properties.right) {
-            	moveRight();
-				player.animations.play('right');
-            } else if (this.joystick.properties.left) {
-            	moveLeft();
-				player.animations.play('left');
-            } else {
-				if (player.body.velocity.x >= playerSlow) {
-					player.body.velocity.x -= playerSlow;
-				} else if (player.body.velocity.x < -playerSlow) {
-					player.body.velocity.x += playerSlow;
+            if (this.button.isDown && (player.body.onFloor() 
+				|| (player.body.touching.down && onPlatform)
+				|| (player.body.touching.down && onFaucet))) {
+				if (Math.abs(player.body.velocity.x) == 125) {
+					player.body.velocity.y = -275;
+					jumpSound.play();
+				} else if (Math.abs(player.body.velocity.x) == 175) {
+					player.body.velocity.y = -300;
+					bigJumpSound.play();
 				} else {
-					player.body.velocity.x = 0;
+					player.body.velocity.y = -250;
+					smallJumpSound.play();
 				}
-				player.animations.play('idle');
-			}		
+            }
+			if (this.joystick.properties.left 
+			&& player.body.velocity.x > -125 
+			&& !player.body.blocked.left) {
+				player.body.velocity.x -= 5;
+				player.animations.play('left');
+			}
+			if (this.joystick.properties.right
+			&& player.body.velocity.x < 125 
+			&& !player.body.blocked.right) {
+				player.body.velocity.x += 5;
+				player.animations.play('right');
+			}
+
+			if (!this.joystick.properties.left 
+			&& !this.joystick.properties.right) {
+				if (player.body.velocity.x > 0) {
+					player.body.velocity.x -= 5;
+				}
+				if (player.body.velocity.x < 0) {
+					player.body.velocity.x += 5;
+				}
+				if (player.body.velocity.x == 0) {
+					player.animations.play('idle');
+				}
+			}			
         }
 		
 		// ========================================================================
@@ -320,11 +314,71 @@ Game.BossState.prototype = {
 		
 		
 		// ========================================================================
+		this.controls();
+		
 		this.stompButton();
 
         this.touchWaterFloor();
 
         this.onSpring();
+	},
+	
+	controls: function () {
+		if (!mobile) {
+			if (!(cursors.left.isDown || leftTrue) 
+			&& !(cursors.right.isDown || rightTrue)) {
+				if (player.body.velocity.x > 0) {
+					player.body.velocity.x -= 5;
+				}
+				if (player.body.velocity.x < 0) {
+					player.body.velocity.x += 5;
+				}
+				if (player.body.velocity.x == 0) {
+					player.animations.play('idle');
+				}
+			}
+
+			if ((cursors.left.isDown || leftTrue) 
+				&& player.body.velocity.x > -125 
+				&& !player.body.blocked.left) {
+				player.body.velocity.x -= 5;
+				player.animations.play('left');
+			}
+			if ((cursors.right.isDown || rightTrue) 
+				&& player.body.velocity.x < 125 
+				&& !player.body.blocked.right) {
+				player.body.velocity.x += 5;
+				player.animations.play('right');
+			}
+
+
+			if ((controls.up.isDown || cursors.up.isDown || jumpTrue)
+				&& (player.body.onFloor() 
+				|| (player.body.touching.down && onPlatform)
+				|| (player.body.touching.down && onFaucet))) {
+				if (Math.abs(player.body.velocity.x) == 125) {
+					player.body.velocity.y = -275;
+					jumpSound.play();
+				} else if (Math.abs(player.body.velocity.x) == 175) {
+					player.body.velocity.y = -300;
+					bigJumpSound.play();
+				} else {
+					player.body.velocity.y = -250;
+					smallJumpSound.play();
+				}
+			}
+			
+		}
+		
+		// TODO: When reaching player.x = 848, player.y = 640, start win state!
+		if (player.y > 635) {
+			this.state.start('Win');
+		}
+		
+        // console.log(player.body.velocity.x);
+    },
+	render: function() {
+		// game.debug.bodyInfo(player, 32, 48);
 	},
 		
 	// ========================================================================
@@ -408,9 +462,10 @@ Game.BossState.prototype = {
             } else if (boss.frame == 2) {
                 this.lowerWaterB();
 				score += bossAdd;
+				finalBossScore = score;
             } else if (boss.frame == 3) {
                 this.lowerWaterC();
-				score += bossAdd;
+				score = finalBossScore + bossAdd;
             }
         }
     },

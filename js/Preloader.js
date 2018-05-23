@@ -13,8 +13,7 @@ Game.Preloader.prototype = {
 
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// load player sprite
-		this.load.image('WaterBot', 'assets/WaterBot.png');
-		this.load.image('WaterBotSkin', 'assets/WaterBotSkin.png');
+		this.load.spritesheet('h2no_chris', 'assets/characters/H2NObit_chris.PNG', 32, 48);
 		// load map
 		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v4.json', null, Phaser.Tilemap.TILED_JSON);        
 		// load tiles
@@ -64,7 +63,12 @@ Game.Preloader.prototype = {
 	    // ==========================
 	  
 		
-		this.load.image('npc', 'assets/smolcat.png');
+		this.load.image('npc_b1', 'assets/npc_boy1.png');
+		this.load.image('npc_b2', 'assets/npc_boy2.png');
+		this.load.image('npc_b3', 'assets/npc_boy3.png');
+		this.load.image('npc_g1', 'assets/npc_girl1.png');
+		this.load.image('npc_g2', 'assets/npc_girl2.png');
+		this.load.image('npc_g3', 'assets/npc_girl3.png');
 		this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
 		this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
@@ -73,7 +77,8 @@ Game.Preloader.prototype = {
 	    // THIS IS FOR DRONES
 	    // ==========================
 
-		this.load.image('platform', 'assets/droneTwo.png');
+		this.load.image('platform', 'assets/drone.png');
+        this.load.image('invisibleDrone', 'assets/bluedrone.png');
     },
     
     create:function() {
