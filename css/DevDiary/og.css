@@ -1,0 +1,28 @@
+#diary {
+    margin-top: 60px;
+}
+
+#entry {
+    margin: auto;
+    width: 80%;
+}
+
+.outer {
+    margin-bottom: 60px;
+}
+
+.inner {
+    font-size: 10pt;
+    line-height: 2.0em;
+}
+
+.title {
+    font-size: 12pt;
+    color: crimson;
+}
+
+#Vancouver1 {
+    margin: auto;
+    width: 100%;
+    height: auto;
+}
