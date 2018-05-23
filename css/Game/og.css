@@ -26,16 +26,16 @@ body
     font-size: 14pt;
 }
 
-#returnhome {
+a {
     float: right;
     width: 25%;
     padding-top: 10px;
     margin: 5px;
     font-size: 14pt;
-    color: red;
+	color: red;
 }
 
-#returnhome:hover {
+a:hover {
     color:pink;
 }
 
