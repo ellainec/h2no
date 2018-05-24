@@ -10,7 +10,7 @@ var bossCollision;
 var onPlatform;
 var onBoss;
 var spring;
-var bossHP = 3;
+var bossHP;
 
 var jumpSound;
 var smallJumpSound;
@@ -236,6 +236,7 @@ Game.BossState.prototype = {
 		boss.width = 128;
 		boss.height = 128;
 		bossAlive = false;
+		bossHP = 3;
 
 		// Spring
         spring = this.add.sprite(1616, 200, 'spring');
