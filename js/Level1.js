@@ -158,11 +158,11 @@ createSprinkler3 = function (index, game, x, y) {
     thisSprinkler3.emitter = game.add.emitter(x, y);
     thisSprinkler3.emitter2 = game.add.emitter(x, y);
 
-    thisSprinkler3.emitter.makeParticles('water', 0, 200, true);
-    thisSprinkler3.emitter.start(false, 40, -1);
+    thisSprinkler3.emitter.makeParticles('water', 0, 190, true);
+    thisSprinkler3.emitter.start(false, 10, 10);
 
-    thisSprinkler3.emitter2.makeParticles('water', 0, 200, true);
-    thisSprinkler3.emitter2.start(false, 40, -1);
+    thisSprinkler3.emitter2.makeParticles('water', 0, 190, true);
+    thisSprinkler3.emitter2.start(false, 10, 10);
 
     thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
     thisSprinkler3.emitter.minParticleScale = 0.3;
@@ -237,13 +237,16 @@ var sprinklersGroup;
 var boxGroup;
 var npcGroup;
 var sprinkler1;
-var sprinklerX1 = [575, 2190, 3400, 6436];
-var sprinklerY1 = [916, 724, 596, 596];
+//LAI FUN
+var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 9137, 13253];
+var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
 var sprinklerHit1 = [false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
-var sprinklerX2 = [2835, 4200, 5257];
-var sprinklerY2 = [596, 852, 852];
+
+var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
+var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
+
 var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
 
@@ -511,7 +514,32 @@ Game.Level1.prototype = {
 		// createSprinkler3(1, game, 15650, 584 + 12);
     */
 
+// DEBUG THESE//		
+
+        createSprinkler(1, game, 1588, 852);
+        //sprinkler1 = sprinklersGroup.children[0];
+        
+        createSprinkler(1, game, 3855, 436);
+        //sprinkler1 = sprinklersGroup.children[0];
+        
+        // createSprinkler(1, game, 8785, 852);
+		//sprinkler1 = sprinklersGroup.children[0];
+
+
+        createSprinkler2(1, game, 2835, 584 + 12);
+        //sprinkler2 = sprinklersGroup2.children[0];
+
+        createSprinkler3(1, game, 4950, 840 + 12);
+		
+        createSprinkler3(1, game, 14140, 840 + 12);
+		
+// DEBUG THESE!/
+    
+
         this.world.bringToTop(sprinklersGroup);
+        //this.world.bringToTop(sprinklersGroup2);
+        //this.world.bringToTop(sprinklersGroup3);
+
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -875,6 +903,7 @@ Game.Level1.prototype = {
     render: function() {
         game.debug.text(game.time.fps, 10, 10, "#000000");
 		game.debug.spriteInfo(player, 32, 48);
+
     },
 
     
