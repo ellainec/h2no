@@ -786,8 +786,10 @@ Game.Level1.prototype = {
 
 
     render: function() {
-        game.debug.text(game.time.fps, 10, 10, "#000000");
-		game.debug.spriteInfo(player, 32, 48);
+		// UNCOMMENT TO SHOW FPS
+        //game.debug.text(game.time.fps, 10, 10, "#000000");
+		// UNCOMMENT TO SHOW PLAYER INFO
+		//game.debug.spriteInfo(player, 32, 48);
 
     },
 

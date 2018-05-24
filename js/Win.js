@@ -4,6 +4,10 @@ var alltime;
 
 var completeTotalScore;
 var completeTotalScoreText;
+var finalLifeText;
+var finalScoreText;
+var finalTimeText;
+
 Game.Win = function(game) {};
 
 Game.Win.prototype = {
@@ -16,6 +20,22 @@ Game.Win.prototype = {
 						this.state.start('DailyLeaderboard');
 				});
 		completeTotalScore = (life * 100) + score + (timeLimit * 10);
+		
+		finalLifeText = game.add.text(400, 225, life, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		finalScoreText = game.add.text(400, 250, score, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
+		finalTimeText = game.add.text(400, 275, timeLimit, {
+				font: "12pt press_start_2pregular",
+				fill: "#fff",
+				align: "center"
+		});
 		completeTotalScoreText = game.add.text(400, 300, completeTotalScore, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
@@ -24,6 +44,9 @@ Game.Win.prototype = {
         postScores();
     },
     update:function(){
+		finalLifeText.setText('Lives Left: ' + life + ' x 100');
+		finalScoreText.setText('Score: ' + score);
+		finalTimeText.setText('Time Life: ' + timeLimit + ' x 10');
 		completeTotalScoreText.setText('You Scored: ' + completeTotalScore);
 
     },
