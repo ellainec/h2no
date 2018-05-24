@@ -44,16 +44,17 @@ a:hover {
 }
 
 .widescreen {
-	height: 95vh;
-	width: calc(95vh * 2);
+	height: 90vh;
+	width: 90vw;
+	/* width: calc(90vh * 2); */
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.fullscreen{
-	width: 95vw;
-	height: calc(95vw / 2);
-}
+/* .fullscreen{
+	width: 90vw;
+	height: calc(90vw / 2);
+} */
 
 #container {
     position: relative;
@@ -81,7 +82,7 @@ a:hover {
 	position: absolute;
 	width: 120%;
 	height: auto;
-	left: 25%;
+	left: 35%;
 	margin-left: -100px;
 	margin-top: -60%;
 }
