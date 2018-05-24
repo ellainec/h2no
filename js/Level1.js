@@ -227,10 +227,6 @@ var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
 var sprinklerHit2 = [false, false, false];
 var currentSprinkler2 = 0;
 
-var sprinkler3a;
-var sprinkler3b;
-var sprinkler3c;
-
 Game.Level1 = function (game) {
 
 };
