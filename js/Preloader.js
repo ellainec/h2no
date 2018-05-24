@@ -72,14 +72,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
 		this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
-
-	    // ==========================
-	    // THIS IS FOR DRONES
-	    // ==========================
-
-		this.load.image('platform', 'assets/drone.png');
-        this.load.image('invisibleDrone', 'assets/bluedrone.png');
-        this.load.start();
+		
     },
     
     create:function() {
