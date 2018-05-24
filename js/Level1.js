@@ -508,10 +508,11 @@ Game.Level1.prototype = {
 		
 		
 		// =======================================
-		
+		/*
 	    bossButton = this.createButton(game, "Boss", 
 									   400, 350, 100, 50,
 									   function () {this.state.start('BossState');});
+		*/
 		
 		// =========================================
 		
@@ -524,18 +525,22 @@ Game.Level1.prototype = {
 		
 		// =======================================
 		
+		/*
 	    easterButton = this.createButton(game, "Cat", 
 									   200, 350, 100, 50,
 									   function () {player.x = 11000;
 												    player.y = 0;});
+		*/
+		
+		/*
 		chrisButton = this.createButton(game, "Owner", 
 									   600, 350, 100, 50,
 									   function () {player.x = 7855
 													player.y = 800;});
+		*/
 		
 		// =========================================
 
-		
 		// CLOCKS //
 		clocks = game.add.group();
 		clocks.enableBody = true;
