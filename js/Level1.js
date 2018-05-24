@@ -213,17 +213,23 @@ var cat2;
 var sprinklersGroup;
 var boxGroup;
 var npcGroup;
-var sprinkler1;
+
 //LAI FUN
+var sprinkler1;
 var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 13253];
 var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852];
 var sprinklerHit1 = [false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
-var sprinkler2;
 
+var sprinkler1b;
+var sprinklerX1b = [1588, 3855, 9137];
+var sprinklerY1b = [852, 436, 852];
+var sprinklerHit1b = [false, false, false];
+var currentSprinkler1b = 0;
+
+var sprinkler2;
 var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
 var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
-
 var sprinklerHit2 = [false, false, false, false, false, false, false, false];
 var currentSprinkler2 = 0;
 
@@ -436,20 +442,15 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
+        createSprinkler(1, game, sprinklerX1b[currentSprinkler1b], sprinklerY1b[currentSprinkler1b]);
+        sprinkler1b = sprinklersGroup.children[1];
+
         createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
-        sprinkler2 = sprinklersGroup.children[1];
+        sprinkler2 = sprinklersGroup.children[2];
 
-        //createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
-        //sprinkler3 = sprinklersGroup.children[2];
+        //createSprinkler(1, game, 3855, 436);
 
-        createSprinkler(1, game, 1588, 852);
-        
-        createSprinkler(1, game, 3855, 436);
-
-        createSprinkler(1, game, 9137, 852);
-
-        //kevin - maybe
-        // createSprinkler(1, game, 8785, 852);
+        //createSprinkler(1, game, 9137, 852);
 
         createSprinkler3(1, game, 4950, 840 + 12);
 		
@@ -670,6 +671,23 @@ Game.Level1.prototype = {
             }
 
             repositionSprinkler(sprinkler1, sprinklerX1, sprinklerY1, currentSprinkler1);
+        }
+
+        if (!sprinkler1b.inCamera) {
+            if (sprinkler1b.hit === true) {
+                sprinklerHit1b[currentSprinkler1b] = true;
+            }
+            if (player.x > sprinkler1b.x && currentSprinkler1b + 1 < sprinklerX1b.length && player.body.velocity.x > 0) {
+                currentSprinkler1b++;
+                sprinklerOn(sprinkler1b, sprinklerHit1b, currentSprinkler1b);
+            }
+
+            if (player.x < sprinkler1b.x && currentSprinkler1b > 0 && player.body.velocity.x < 0) {
+                currentSprinkler1b--;
+                sprinklerOn(sprinkler1b, sprinklerHit1b, currentSprinkler1b);
+            }
+
+            repositionSprinkler(sprinkler1b, sprinklerX1b, sprinklerY1b, currentSprinkler1b);
         }
 
         if (!sprinkler2.inCamera && game.time.now > 10000) {
