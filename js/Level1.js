@@ -450,18 +450,19 @@ Game.Level1.prototype = {
 		sprinkler1 = sprinklersGroup.children[0];
 
         createSprinkler(1, game, 1588, 852);
-        sprinkler1 = sprinklersGroup.children[0];
+        //sprinkler1 = sprinklersGroup.children[0];
         
         createSprinkler(1, game, 3855, 436);
-        sprinkler1 = sprinklersGroup.children[0];
+        //sprinkler1 = sprinklersGroup.children[0];
         
         createSprinkler(1, game, 8785, 852);
-		sprinkler1 = sprinklersGroup.children[0];
+		//sprinkler1 = sprinklersGroup.children[0];
 
 
         createSprinkler2(1, game, 2835, 584 + 12);
         sprinkler2 = sprinklersGroup2.children[0];
 
+        createSprinkler3(1, game, 4950, 840 + 12);
 		/*
         //createSprinkler3(1, game, 4950, 840 + 12);
         // createSprinkler3(1, game, 14140, 840 + 12); //test dont delete
