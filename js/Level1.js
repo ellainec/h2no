@@ -358,9 +358,8 @@ Game.Level1.prototype = {
         map = this.add.tilemap('map');
 	    // add tileset with 'tileset id', 'key'
         map.addTilesetImage('h2no_tilesheet_pastel', 'tiles');
-			
-        secretLayer = map.createLayer('secret');
-		backgroundFarLayer = map.createLayer('background_far');
+            
+        backgroundFarLayer = map.createLayer('background_far');
 		backgroundLayer = map.createLayer('background');
 		mainLayer = map.createLayer('main');
 		foregroundLayer = map.createLayer('foreground');
@@ -370,8 +369,6 @@ Game.Level1.prototype = {
         mainLayer.resizeWorld();
 		
 		map.setCollisionBetween(0, 999, true, 'main');
-		map.setCollisionBetween(0, 999, true, 'secret');
-
 
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
