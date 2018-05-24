@@ -292,8 +292,10 @@ var rightTrue = false;
 var life;
 var lifeText;
 var gravityWorld = 1400; // NEW CONSTANT
-var initX = 100;
-var initY = 900;
+//var initX = 100;
+//var initY = 900;
+var initX = 15700;
+var initY = 560
 var respawnX = 100; // NEW CONSTANT (until checkpoints)
 var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
@@ -915,12 +917,26 @@ Game.Level1.prototype = {
             if (locked) {
                 this.checkLock();
             }
+		
+		// ============================================================================
+		
+		// For check of change to bossState
+		// ============================================================================
+		
+		if (player.x >= 15760 && player.y < 1050) {
+			this.state.start('BossState');
+		}
+		
+		if (player.y >= 1050) {
+			this.resetPlayer();
+		}
 
     },
 
 
     render: function() {
         game.debug.text(game.time.fps, 10, 10, "#000000");
+		game.debug.spriteInfo(player, 32, 48);
     },
 
     
