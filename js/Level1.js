@@ -215,9 +215,9 @@ var boxGroup;
 var npcGroup;
 var sprinkler1;
 //LAI FUN
-var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 9137, 13253];
-var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
-var sprinklerHit1 = [false, false, false, false, false, false, false, false];
+var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 13253];
+var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852];
+var sprinklerHit1 = [false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
 
