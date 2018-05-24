@@ -508,6 +508,7 @@ Game.Level1.prototype = {
 		
 		
 		// =======================================
+		
 		/*
 	    bossButton = this.createButton(game, "Boss", 
 									   400, 350, 100, 50,
