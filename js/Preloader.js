@@ -33,7 +33,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 		this.load.image('water', 'assets/water.png');
 		this.load.spritesheet('sprinkler', 'assets/sprinklerSprite.png', 64, 64);
-		this.load.image('sprinklerCollision', 'assets/sprinkler_on.png', 64, 64);
+		this.load.image('sprinklerCollision', 'assets/sprinkler_on.PNG', 64, 64);
 		this.load.image('clock', 'assets/clock.png');
 
 	  
@@ -42,13 +42,15 @@ Game.Preloader.prototype = {
 	    // ==========================
 	  
 		this.load.image('blue', 'assets/img/blue.png');
+		this.load.image('cyan', 'assets/img/cyan.png');
 		this.load.image('grey', 'assets/img/grey.png');
-		this.load.image('spring', 'assets/img/spring.png');
+		this.load.image('raft', 'assets/img/raft.png');
+		this.load.image('spring', 'assets/img/spring_v2.png');
 
 		this.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
-		this.load.spritesheet('faucet', 'assets/img/faucet.png', 64, 64);
-		this.load.image('tileSheet', 'assets/img/tiles.png');
-		this.load.tilemap('boss_map', 'assets/map/boss_map.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.spritesheet('faucet', 'assets/faucet.png', 320, 320);
+		this.load.image('tileSheet', 'assets/tiles/h2no_boss.png');
+		this.load.tilemap('boss_map', 'assets/tilemaps/maps/level1_boss_v4.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.load.audio('jumpSmall', 'assets/audio/effects/jump_small.wav');
 		this.load.audio('jump', 'assets/audio/effects/jump.wav');
@@ -61,24 +63,17 @@ Game.Preloader.prototype = {
 	    // ==========================
 	    // THIS IS FOR NPC
 	    // ==========================
-	  
-		
+
 		this.load.image('npc_b1', 'assets/npc_boy1.png');
-		this.load.image('npc_b2', 'assets/npc_boy2.png');
-		this.load.image('npc_b3', 'assets/npc_boy3.png');
-		this.load.image('npc_g1', 'assets/npc_girl1.png');
-		this.load.image('npc_g2', 'assets/npc_girl2.png');
-		this.load.image('npc_g3', 'assets/npc_girl3.png');
+		this.load.image('npc_b2', 'assets/npc_boy2.PNG');
+		this.load.image('npc_b3', 'assets/npc_boy3.PNG');
+		this.load.image('npc_g1', 'assets/npc_girl1.PNG');
+		this.load.image('npc_g2', 'assets/npc_girl2.PNG');
+		this.load.image('npc_g3', 'assets/npc_girl3.PNG');
 		this.load.spritesheet('bubble-border', 'assets/bubble-border-noshadow.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/bubble-tail-noshadow.png');
 		this.load.bitmapFont('carrier-command', 'font/carrier_command.png', 'font/carrier_command.xml');
 
-	    // ==========================
-	    // THIS IS FOR DRONES
-	    // ==========================
-
-		this.load.image('platform', 'assets/drone.png');
-        this.load.image('invisibleDrone', 'assets/bluedrone.png');
     },
     
     create:function() {
