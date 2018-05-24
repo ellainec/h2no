@@ -449,13 +449,13 @@ Game.Level1.prototype = {
 		createSprinkler(1, game, sprinklerX1[currentSprinkler1], sprinklerY1[currentSprinkler1]);
 		sprinkler1 = sprinklersGroup.children[0];
 
-        createSprinkler(1, game, 1588, 852);
+        //createSprinkler(1, game, 1588, 852);
         //sprinkler1 = sprinklersGroup.children[0];
         
-        createSprinkler(1, game, 3855, 436);
+        //createSprinkler(1, game, 3855, 436);
         //sprinkler1 = sprinklersGroup.children[0];
         
-        createSprinkler(1, game, 8785, 852);
+        //createSprinkler(1, game, 8785, 852);
 		//sprinkler1 = sprinklersGroup.children[0];
 
 
