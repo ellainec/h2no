@@ -5,11 +5,7 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>H2NO - The Game</title>
-	  <link rel="stylesheet" media="(min-width: 800px)" href="css/Game/original.css">
-  	<link rel="stylesheet" media="(min-width: 600px) and (max-width: 800px)" href="css/Game/mid.css">
-  	<link rel="stylesheet" media="(min-width: 480px) and (max-width: 600px)" href="css/Game/midSmall.css">
-  	<link rel="stylesheet" media="(min-width: 400px) and (max-width: 480px)" href="css/Game/smallMid.css">
-  	<link rel="stylesheet" media="(max-width: 400px)" href="css/Game/small.css">
+	  	<link rel="stylesheet" href="css/Game/mobile/og.css">
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script type= "text/javascript" src="js/phaser.js"></script>
@@ -31,17 +27,8 @@
     
 	<body>
 		<div id="top">
-    	<img id="logo" src='assets/logo.png' alt='H2NO! Logo'>
-			
-      <ul id="nav">
-        <li class="active"><a href="index.html">Game</a></li>
-				<li><a href="html/AboutTheCharacters.html">Characters</a></li>
-		<li><a href="html/DevDiary.html">Dev Diary</a></li>
-		<li><a href="html/Social.html">Social</a></li>
-        <li><a href="html/AboutTheTeam.html">About Us</a></li>
-
-      </ul>
-		
+			<div id=title>Play H2NO! Save Vancouver!</div>
+			<a href="#" id=returnhome>Return Home</a>
 		</div>
 		<div id="container">
 			<div id="coverup">
@@ -55,23 +42,10 @@
 				</div>
 				<p id="message"></p>
 			</div>
-		<div id="Setup">
+			<div id="Setup">
 				<script text= "text/javascript" src="js/SetUp.js"></script>
+			</div>
 		</div>
-
-		</div>
-		<div id="description">
-				A time not too distant in the future, the era of the Great Disaster, where humans had 
-			completely wasted the limited fresh water resource they had been gifted on earth. 
-			A young scientist going by the name of Marina, built a robot named H2-NO. 
-			She had managed to build a time travel machine. and wanting to stop the 
-			Era of the Great Disaster from occuring, Marina sent H2-NO back in time 
-			to save the future of the world, by attempting to build up awareness
-			in the children of Vancouver about water waste! Your job is to help H2-NO turn off the 
-			major water wasting appliances around the city of Vancouver!
-		</div>
-     <!--TWITTER-->
-		<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script>
 
 		var submitButton = document.getElementById("submitButton");
@@ -102,6 +76,16 @@
                 }
 			}
 		</script>
+
+		<!-- Rotate device pls-->
+		<script>
+  			var portrait = window.innerWidth < window.innerHeight;
+  			var PleaseRotateOptions = {
+      		onlyMobile: true,
+      		forcePortrait: !portrait
+  			}
+		</script>
+		<script src="pleaserotate.min.js"></script>
 		
   </body>
 

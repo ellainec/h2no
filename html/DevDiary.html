@@ -4,32 +4,38 @@
   <head>
     <meta charset="UTF-8"/>
     <title>H2NO - Dev Diary</title>
-	  <link rel="stylesheet" media="(min-width: 800px)" href="../css/DevDiary/original.css">
+	<!-- <link rel="stylesheet" media="(min-width: 800px)" href="../css/DevDiary/original.css">
   	<link rel="stylesheet" media="(min-width: 400px) and (max-width: 800px)" href="../css/DevDiary/mid.css">
-  	<link rel="stylesheet" media="(max-width: 400px)" href="../css/DevDiary/small.css">
+	<link rel="stylesheet" media="(max-width: 400px)" href="../css/DevDiary/small.css"> -->
+	  
+	<link rel="stylesheet"  href="../css/DevDiary/mobile/hamburger.css">
+    <link rel="stylesheet"  href="../css/DevDiary/mobile/og.css">
   </head>
     
   <body>
-		<div id="top">
-			
-    	<img id="logo" src='../assets/logo.png' alt='H2NO! Logo'> 
-			
-      <ul id="nav">
-        <li><a href="../index.html">Game</a></li>
-				<li><a href="AboutTheCharacters.html">Characters</a></li>
-		<li class="active"><a href="DevDiary.html">Dev Diary</a></li>
-		<li><a href="Social.html">Social</a></li>
-        <li><a href="AboutTheTeam.html">About Us</a></li>
-      </ul>
-		
-		</div> 
+	  <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <a href="Home.html" class=menulinks><li>Home</li></a>
+                <a href="../index.html" class=menulinks><li>PLAY</li></a>
+                <a href="Story.html" class=menulinks><li>Story</li></a>
+                <a href="AboutTheCharacters.html" class=menulinks><li>Characters</li></a>
+                <a href="DevDiary.html" class=menulinks><li>Dev Diary</li></a>
+                <a href="Social.html" class=menulinks><li>Social</li></a>
+                <a href="AboutTheTeam.html" class=menulinks><li>About Us</li></a>
+            </ul>
+        </div>
+    </nav>
+    <div id=title>H2NO</div>
+	<div id="diary">
 		<div id=entry>
 			
 		<div class=outer>
-			<div class=title>05/17/2018 - Update:
-				<br>
-				<br>
-			</div>
+			<div class=title>05/17/2018 - Update:</div>
 			<div class=inner>
 				<p>We've been busy, so this hasn't been updated in a while, but first of all, for the week before this, we managed to implement a hilarious easter egg. We couldn't stop laughing at the idea for a while. It is in game though, so I'm wondering if anyone will figure out how to activate it on their own without reading the hint in this entry. Keep reading if you want to find the hint hidden in here. <br> <br> (HUGE THANKS to Kevin Vizconde for the graphics made to represent the easter egg. I honestly have no idea how he captured the image of our easter egg perfectly but it's scary perfect) <br> <br> For this week, we've added in the twitter API to tweet your score or share the game! We haven't completely finished implementing the scoring system, but we have the number of lives and the timer down. We've also implemented a new physics system, the player will skid and no longer stop abruptly when the arrow keys are released, but there is a lot of testing that needs to be done to create a realistic movmeent, so those numbers will need to be modified. All we need to do is add in a points system for the sprinklers, add those up based on specific values, and we'd have a score for the player! To anyone who reads this for hints on the easter egg, "a certain cat loves its owner". Have fun! Originally, we were going to only have one level but... we thought it'd be more interesting to add in a boss stage! <br> <br> (HUGE THANKS to Stephen Thompson: for his amazing graphics creation with the tilesheet on the main map and the interesting and awesome boss stage design! The dialogue bitmapping was also another awesome component implemented) <br> <br> We've also optimized the code a little more so that it would be easier to add in the sprites of everything in game. I definitely suggest giving the dialogue chat boxes a read. They're actually pretty funny. At least in my opinion. Though I'm pretty easily amused so I may be biased. <br> <br> We still need to do a few more things, but the entire game is coming together extremely nicely! We'll need to test sprinkler placement and NPC placement, and of course we still need to edit the boss stage as well a little more, as we're using placeholder graphics for that. For testing there is a boss button that has been created to immediately lead us to the boss stage, but it will be removed when the game is completed. Still a couple more things to do, and a bit more testing to play around with the numbers. Difficultly level is contemplatable, we want to make it hard, but not so hard that the player gives up after a certain number of play throughs, but we do want to make it... "frustratingly fun"? I've already reached the game over screen multiple times while trying to test this game. Ha... Hahaaha... 
 				</p> 
@@ -37,20 +43,14 @@
 		</div>
 		
 		<div class=outer>
-			<div class=title>05/04/2018 - Update:
-				<br>
-				<br>
-			</div>
+			<div class=title>05/04/2018 - Update:</div>
 			<div class=inner>
 				<p>For the past few days we've been working on implementing much of the functionality into the game itself using Phaser and the database itself <br> <br> (HUGE THANKS to Ellaine Chan: our database specialist) <br> <br> The learning curve for Phaser was quite steep as we knew nearly nothing about it and spent a lot of time learning to manage states and files to increase workflow capabilities. We managed to pick up what we could from the resources we had online. We've been less focused on graphics and increasingly focused on gameplay elements and dificulty, such as enemies and NPC functionality. Originally we had intended to market the game towards a younger audience, but as time went on, we got new ideas and wanted to build a more complex storyline. <br> <br> The game is still intended to be used by kids around ages 7+ so that they can gain a better understanding of water waste, but it is likely that older people will still be able to play this game and have just as much fun, as we've come up with a unique storyline!<br> <br> Anyways, time to get back to work! </p> 
 			</div>
 		</div>
 		
 		<div class=outer>
-			<div class=title>04/28/2018 - Update:
-				<br>
-				<br>
-			</div>
+			<div class=title>04/28/2018 - Update:</div>
 			<div class=inner>
 				<p>After doing more research we may likely decide with the deadlines coming up that it isn't completely feasible to make a game that we would be proud of with Vanilla Javascript. We are doing more research with JS libraries and frameworks, such as PIXI.js and Phaser. These tools will help us to create a much more interesting storyline and gameplay, as doing so with Vanilla Javascript doesn't seem feasible with the amount of current experience we have right now. After 4 months of learning, and a deadline of needing to have a large amount of it done by the coming week it seems less than likely we'll be able to complete it in time if we attempt to use Vanilla Javascript. <br> <br> As much as I would love to learn more and create this using Vanilla Javascript... We have deadlines... <br> <br> Hope to update again soon!
 				</p>
@@ -60,10 +60,7 @@
 			
 		
 		<div class=outer>
-			<div class=title>04/22/2018 - Photo:
-				<br>
-				<br>
-			</div>
+			<div class=title>04/22/2018 - Photo:</div>
 			<div class=inner>
 				<p><img id="Vancouver1" src="../assets/characters/Vancouver%20Sketch.jpeg" alt="Vancouver Part1"> Huge thanks to Johnny Kim for drawing this out! It's an amazing sketch of Vancouver we're going to digitize and recreate in the background!</p>
 			</div>
@@ -71,25 +68,20 @@
 		
 		
 		<div class=outer>
-			<div class=title>04/22/2018 - Photo:
-				<br>
-				<br>
-			</div>
+			<div class=title>04/22/2018 - Photo:</div>
 			<div class=inner>
 				<p><img id="WaterBot" src="../assets/characters/WaterBotGif.gif" alt="WaterBotGif"> We decided on a robot character as a main character! It's name was originally going to be WaterBot, but one of the members came up with an interesting parellel with Star Wars. C3-PO is a robot is well! So we decided, let's use C3-PO as inspiration! Thus, the name H2-NO became our offical game name.</p>
 			</div>
 		</div>
 		
 		<div class=outer>
-			<div class=title>04/21/2018 - Ideas:
-				<br>
-				<br>
-			</div>
+			<div class=title>04/21/2018 - Ideas:</div>
 			<div class=inner>
 				<p>The team finally managed to settle on an idea of how we wanted to implement this. We've agreed that we wanted to create an educational game for kids around 5-10. Why? It's easier to brainwash kids than adults. Hehe. See what I did there? Brain-'Wash' <br> - okay jokes aside - <br> We decided to make something similar to Mario. Though we kept bouncing ideas back and forth it was a relief to have finally settled on an idea. We'll be doing research to gather information on how we would implement this to work on both desktop and mobile. <br> <br>  To be honest though, it is quite easy to lose focus and forget that one should be designing for mobile first before designing for desktop. <br> <br> I'm hoping to have implemented some interesting features by next week. We've mostly been thinking about using Javascript and HTML5 Canvas.
 				</p>
 			</div>
 		</div>
+	</div>
 	</div>
         
 		

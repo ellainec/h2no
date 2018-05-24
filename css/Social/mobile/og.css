@@ -1,0 +1,39 @@
+#caption {
+	margin: auto;
+	width: 75%;
+	font-size: 30pt;
+	line-height: 1.8em;
+}
+
+#button {
+	float: left;
+}
+
+/* .twitter-hashtag-button {
+	
+} */
+
+#timeline {
+	padding: 2%;
+	width: 30%;
+	display: block;
+	float: left;
+}
+
+
+
+.pt36 {
+	font-size: 36pt;
+}
+
+#lightblue {
+	color: lightblue;
+}
+
+#twitterblue {
+	color: rgb(66, 148, 218);
+}
+
+#red {
+	color: orangered;
+}
