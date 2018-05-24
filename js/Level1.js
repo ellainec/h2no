@@ -1,26 +1,3 @@
-// ==================================
-// GLOBAL FUNCTIONS FOR CREATING OTHER SPRITES IN GAME
-// ==================================
-
-
-EnemyRobot = function (index, game, x, y) {
-    this.robot = game.add.sprite(x, y, 'WaterBot');
-    // this is a global variable
-
-    this.robot.anchor.setTo(0.5, 0.5);
-    this.robot.name = index.toString();
-    game.physics.enable(this.robot, Phaser.Physics.ARCADE);
-    this.robot.body.immovable = true;
-    this.robot.body.allowGravity = true;
-    this.robot.body.collideWorldBounds = true;
-
-    // tween
-    this.robotTween = game.add.tween(this.robot).to({
-        x: this.robot.x + 25
-    }, 2000, 'Linear', true, 0, 100, true);
-
-};
-
 // =======================================================================================================================================
 //                                   SPRINKLERS START
 //
@@ -158,11 +135,11 @@ createSprinkler3 = function (index, game, x, y) {
     thisSprinkler3.emitter = game.add.emitter(x, y);
     thisSprinkler3.emitter2 = game.add.emitter(x, y);
 
-    thisSprinkler3.emitter.makeParticles('water', 0, 200, true);
-    thisSprinkler3.emitter.start(false, 40, -1);
+    thisSprinkler3.emitter.makeParticles('water', 0, 190, true);
+    thisSprinkler3.emitter.start(false, 10, 10);
 
-    thisSprinkler3.emitter2.makeParticles('water', 0, 200, true);
-    thisSprinkler3.emitter2.start(false, 40, -1);
+    thisSprinkler3.emitter2.makeParticles('water', 0, 190, true);
+    thisSprinkler3.emitter2.start(false, 10, 10);
 
     thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
     thisSprinkler3.emitter.minParticleScale = 0.3;
@@ -237,19 +214,20 @@ var sprinklersGroup;
 var boxGroup;
 var npcGroup;
 var sprinkler1;
-var sprinklerX1 = [575, 2190, 3400, 6436];
-var sprinklerY1 = [916, 724, 596, 596];
-var sprinklerHit1 = [false, false, false, false];
+//LAI FUN
+var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 13253];
+var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852];
+var sprinklerHit1 = [false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
-var sprinklerX2 = [2835, 4200, 5257];
-var sprinklerY2 = [596, 852, 852];
-var sprinklerHit2 = [false, false, false];
+
+var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
+var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
+
+var sprinklerHit2 = [false, false, false, false, false, false, false, false];
 var currentSprinkler2 = 0;
 
-var sprinkler3a;
-var sprinkler3b;
-var sprinkler3c;
+
 
 Game.Level1 = function (game) {
 
@@ -274,10 +252,10 @@ var rightTrue = false;
 var life;
 var lifeText;
 var gravityWorld = 1400; // NEW CONSTANT
-//var initX = 100;
-//var initY = 900;
-var initX = 15700;
-var initY = 560
+var initX = 100;
+var initY = 900;
+//var initX = 15700; // For testing
+//var initY = 560    // For testing
 var respawnX = 100; // NEW CONSTANT (until checkpoints)
 var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
@@ -307,15 +285,6 @@ var scoreText;
 var clocks;
 var clockAdd = 10;
 var easterEggReward;
-
-
-// DRONE PARTS
-var clouds = null;
-var locked = false;
-var lockedTo = null;
-var wasLocked = false;
-var willJump = false;
-var standing;
 
 // SOUND EFFECTS
 var jumpSound = null;
@@ -358,9 +327,8 @@ Game.Level1.prototype = {
         map = this.add.tilemap('map');
 	    // add tileset with 'tileset id', 'key'
         map.addTilesetImage('h2no_tilesheet_pastel', 'tiles');
-			
-        secretLayer = map.createLayer('secret');
-		backgroundFarLayer = map.createLayer('background_far');
+            
+        backgroundFarLayer = map.createLayer('background_far');
 		backgroundLayer = map.createLayer('background');
 		mainLayer = map.createLayer('main');
 		foregroundLayer = map.createLayer('foreground');
@@ -370,8 +338,6 @@ Game.Level1.prototype = {
         mainLayer.resizeWorld();
 		
 		map.setCollisionBetween(0, 999, true, 'main');
-		map.setCollisionBetween(0, 999, true, 'secret');
-
 
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
@@ -476,42 +442,25 @@ Game.Level1.prototype = {
         //createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
         //sprinkler3 = sprinklersGroup.children[2];
 
-        createSprinkler3(1, game, 7374, 840 + 12);
-        sprinkler3a = sprinklersGroup.children[2];
-    /*
-        createSprinkler3(1, game, 4950, 840 + 12);
-        sprinkler3b = sprinklersGroup.children[3];
+        createSprinkler(1, game, 1588, 852);
+        
+        createSprinkler(1, game, 3855, 436);
 
-        createSprinkler3(1, game, 9374, 840 + 12);
-        sprinkler3c = sprinklersGroup.children[4];
-        //createSprinkler3(1, game, 15650, 584 + 12);
-*/
-		/*
-		createSprinkler(1, game, 1588, 840 + 12);
-		createSprinkler(1, game, 2190, 712 + 12);
-		// createSprinkler(1, game, 2705, 840 + 12); // test dont delete
-		//createSprinkler2(1, game, 2835, 584 + 12);
-		//createSprinkler(1, game, 3400, 584 + 12);
-		//createSprinkler2(1, game, 3600, 840 + 12);
-		//createSprinkler(1, game, 3855, 424 + 12);
-		//createSprinkler3(1, game, 4950, 840 + 12);
-		//createSprinkler2(1, game, 5257, 840 + 12);
-		//createSprinkler2(1, game, 6145, 840 + 12);
-		// createSprinkler(1, game, 6436, 584 + 12); // test dont delete
-		//createSprinkler(1, game, 7455, 840 + 12);
-		//createSprinkler(1, game, 8393, 840 + 12);
-		//createSprinkler(1, game, 8785, 840 + 12);
-		//createSprinkler(1, game, 9137, 840 + 12);
-		// createSprinkler2(1, game, 9673, 840 + 12);
-		// createSprinkler(1, game, 11453, 840 + 12);
-		//createSprinkler(1, game, 13253, 840 + 12); // test dont delete
-		// createSprinkler2(1, game, 13584, 840 + 12); //test dont delete
-		// createSprinkler3(1, game, 4950, 840 + 12);
-		// createSprinkler2(1, game, 15124, 584 + 12); //test dont delete
-		// createSprinkler3(1, game, 15650, 584 + 12);
-    */
+        createSprinkler(1, game, 9137, 852);
+
+        //kevin - maybe
+        // createSprinkler(1, game, 8785, 852);
+
+        createSprinkler3(1, game, 4950, 840 + 12);
+		
+        createSprinkler3(1, game, 14140, 840 + 12);
+
+    
 
         this.world.bringToTop(sprinklersGroup);
+        //this.world.bringToTop(sprinklersGroup2);
+        //this.world.bringToTop(sprinklersGroup3);
+
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -729,14 +678,13 @@ Game.Level1.prototype = {
             }
             if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
                 currentSprinkler2++;
-                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
             }
 
             if (player.x < sprinkler2.x && currentSprinkler2 > 0 && player.body.velocity.x < 0) {
                 currentSprinkler2--;
-                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
             }
             repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+            sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
         }
 
 
@@ -801,60 +749,6 @@ Game.Level1.prototype = {
 
             findCat();
             easterEgg();
-
-            // =======================================================================================================================================
-            //                                   DRONE UPDATE
-            //========================================================================================================================================
-
-
-            if (this.game.paused) {
-                //  Because preRender still runs even if your game pauses!
-                return;
-            }
-
-            if (locked) {
-                player.x += lockedTo.deltaX;
-                player.y = lockedTo.y - 30;
-
-                if (player.body.velocity.x !== 0) {
-                    player.body.velocity.y = 0;
-                }
-            }
-
-            if (willJump) {
-                willJump = false;
-
-                if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
-
-                    //  If the platform is moving up we add its velocity to the players jump
-                    player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
-                }
-                else {
-                    player.body.velocity.y -= Jump2;
-                }
-
-                jumpTimer = game.time.now + 500;
-            }
-
-            if (wasLocked) {
-                wasLocked = false;
-                lockedTo.playerLocked = false;
-                lockedTo = null;
-            }
-
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            standing = player.body.blocked.down || player.body.touching.down || locked;
-
-            if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
-                if (locked) {
-                    this.cancelLock();
-                }
-                willJump = true;
-            }
-
-            if (locked) {
-                this.checkLock();
-            }
 		
 		// ============================================================================
 		
@@ -875,6 +769,7 @@ Game.Level1.prototype = {
     render: function() {
         game.debug.text(game.time.fps, 10, 10, "#000000");
 		game.debug.spriteInfo(player, 32, 48);
+
     },
 
     
@@ -896,7 +791,6 @@ Game.Level1.prototype = {
 
         sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
         sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
-
     },
     // for checkpoint create checkx/y
 

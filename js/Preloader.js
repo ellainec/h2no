@@ -15,7 +15,7 @@ Game.Preloader.prototype = {
 		// load player sprite
 		this.load.spritesheet('h2no_chris', 'assets/characters/H2NObit_chris.PNG', 32, 48);
 		// load map
-		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v4.json', null, Phaser.Tilemap.TILED_JSON);        
+		this.load.tilemap('map', 'assets/tilemaps/maps/level1_v5.json', null, Phaser.Tilemap.TILED_JSON);        
 		// load tiles
 		this.load.image('tiles', 'assets/tiles/h2no_tilesheet_pastel.png');
 
