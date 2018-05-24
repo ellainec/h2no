@@ -14,11 +14,16 @@ body
 {
   margin: 0;
   padding: 0;
-  background-color: lightblue;
+  background-color: rgb(226, 248, 255);
   color: #343434;
   font-family: 'press_start_2pregular';
   font-size: 24pt;
 
+}
+
+#top {
+	width: 90vw;
+	margin: auto;
 }
 
 /* The Title */
@@ -26,13 +31,14 @@ body
 	float: left;
 	width: 60%;
     padding-top: 5px;
-    margin-left: 5px;
-    font-size: 12pt;
+    margin-left: 1px;
+	font-size: 12pt;
+	color:blue;
 }
 
-a {
+#returnhome {
     float: right;
-    width: 25%;
+    width: 30%;
     padding-top: 5px;
     margin-right: 5px;
     font-size: 12pt;
