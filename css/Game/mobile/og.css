@@ -33,7 +33,7 @@ body
     padding-top: 5px;
     margin-left: 1px;
 	font-size: 12pt;
-	color:blue;
+	color:#000550 ;
 }
 
 #returnhome {
@@ -43,6 +43,7 @@ body
     margin-right: 5px;
     font-size: 12pt;
 	color: red;
+	z-index: 2;
 }
 
 a:hover {
@@ -124,8 +125,6 @@ a:hover {
 	height: 25px;
 	margin: 10px;
 }
-
-
 
 #Setup {
 	height: 95vh;
