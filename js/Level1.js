@@ -217,15 +217,17 @@ var sprinkler1;
 //LAI FUN
 var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 9137, 13253];
 var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
-var sprinklerHit1 = [false, false, false, false];
+var sprinklerHit1 = [false, false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
 var sprinkler2;
 
 var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
 var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
 
-var sprinklerHit2 = [false, false, false];
+var sprinklerHit2 = [false, false, false, false, false, false, false, false];
 var currentSprinkler2 = 0;
+
+
 
 Game.Level1 = function (game) {
 
@@ -443,10 +445,11 @@ Game.Level1.prototype = {
         //createSprinkler3(1, game, sprinklerX3[currentSprinkler3], sprinklerY3[currentSprinkler3]);
         //sprinkler3 = sprinklersGroup.children[2];
 
-
         createSprinkler(1, game, 1588, 852);
         
         createSprinkler(1, game, 3855, 436);
+
+        createSprinkler(1, game, 9137, 852);
 
         //kevin - maybe
         // createSprinkler(1, game, 8785, 852);
