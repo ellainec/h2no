@@ -214,23 +214,6 @@ createSprinkler3 = function (index, game, x, y) {
 //
 //=========================================================================================================================================
 
-
-NPC = function (index, game, x, y) {
-    this.npc = game.add.sprite(x, y, 'baddie');
-    // this isa global variable
-
-    this.npc.anchor.setTo(0.5, 0.5);
-    this.npc.name = index.toString();
-    game.physics.enable(this.npc, Phaser.Physics.ARCADE);
-    this.npc.body.immovable = false;
-    this.npc.body.allowGravity = true;
-    this.npc.body.collideWorldBounds = true;
-
-    this.npc.animations.add('left', [0, 1], 10, true);
-    this.npc.animations.add('right', [2, 3], 10, true);
-
-};
-
 Cat = function (index, game, x, y) {
     this.cat = game.add.sprite(x, y, 'cat');
 
@@ -356,29 +339,6 @@ Game.Level1.prototype = {
 		
 		console.log(easterEggReward);
         game.time.advancedTiming = true;
-        // =======================================================================================================================================
-        //                                   PLAYER VARIABLES START
-        //=========================================================================================================================================
-
-		//assignment of playerName can't be outside in global scope
-		playerName = sessionStorage.getItem("playerName");
-
-		// Set up players
-		player = this.add.sprite(initX, initY, 'h2no');
-		player.anchor.setTo(0.5, 0.5);
-		// Enable physics on player
-		this.physics.enable(player, Phaser.Physics.ARCADE);
-		// Ground and edges of the world
-		player.body.collideWorldBounds = true;
-		player.body.maxVelocity.y = maxY; // SET UP NEW CONSTANT
-		this.camera.follow(player);
-
-		player.animations.add('idle', [4], 10, true);
-		player.animations.add('left', [0, 1, 2, 3], 10, true);
-		player.animations.add('right', [5, 6, 7, 8], 10, true);
-        // =======================================================================================================================================
-        //                                   PLAYER VARIABLES END
-        //====================================================================================================================================
 
         
         // =======================================================================================================================================
@@ -415,6 +375,64 @@ Game.Level1.prototype = {
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
         //=========================================================================================================================================
+
+        // =======================================================================================================================================
+        //                                   NPC START - GOES BEFORE PLAYER!
+        //=========================================================================================================================================
+
+
+        npcGroup = game.add.group();
+
+        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
+        createNPC(game, 7855, 800, 'chris', 200,
+            "Have you seen my cat?");
+
+        createNPC(game, 200, 880, 'npc_b1', 200,
+            "Why don't you make yourself useful and turn off some sprinklers huh?");
+
+        createNPC(game, 3745, 550, 'npc_b2', 200,
+            "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
+
+        createNPC(game, 5555, 880, 'npc_b3', 300,
+            "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
+            "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
+
+        createNPC(game, 700, 880, 'npc_g1', 200,
+            "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
+
+        createNPC(game, 900, 900, 'npc_g2', 200,
+            "He tried to run the dishwasher with only half a load, can you believe it? " +
+            "I almost lost it H2NO, what a water waster!");
+
+        createNPC(game, 1000, 900, 'npc_g3', 200,
+            "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
+        // =======================================================================================================================================
+        // NPC END //=========================================================================================================================================
+
+
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES START
+        //=========================================================================================================================================
+
+        //assignment of playerName can't be outside in global scope
+        playerName = sessionStorage.getItem("playerName");
+
+        // Set up players
+        player = this.add.sprite(initX, initY, 'h2no');
+        player.anchor.setTo(0.5, 0.5);
+        // Enable physics on player
+        this.physics.enable(player, Phaser.Physics.ARCADE);
+        // Ground and edges of the world
+        player.body.collideWorldBounds = true;
+        player.body.maxVelocity.y = maxY; // SET UP NEW CONSTANT
+        this.camera.follow(player);
+
+        player.animations.add('idle', [4], 10, true);
+        player.animations.add('left', [0, 1, 2, 3], 10, true);
+        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        // =======================================================================================================================================
+        //                                   PLAYER VARIABLES END
+        //====================================================================================================================================
         // =======================================================================================================================================
         //                                   CONTROL VARIABLES START
         //=========================================================================================================================================
@@ -599,112 +617,21 @@ Game.Level1.prototype = {
         // =======================================================================================================================================
         //                                   LAYER CONTROL END
         //=========================================================================================================================================
-        // =======================================================================================================================================
-        //                                   NPC START
-        //=========================================================================================================================================
-
-
-        npcGroup = game.add.group();
-
-        //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
-        createNPC(game, 7855, 800, 'chris', 200,
-            "Have you seen my cat?");
-
-        createNPC(game, 200, 880, 'npc_b1', 200,
-        "Why don't you make yourself useful and turn off some sprinklers huh?");
-        
-        createNPC(game, 3745, 550, 'npc_b2', 200,
-            "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
-
-        createNPC(game, 5555, 880, 'npc_b3', 300,
-            "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
-            "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
-
-        createNPC(game, 700, 880, 'npc_g1', 200,
-            "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
-
-        createNPC(game, 900, 900, 'npc_g2', 200,
-            "He tried to run the dishwasher with only half a load, can you believe it? " +
-            "I almost lost it H2NO, what a water waster!");
-
-        createNPC(game, 1000, 900, 'npc_g3', 200,
-            "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
-        // =======================================================================================================================================
-        //                                  NPC END //=========================================================================================================================================
-
-
-        //////////////////////////////////////////Drones//////////////////////////////////////////
-        clouds = this.add.physicsGroup(true);
-
-        var cloud1 = new CloudPlatform(game, 10450, 860, 'platform', clouds);
-
-        cloud1.addMotionPath([
-            { x: "+300", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
-            { x: "-300", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
-        ]);
-
-        var cloud2 = new CloudPlatform(game, 12280, 860, 'platform', clouds);
-        cloud2.addMotionPath([
-            { x: "+480", xSpeed: 3000, xEase: "Linear", y: "+0", ySpeed: 2000, yEase: "Linear" },
-            { x: "-480", xSpeed: 3000, xEase: "Linear", y: "-0", ySpeed: 2000, yEase: "Linear" },
-        ]);
-
-        var cloud3 = new CloudPlatform(game, 11250, 560, 'invisibleDrone', clouds);
-        cloud3.alpha = 0.02;
-        cloud3.addMotionPath([
-            { y: "-400", ySpeed: 6000, yEase: "Linear", x: "+0", xSpeed: 2000, xEase: "Linear" },
-            { y: "+400", ySpeed: 4000, yEase: "Linear", x: "-0", xSpeed: 2000, xEase: "Linear" },
-        ]);
-
-        clouds.callAll('start');
-
-        //////////////////////////////////////////Drones//////////////////////////////////////////
 
         // AUDIO STUFF
         jumpSound = this.add.audio('jump');
 
     },
-
-    /////////////Drone Functions////////////
-
-
-    customSep: function (player, platform) {
-        if (!locked && player.body.velocity.y > 0) {
-            locked = true;
-            lockedTo = platform;
-            //platform.playerLocked = true;
-            player.body.velocity.y = 0;
-        }
-    },
-
-    checkLock: function () {
-
-        player.body.velocity.y = 0;
-
-        //  If the player has walked off either side of the platform then they're no longer locked to it
-        if (player.body.right < lockedTo.body.x || player.body.x > lockedTo.body.right) {
-            this.cancelLock();
-        }
-
-    },
-
-    cancelLock: function () {
-
-        wasLocked = true;
-        locked = false;
-
-    },
-
+    
     // ==================================
     // UPDATE FUNCTION BELOW
     // ==================================
 
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
-        this.physics.arcade.collide(npcGroup, mainLayer);
+        //this.physics.arcade.collide(npcGroup, mainLayer);
         //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-        this.physics.arcade.collide(player, clouds, this.customSep, null, this);
+        //this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -868,60 +795,6 @@ Game.Level1.prototype = {
 
             findCat();
             easterEgg();
-
-            // =======================================================================================================================================
-            //                                   DRONE UPDATE
-            //========================================================================================================================================
-
-
-            if (this.game.paused) {
-                //  Because preRender still runs even if your game pauses!
-                return;
-            }
-
-            if (locked) {
-                player.x += lockedTo.deltaX;
-                player.y = lockedTo.y - 30;
-
-                if (player.body.velocity.x !== 0) {
-                    player.body.velocity.y = 0;
-                }
-            }
-
-            if (willJump) {
-                willJump = false;
-
-                if (lockedTo && lockedTo.deltaY < 0 && wasLocked) {
-
-                    //  If the platform is moving up we add its velocity to the players jump
-                    player.body.velocity.y -= Jump2 + (lockedTo.deltaY * 20);
-                }
-                else {
-                    player.body.velocity.y -= Jump2;
-                }
-
-                jumpTimer = game.time.now + 500;
-            }
-
-            if (wasLocked) {
-                wasLocked = false;
-                lockedTo.playerLocked = false;
-                lockedTo = null;
-            }
-
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            standing = player.body.blocked.down || player.body.touching.down || locked;
-
-            if (standing && cursors.up.isDown && game.time.now > jumpTimer) {
-                if (locked) {
-                    this.cancelLock();
-                }
-                willJump = true;
-            }
-
-            if (locked) {
-                this.checkLock();
-            }
 
     },
 
@@ -1088,8 +961,8 @@ function easterEgg() {
 function createNPC(game, x, y, image, width, text) {
     var npc = npcGroup.create(x,y,image);
     game.physics.enable(npc, Phaser.Physics.ARCADE);
-    npc.body.immovable= false;
-    npc.body.allowGravity = true;
+    npc.body.immovable = false;
+    npc.body.allowGravity = false;
     npc.body.collideWorldBounds = true;
     npc.SpeechBubble = new SpeechBubble(game, x + 45, y, width, text);
 
@@ -1174,67 +1047,3 @@ SpeechBubble.wrapBitmapText = function (bitmapText, maxWidth) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////SPEECH BUBBLE FUNCTION /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////
-/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
-
-CloudPlatform = function (game, x, y, key, group) {
-
-    if (typeof group === 'undefined') { group = game.world; }
-
-    Phaser.Sprite.call(this, game, x, y, key);
-
-    game.physics.arcade.enable(this);
-
-    this.anchor.x = 0.5;
-
-    this.body.customSeparateX = true;
-    this.body.customSeparateY = true;
-    this.body.allowGravity = false;
-    this.body.immovable = true;
-
-    this.playerLocked = false;
-
-    group.add(this);
-
-};
-
-CloudPlatform.prototype = Object.create(Phaser.Sprite.prototype);
-CloudPlatform.prototype.constructor = CloudPlatform;
-
-CloudPlatform.prototype.addMotionPath = function (motionPath) {
-
-    this.tweenX = this.game.add.tween(this.body);
-    this.tweenY = this.game.add.tween(this.body);
-
-    //  motionPath is an array containing objects with this structure
-    //  [
-    //   { x: "+200", xSpeed: 2000, xEase: "Linear", y: "-200", ySpeed: 2000, yEase: "Sine.easeIn" }
-    //  ]
-
-    for (var i = 0; i < motionPath.length; i++) {
-        this.tweenX.to({ x: motionPath[i].x }, motionPath[i].xSpeed, motionPath[i].xEase);
-        this.tweenY.to({ y: motionPath[i].y }, motionPath[i].ySpeed, motionPath[i].yEase);
-    }
-
-    this.tweenX.loop();
-    this.tweenY.loop();
-
-};
-
-CloudPlatform.prototype.start = function () {
-
-    this.tweenX.start();
-    this.tweenY.start();
-
-};
-
-CloudPlatform.prototype.stop = function () {
-
-    this.tweenX.stop();
-    this.tweenY.stop();
-
-};
-
-/////////////////// Cloud Platform (Moving Platforms(drones)) //////////////
-////////////////////////////////////////////////////////////////////////////
