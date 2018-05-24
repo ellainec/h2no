@@ -42,13 +42,15 @@ Game.Preloader.prototype = {
 	    // ==========================
 	  
 		this.load.image('blue', 'assets/img/blue.png');
+		this.load.image('cyan', 'assets/img/cyan.png');
 		this.load.image('grey', 'assets/img/grey.png');
-		this.load.image('spring', 'assets/img/spring.png');
+		this.load.image('raft', 'assets/img/raft.png');
+		this.load.image('spring', 'assets/img/spring_v2.png');
 
 		this.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
-		this.load.spritesheet('faucet', 'assets/img/faucet.png', 64, 64);
-		this.load.image('tileSheet', 'assets/img/tiles.png');
-		this.load.tilemap('boss_map', 'assets/map/boss_map.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.spritesheet('faucet', 'assets/faucet.png', 320, 320);
+		this.load.image('tileSheet', 'assets/tiles/h2no_boss.png');
+		this.load.tilemap('boss_map', 'assets/tilemaps/maps/level1_boss_v4.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.load.audio('jumpSmall', 'assets/audio/effects/jump_small.wav');
 		this.load.audio('jump', 'assets/audio/effects/jump.wav');

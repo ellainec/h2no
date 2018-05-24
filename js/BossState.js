@@ -10,6 +10,7 @@ var bossCollision;
 var onPlatform;
 var onBoss;
 var spring;
+var bossHP = 3;
 
 var jumpSound;
 var smallJumpSound;
@@ -37,6 +38,11 @@ var bossAlive;
 
 var finalBossScore;
 
+var emitter;
+var emitter2;
+var emitter3;
+var faucetEmitter;
+
 Game.BossState = function (game) { };
 
 Game.BossState.prototype = {
@@ -55,12 +61,15 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 		map = this.add.tilemap('boss_map');
-        map.addTilesetImage('tiles', 'tileSheet');
+        map.addTilesetImage('h2no_boss', 'tileSheet');
 
-        layerMain = map.createLayer(0);
-        layerMain.resizeWorld();
+        backgroundFarLayer = map.createLayer('background_far');
+        backgroundLayer = map.createLayer('background');
+        mainLayer = map.createLayer('main');
+        foregroundLayer = map.createLayer('foreground');
+        mainLayer.resizeWorld();
 
-        map.setCollisionBetween(1, 999, true);
+        map.setCollisionBetween(1, 999, true, 'main');
 		
 		// ========================================================================
 		// MAP VAR END
@@ -68,8 +77,8 @@ Game.BossState.prototype = {
 		
 		// PLAYER VAR START
 		// ========================================================================
-		bossPlayerSpawnX = 360;
-		bossPlayerSpawnY = 60;
+		bossPlayerSpawnX = 575;
+		bossPlayerSpawnY = 785;
 		
 		if (easterEggReward) {
 			player = this.add.sprite(bossPlayerSpawnX, bossPlayerSpawnY, 'h2no_chris');
@@ -138,28 +147,78 @@ Game.BossState.prototype = {
 		// MAP VARS
 		
 		// =======================================================================
+
+		// Emitters
+		emitter1 = game.add.emitter(1280, 526);
+		emitter1.makeParticles('water', 0, 60, true);
+		emitter1.start(true, 50, -1);
+		emitter1.minParticleScale = 0.3;
+		emitter1.maxParticleScale = 0.4;
+		emitter1.lifespan = 4000;
+		emitter1.setXSpeed(-25, 25);
+		emitter1.setYSpeed(-600, -600);
+		emitter1.gravity = 2000;
+		emitter1.alpha = 0.5;
+
+		emitter2 = game.add.emitter(1560, 526);
+		emitter2.makeParticles('water', 0, 60, true);
+		emitter2.start(true, 50, -1);
+		emitter2.minParticleScale = 0.3;
+		emitter2.maxParticleScale = 0.4;
+		emitter2.lifespan = 4000;	
+		emitter2.setXSpeed(-25, 25);
+		emitter2.setYSpeed(-600, -600);
+		emitter2.gravity = 2000;
+		emitter2.alpha = 0.5;
+
+		emitter3 = game.add.emitter(1280, 626);
+		emitter3.makeParticles('water', 0, 500, true);
+		emitter3.start(true, 50, -1);
+		emitter3.bringToTop = true;
+		emitter3.minParticleScale = 0.3;
+		emitter3.maxParticleScale = 0.4;
+		emitter3.lifespan = 3200;
+		emitter3.setXSpeed(-5, 5);
+		emitter3.setYSpeed(-355, -355);
+		emitter3.gravity = 2000;
+		emitter3.emitX = 1300;
+
+		game.add.tween(emitter3).to( { emitX: 1540 }, 1850, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
+		
+		// Faucet Emitter
+		faucetEmitter = game.add.emitter(1740, 480);
+		faucetEmitter.makeParticles('water', 0, 200, true);
+		faucetEmitter.start(false, 50, -1);
+		faucetEmitter.minParticleScale = 0.8;
+		faucetEmitter.maxParticleScale = 1;
+		faucetEmitter.lifespan = 1000;
+		faucetEmitter.setYSpeed(175, 165);
+		faucetEmitter.setXSpeed(30, -30);
+		faucetEmitter.gravity = 350;
+
+		faucetTweenA = this.add.tween(faucetEmitter).to({minParticleScale: 0.4, maxParticleScale: 0.6}, 3000, Phaser.Easing.Linear.In, false, 500);
+		faucetTweenB = this.add.tween(faucetEmitter).to({minParticleScale: 0.2, maxParticleScale: 0.4}, 3000, Phaser.Easing.Linear.In, false, 500);
+		faucetTweenC = this.add.tween(faucetEmitter).to({minParticleScale: 0, maxParticleScale: 0}, 500, Phaser.Easing.Linear.In, false, 500);
+
+		// Platforms
 		platforms = this.add.group();
         platforms.enableBody = true;
 
-        platformA = platforms.create(430, 476, 'grey');
-        platformA.width = 32;
-        platformA.height = 8;
-        platformA.body.immovable = true;
+		let xStartPos = 1180;
+		let yStartPos = 475;
+		let raftGap = 140;
 
-        platformB = platforms.create(510, 476, 'grey');
-        platformB.width = 32;
-        platformB.height = 8;
-        platformB.body.immovable = true;
+		for (let amount = 4; amount > 0; amount--) {
+			let platform = platforms.create(xStartPos, yStartPos, 'raft');
+			platform.body.immovable = true;
+			xStartPos += raftGap; 
+		}
 
-        platformC = platforms.create(590, 476, 'grey');
-        platformC.width = 32;
-        platformC.height = 8;
-        platformC.body.immovable = true;
-
-        bossButton = this.add.sprite(687, 436, 'grey');
+		// Boss
+        bossButton = this.add.sprite(1780, 435, 'grey');
         this.physics.arcade.enable(bossButton, Phaser.Physics.ARCADE);
-        bossButton.width = 24;
-        bossButton.height = 6;
+        bossButton.width = 32;
+        bossButton.height = 32;
         bossButton.alpha = 0;
         bossButton.body.immovable = true;
         // bossButton.body.moves = false;
@@ -167,26 +226,46 @@ Game.BossState.prototype = {
         faucetGroup = this.add.group();
         faucetGroup.enableBody = true;
 
-        bossCollision = faucetGroup.create(658, 446, 'grey');
-        bossCollision.width = 24;
-        bossCollision.height = 32;
+        bossCollision = faucetGroup.create(1720, 450, 'grey');
+        bossCollision.width = 128;
+        bossCollision.height = 48;
         bossCollision.alpha = 0;
         bossCollision.body.immovable = true;
 
-        boss = this.add.sprite(656, 430, 'faucet');
+		boss = this.add.sprite(1706, 400, 'faucet');
+		boss.width = 128;
+		boss.height = 128;
 		bossAlive = false;
 
-        spring = this.add.sprite(598, 260, 'spring');
+		// Spring
+        spring = this.add.sprite(1616, 200, 'spring');
         this.physics.arcade.enable(spring, Phaser.Physics.ARCADE);
-        spring.width = 16;
-        spring.height = 16;
         spring.body.immovable = true;
 
-        waterFloor = this.add.sprite(0, 480, 'blue');
+		// Water Floor
+        waterFloor = this.add.sprite(1070, 480, 'cyan');
         this.physics.arcade.enable(waterFloor, Phaser.Physics.ARCADE);
-        waterFloor.width = window.screen.width;
-        waterFloor.height = window.screen.height;
-        waterFloor.alpha = 0.8;
+        waterFloor.width = 800;
+        waterFloor.height = 400;
+		waterFloor.alpha = 0.5;
+		
+		// Ladder
+		ladder = this.add.sprite(870, 415, 'blue');
+		this.physics.arcade.enable(ladder, Phaser.Physics.ARCADE);
+		ladder.width = 20;
+		ladder.height = 500;
+		ladder.alpha = 0;
+		ladder.body.immovable = true;
+
+		// Camera Boundary
+		cameraBoundary = this.add.sprite(1055, 320, 'blue');
+		this.physics.arcade.enable(cameraBoundary, Phaser.Physics.ARCADE);
+		cameraBoundary.width = 1;
+		cameraBoundary.height = 96;
+		cameraBoundary.alpha = 0;
+		cameraBoundary.body.immovable = true;
+		cameraBoundary.body.moves = false;
+
 		// ========================================================================
 		
 		// MAP VARS END
@@ -201,32 +280,39 @@ Game.BossState.prototype = {
         waterTweenB = this.add.tween(waterFloor).to({y: waterFloor.world.y + 150}, 2000, Phaser.Easing.Linear.In, false, 500);
         platformTweenB = this.add.tween(platforms).to({y: 150}, 2000, Phaser.Easing.Linear.In, false, 500);
 		
-        waterTweenC = this.add.tween(waterFloor).to({y: waterFloor.world.y + 300 + 300}, 3000, Phaser.Easing.Linear.In, false, 500);
+        waterTweenC = this.add.tween(waterFloor).to({y: waterFloor.world.y + 300 + 300}, 1000, Phaser.Easing.Linear.In, false, 500);
         platformTweenC = this.add.tween(platforms).to({y: 300 + 300}, 3000, Phaser.Easing.Linear.In, false, 500);
 
-        springTweenA = this.add.tween(spring).to({y: waterFloor.world.y + 30}, 2000, Phaser.Easing.Bounce.Out, false, 2000);
+		bossAnimationTween = this.add.tween(boss).to({frame: 0}, 1000, Phaser.Easing.Linear.In, false, 1000);
+
+        springTweenA = this.add.tween(spring).to({y: waterFloor.world.y + 14}, 2000, Phaser.Easing.Bounce.Out, false, 2000);
 		
-        springTweenB = this.add.tween(spring).to({y: waterFloor.world.y + 130}, 2000, Phaser.Easing.Linear.In, false, 500);
+        springTweenB = this.add.tween(spring).to({y: waterFloor.world.y + 114}, 2000, Phaser.Easing.Linear.In, false, 500);
 		
-        springTweenC = this.add.tween(spring).to({y: waterFloor.world.y + 280 + 300}, 3000, Phaser.Easing.Linear.In, false, 500);
+        springTweenC = this.add.tween(spring).to({y: waterFloor.world.y + 264 + 300}, 3000, Phaser.Easing.Linear.In, false, 500);
 		
+		cameraLockTween = this.add.tween(this.camera).to({x: 1056, y: 300}, 1000, Phaser.Easing.Linear.In, false, 0);
+
 		// ========================================================================
 		// TWEENS END
 		
 		// ========================================================================
 		
-		this.lockCamera();
+		// this.lockCamera();
+		this.camera.follow(player);
 		
-		
+		this.world.bringToTop(mainLayer);
+		this.world.bringToTop(foregroundLayer);
+		this.world.bringToTop(timeText);
+		this.world.bringToTop(scoreText);
+		this.world.bringToTop(lifeText);
+
 		if (!game.device.desktop) {
 			mobile = true;
 			this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
 			this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
 			this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
 		}
-		
-		
-
 		
 	},
 		
@@ -242,15 +328,28 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 		
-		this.physics.arcade.collide(player, layerMain);
-		this.physics.arcade.collide(platforms, layerMain);
+		this.physics.arcade.collide(player, mainLayer);
+		this.physics.arcade.collide(platforms, mainLayer);
 		this.physics.arcade.collide(platforms, waterFloor);
 		onPlatform = this.physics.arcade.collide(player, platforms);
         onFaucet = this.physics.arcade.collide(player, faucetGroup);
         onButton = this.physics.arcade.collide(player, bossButton);
         onSpring = this.physics.arcade.collide(player, spring);
 
+		//emitter physics
+		if(game.physics.arcade.overlap(player, emitter1)) {
+			this.resetPlayer();
+		}
+
+		if(game.physics.arcade.overlap(player, emitter2)) {
+			this.resetPlayer();
+		}
 		
+		// Emitter3 Physics
+		if (game.physics.arcade.overlap(player, emitter3)) {
+			this.resetPlayer();
+		}
+
 		// ========================================================================
 		// MOBILE CONTROL MOVEMENT PHYSICS WITH JOYSTICK
 		
@@ -315,14 +414,21 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 		this.controls();
+
+		this.climbLadder();
+		if (bossHP > 0) {
+			this.lockCamera();
+		}
 		
 		this.stompButton();
 
         this.touchWaterFloor();
 
-        this.onSpring();
+		this.onSpring();
+		
+		this.winGame();
 	},
-	
+
 	controls: function () {
 		if (!mobile) {
 			if (!(cursors.left.isDown || leftTrue) 
@@ -367,29 +473,30 @@ Game.BossState.prototype = {
 					smallJumpSound.play();
 				}
 			}
-			
 		}
 		
 		// TODO: When reaching player.x = 848, player.y = 640, start win state!
-		if (player.y > 635) {
-			this.state.start('Win');
-		}
+		// if (player.y > 635) {
+			// this.state.start('Win');
+		// }
 		
         // console.log(player.body.velocity.x);
     },
 	render: function() {
-		// game.debug.bodyInfo(player, 32, 48);
+		// game.debug.spriteInfo(player, 32, 48);
 	},
-		
+
 	// ========================================================================
 	// LOCKS CAMERA TO THE BOSS SCENE
 
 
 	// ========================================================================
 	lockCamera: function () {
-
-        this.camera.x = 336;
-        this.camera.y = 336;
+		if (player.world.x > 1060) {
+			this.camera.follow(null);
+			cameraLockTween.start();
+			this.physics.arcade.collide(player, cameraBoundary);
+		}
     },
 		
 	// ========================================================================
@@ -420,13 +527,21 @@ Game.BossState.prototype = {
 
 	// ========================================================================
     resetPlayer: function () {
-        player.reset(bossPlayerSpawnX, bossPlayerSpawnY);
+		let resetX = 1080;
+		let resetY = 360;
+        player.reset(resetX, resetY);
 		life--;
 	    console.log("died");
 	    if (life === 0) {
 		    game.state.start('Gameover');
 	    }
     },
+
+	climbLadder: function () {
+		if (this.checkOverlap(player, ladder)) {
+            player.body.velocity.y = -200;
+        }
+	},
 
 	// ========================================================================
 	// Checks if player touches the water, if it true, resetPlayer
@@ -449,26 +564,51 @@ Game.BossState.prototype = {
 	// ========================================================================
 
     stompButton: function () {
-        if (onButton) {
-            if (boss.frame != 3) {
-                player.body.velocity.x = -1000;
-                player.body.velocity.y = -400;
-                boss.frame += 1;
-                buttonStomp.play();
-            }
-            if (boss.frame == 1) {
-                this.lowerWaterA();
+		if (onButton) {
+			if (bossHP > 0) {
+				boss.frame = 1;
+				if (bossHP > 1) {
+					player.body.velocity.x = -1500;
+					player.body.velocity.y = -500;
+				} else {
+					player.body.velocity.x = -500;
+					player.body.velocity.y = -500;
+				}
+					bossHP -= 1;
+					buttonStomp.play();
+					bossAnimationTween.start();
+					// if (waterFloor.y == )
+			}
+			if (bossHP === 2) {
+				this.lowerWaterA();
 				score += bossAdd;
-            } else if (boss.frame == 2) {
-                this.lowerWaterB();
+
+				emitter1.on = true;
+				emitter2.on = true;
+
+				faucetTweenA.start();
+
+			} else if (bossHP === 1) {
+				this.lowerWaterB();
 				score += bossAdd;
 				finalBossScore = score;
-            } else if (boss.frame == 3) {
-                this.lowerWaterC();
+
+				emitter1.on = false;
+				emitter2.on = false;
+				emitter3.on = true;
+
+				faucetTweenB.start();
+
+			} else if (bossHP === 0) {
+				this.lowerWaterC();
 				score = finalBossScore + bossAdd;
-            }
-        }
-    },
+
+				emitter3.on = false;
+
+				faucetTweenC.start();
+			}
+		}
+	},
 
 	// ========================================================================
 	// SPRING FUNCTIONALITY
@@ -478,7 +618,7 @@ Game.BossState.prototype = {
 
     onSpring: function () {
         if (onSpring) {
-            player.body.velocity.x = 100;
+            player.body.velocity.x = 500;
             player.body.velocity.y = -800;
             springSound.play();
         }
@@ -505,9 +645,8 @@ Game.BossState.prototype = {
     lowerWaterC: function () {
         waterTweenC.start();
         platformTweenC.start();
-        springTweenC.start();
-        // game.state.start('win');
-        // this.camera.follow(player);
+		springTweenC.start();
+		this.camera.follow(player);
     },
 
 	// ========================================================================
@@ -518,6 +657,11 @@ Game.BossState.prototype = {
 
     checkOverlap: function (sprite1, sprite2) {
         return Phaser.Rectangle.intersects(sprite1.getBounds(), sprite2.getBounds());
-    }
-		
+	},
+	
+	winGame: function () {
+		if (waterFloor.world.y == 1080) {
+			game.state.start('Win');
+		}
+	}
 }
