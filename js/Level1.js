@@ -274,10 +274,10 @@ var rightTrue = false;
 var life;
 var lifeText;
 var gravityWorld = 1400; // NEW CONSTANT
-//var initX = 100;
-//var initY = 900;
-var initX = 15700;
-var initY = 560
+var initX = 100;
+var initY = 900;
+//var initX = 15700; // For testing
+//var initY = 560    // For testing
 var respawnX = 100; // NEW CONSTANT (until checkpoints)
 var respawnY = 900; // NEW CONSTANT (until checkpoints)
 
