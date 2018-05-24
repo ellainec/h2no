@@ -33,7 +33,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 		this.load.image('water', 'assets/water.png');
 		this.load.spritesheet('sprinkler', 'assets/sprinklerSprite.png', 64, 64);
-		this.load.image('sprinklerCollision', 'assets/sprinkler_on.png', 64, 64);
+		this.load.image('sprinklerCollision', 'assets/sprinkler_on.PNG', 64, 64);
 		this.load.image('clock', 'assets/clock.png');
 
 	  
@@ -62,7 +62,7 @@ Game.Preloader.prototype = {
 	    // THIS IS FOR NPC
 	    // ==========================
 
-		this.load.image('npc_b1', 'assets/npc_boy1.PNG');
+		this.load.image('npc_b1', 'assets/npc_boy1.png');
 		this.load.image('npc_b2', 'assets/npc_boy2.PNG');
 		this.load.image('npc_b3', 'assets/npc_boy3.PNG');
 		this.load.image('npc_g1', 'assets/npc_girl1.PNG');
