@@ -2,8 +2,8 @@
 
 @font-face {
 	font-family: 'press_start_2pregular';
-	src: url('../../font/pressstart2p-webfont.woff2') format('woff2'),
-	url('../../font/pressstart2p-webfont.woff') format('woff');
+	src: url('../../../font/pressstart2p-webfont.woff2') format('woff2'),
+	url('../../../font/pressstart2p-webfont.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -170,5 +170,5 @@ body
   padding-top: 50px;
   padding-bottom: 50px;
 	height: 50px;
-  font-size: 50pt;
+	font-size: 50pt;
 }
