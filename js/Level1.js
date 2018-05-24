@@ -681,14 +681,13 @@ Game.Level1.prototype = {
             }
             if (player.x > sprinkler2.x && currentSprinkler2 + 1 < sprinklerX2.length && player.body.velocity.x > 0) {
                 currentSprinkler2++;
-                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
             }
 
             if (player.x < sprinkler2.x && currentSprinkler2 > 0 && player.body.velocity.x < 0) {
                 currentSprinkler2--;
-                sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
             }
             repositionSprinkler(sprinkler2, sprinklerX2, sprinklerY2, currentSprinkler2);
+            sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
         }
 
 
@@ -795,7 +794,6 @@ Game.Level1.prototype = {
 
         sprinklerOn(sprinkler1, sprinklerHit1, currentSprinkler1);
         sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
-
     },
     // for checkpoint create checkx/y
 
