@@ -391,7 +391,8 @@ Game.Level1.prototype = {
         createNPC(game, 5536, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 242, 878, 'npc_b1', 200,
+		// 903 y to put cat on the ground
+        createNPC(game, 242, 873, 'smolcat', 200,
             "Why don't you make yourself useful and turn off some sprinklers huh?");
 
         createNPC(game, 3040, 814, 'npc_b2', 200,
