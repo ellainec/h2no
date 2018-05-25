@@ -121,7 +121,7 @@ Game.BossState.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeText = game.add.text(610, 40, timeLimit, {
+		timeText = game.add.text(610, 40, timeLimit.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -404,7 +404,7 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 
-        timeText.setText('Time: ' + timeLimit);
+        timeText.setText('Time: ' + timeLimit.value());
 		lifeText.setText('Lives: ' + lives.value());
 		scoreText.setText('Score: ' + score.value());
 		this.timeUp();
@@ -506,7 +506,7 @@ Game.BossState.prototype = {
 
 	// ========================================================================
     countdown: function(){
-        timeLimit--;
+        timeLimit.decrement();
     },
 		
 	// ========================================================================
@@ -515,7 +515,7 @@ Game.BossState.prototype = {
 
 	// ========================================================================
 	timeUp: function(){
-        if (timeLimit == 0 || timeLimit < 0) {
+        if (timeLimit.value() == 0 || timeLimit.value() < 0) {
             //change this to something else later, like gameover or minus one life
             timer.stop();
 			game.state.start('Gameover');

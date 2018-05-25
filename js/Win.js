@@ -21,7 +21,7 @@ Game.Win.prototype = {
 				});
 
         completeTotalScore = (function() {
-            var totalScore = (lives.value() * 100) + score.value() + (timeLimit * 10);
+            var totalScore = (lives.value() * 100) + score.value() + (timeLimit.value() * 10);
             function a() {
             }
             return {
@@ -41,7 +41,7 @@ Game.Win.prototype = {
 				fill: "#fff",
 				align: "center"
 		});
-		finalTimeText = game.add.text(400, 275, timeLimit, {
+		finalTimeText = game.add.text(400, 275, timeLimit.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -72,7 +72,7 @@ Game.Win.prototype = {
     update:function(){
 		finalLifeText.setText('Lives Left: ' + lives.value() + ' x 100');
 		finalScoreText.setText('Score: ' + score.value());
-		finalTimeText.setText('Time Life: ' + timeLimit + ' x 10');
+		finalTimeText.setText('Time Life: ' + timeLimit.value() + ' x 10');
 		completeTotalScoreText.setText('You Scored: ' + completeTotalScore.value());
 
     },

@@ -277,7 +277,7 @@ var easterButton;
 var chrisButton;
 
 //TIMER//
-var initTime = 300;
+//var initTime = 300;
 var timer;
 var timeLimit;
 var timeText;
@@ -474,8 +474,25 @@ Game.Level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeLimit = initTime;
-		timeText = game.add.text(610, 40, timeLimit, {
+        timeLimit = (function() {
+            var time = 300;
+            function tickTock(second) {
+                time -= second;
+            }
+            return {
+                decrement: function() {
+                    tickTock(1);
+                },
+                increment: function() {
+                    //clocks
+                    tickTock(-5);
+                },
+                value: function() {
+                    return time;
+                }
+            };
+        })();
+		timeText = game.add.text(610, 40, timeLimit.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -793,7 +810,7 @@ Game.Level1.prototype = {
         }
 
 
-            timeText.setText('Time: ' + timeLimit);
+            timeText.setText('Time: ' + timeLimit.value());
             lifeText.setText('Lives: ' + lives.value());
             scoreText.setText('Score: ' + score.value());
 
@@ -860,11 +877,11 @@ Game.Level1.prototype = {
     // for checkpoint create checkx/y
 
     countdown: function () {
-        timeLimit--;
+        timeLimit.decrement();
     },
 
     timeUp: function () {
-        if (timeLimit == 0 || timeLimit < 0) {
+        if (timeLimit.value() == 0 || timeLimit.value() < 0) {
             timer.stop();
 			game.state.start('Gameover');
         }
@@ -960,7 +977,7 @@ function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler
 }
 
 function collectClock(player, clock) {
-    timeLimit += 5;
+    timeLimit.increment();
     clock.kill();
 }
 
