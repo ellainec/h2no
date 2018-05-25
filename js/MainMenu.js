@@ -21,7 +21,7 @@ Game.MainMenu.prototype = {
 											game.world.centerY - 175,
 											180, 50,
 											function() {this.state.start('DailyLeaderboard');});
-		if (mobileDevice) {
+		if (!mobileDevice) {
             this.createPlayButton(game, "Play",
                 game.world.centerX,
                 game.world.centerY,
