@@ -127,7 +127,7 @@ Game.BossState.prototype = {
 				align: "center"
 		});
 		timeText.fixedToCamera = true;
-		lifeText = game.add.text(40, 40, life, {
+		lifeText = game.add.text(40, 40, lives.value(), {
 			font: "12pt press_start_2pregular",
 			fill: "#fff",
 			align: "center"
@@ -405,7 +405,7 @@ Game.BossState.prototype = {
 		// ========================================================================
 
         timeText.setText('Time: ' + timeLimit);
-		lifeText.setText('Lives: ' + life);
+		lifeText.setText('Lives: ' + lives.value());
 		scoreText.setText('Score: ' + score);
 		this.timeUp();
 		
@@ -531,9 +531,9 @@ Game.BossState.prototype = {
 		let resetX = 1080;
 		let resetY = 360;
         player.reset(resetX, resetY);
-		life--;
+		lives.decrement();
 	    console.log("died");
-	    if (life === 0) {
+	    if (lives.value() === 0) {
 		    game.state.start('Gameover');
 	    }
     },

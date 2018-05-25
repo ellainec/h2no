@@ -255,7 +255,7 @@ var jumpTimer = 0;
 var jumpTrue = false;
 var leftTrue = false;
 var rightTrue = false;
-var life;
+var lives;
 var lifeText;
 var gravityWorld = 1400; // NEW CONSTANT
 var initX = 100;
@@ -475,8 +475,22 @@ Game.Level1.prototype = {
 		timeText.fixedToCamera = true;
 
 		// LIFE // -- Die a certain amount of times before the game over screen pops up
-		life = 10;
-		lifeText = game.add.text(40, 40, life, {
+		lives = (function() {
+		    var life = 10;
+		    function decrease(val) {
+		        life -= val;
+            }
+            return {
+		        decrement: function() {
+                    decrease(1);
+                },
+                value: function() {
+		            return life;
+                }
+            };
+        })();
+
+		lifeText = game.add.text(40, 40, lives.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -758,7 +772,7 @@ Game.Level1.prototype = {
 
 
             timeText.setText('Time: ' + timeLimit);
-            lifeText.setText('Lives: ' + life);
+            lifeText.setText('Lives: ' + lives.value());
             scoreText.setText('Score: ' + score);
 
             this.timeUp();
@@ -794,9 +808,9 @@ Game.Level1.prototype = {
 	resetPlayer: function() {
 
         player.reset(respawnX, respawnY);
-        life--;
+        lives.decrement();
         console.log("died");
-        if (life === 0) {
+        if (lives.value() === 0) {
             game.state.start('Gameover');
         }
 
