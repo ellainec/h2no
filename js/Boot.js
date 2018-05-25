@@ -29,7 +29,7 @@ Game.Boot.prototype = {
         type: "POST",
         success: function (data) {
             console.log(data);
-            daily = data[0];
+            weekly = data[0];
             monthly = data[1];
             alltime = data[2];
         },

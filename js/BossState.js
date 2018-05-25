@@ -33,10 +33,10 @@ var springTweenC;
 var bossPlayerSpawnX;
 var bossPlayerSpawnY;
 
-var bossAdd = 1000;
+//var bossAdd = 1000;
 var bossAlive;
 
-var finalBossScore;
+//var finalBossScore;
 
 var emitter;
 var emitter2;
@@ -119,19 +119,19 @@ Game.BossState.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-		timeText = game.add.text(610, 40, timeLimit, {
+		timeText = game.add.text(610, 40, timeLimit.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
 		});
 		timeText.fixedToCamera = true;
-		lifeText = game.add.text(40, 40, life, {
+		lifeText = game.add.text(40, 40, lives.value(), {
 			font: "12pt press_start_2pregular",
 			fill: "#fff",
 			align: "center"
 		});
 		lifeText.fixedToCamera = true;
-		scoreText = game.add.text(300, 40, score, {
+		scoreText = game.add.text(300, 40, score.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -406,9 +406,9 @@ Game.BossState.prototype = {
 		
 		// ========================================================================
 
-        timeText.setText('Time: ' + timeLimit);
-		lifeText.setText('Lives: ' + life);
-		scoreText.setText('Score: ' + score);
+        timeText.setText('Time: ' + timeLimit.value());
+		lifeText.setText('Lives: ' + lives.value());
+		scoreText.setText('Score: ' + score.value());
 		this.timeUp();
 		
 		// ========================================================================
@@ -508,7 +508,7 @@ Game.BossState.prototype = {
 
 	// ========================================================================
     countdown: function(){
-        timeLimit--;
+        timeLimit.decrement();
     },
 		
 	// ========================================================================
@@ -517,7 +517,7 @@ Game.BossState.prototype = {
 
 	// ========================================================================
 	timeUp: function(){
-        if (timeLimit == 0 || timeLimit < 0) {
+        if (timeLimit.value() == 0 || timeLimit.value() < 0) {
             //change this to something else later, like gameover or minus one life
             timer.stop();
 			game.state.start('Gameover');
@@ -534,9 +534,9 @@ Game.BossState.prototype = {
 		let resetY = 360;
 		robotDeath.play();
         player.reset(resetX, resetY);
-		life--;
+		lives.decrement();
 	    console.log("died");
-	    if (life === 0) {
+	    if (lives.value() === 0) {
 		    game.state.start('Gameover');
 	    }
     },
@@ -585,7 +585,8 @@ Game.BossState.prototype = {
 			}
 			if (bossHP === 2) {
 				this.lowerWaterA();
-				score += bossAdd;
+				//score += bossAdd;
+				score.bossAdd();
 
 				emitter1.on = true;
 				emitter2.on = true;
@@ -594,8 +595,11 @@ Game.BossState.prototype = {
 
 			} else if (bossHP === 1) {
 				this.lowerWaterB();
-				score += bossAdd;
-				finalBossScore = score;
+				//score += bossAdd;
+                //finalBossScore = score;
+
+				score.bossAdd();
+				//finalBossScore = score.value();
 
 				emitter1.on = false;
 				emitter2.on = false;
@@ -605,8 +609,8 @@ Game.BossState.prototype = {
 
 			} else if (bossHP === 0) {
 				this.lowerWaterC();
-				score = finalBossScore + bossAdd;
-
+				//score = finalBossScore + bossAdd;
+                score.bossAdd();
 				emitter3.on = false;
 
 				faucetTweenC.start();
