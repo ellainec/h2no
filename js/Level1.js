@@ -283,7 +283,6 @@ var timeLimit;
 var timeText;
 
 // SCORE//
-var sprinklerAdd = 10;
 var score;
 var scoreText;
 
@@ -454,7 +453,7 @@ Game.Level1.prototype = {
 
         this.world.bringToTop(sprinklersGroup);
 
-        //RESET SPRINKLERS FOR GAME OVER 
+        //RESET SPRINKLERS FOR GAME OVER
         sprinklerHit1 = [false, false, false, false, false, false, false];
         currentSprinkler1 = 0;
 
@@ -506,8 +505,22 @@ Game.Level1.prototype = {
 		});
 		lifeText.fixedToCamera = true;
 		
-		score = 0;
-		scoreText = game.add.text(300, 40, score, {
+		score = (function() {
+            var score = 0;
+            function add(val) {
+                score += val;
+            }
+            return {
+                increment: function() {
+                    add(10);
+                },
+                value: function() {
+                    return score;
+                }
+            };
+        })();
+
+		scoreText = game.add.text(300, 40, score.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -664,7 +677,7 @@ Game.Level1.prototype = {
             if (!sprinkler.hit) {
                 sprinkler.hit = true;
                 sprinkler.emitter.on = false;
-                score += sprinklerAdd;
+                score.increment();
                 if ('emitter2' in sprinkler) {
                     sprinkler.emitter2.on = false;
                 }
@@ -782,7 +795,7 @@ Game.Level1.prototype = {
 
             timeText.setText('Time: ' + timeLimit);
             lifeText.setText('Lives: ' + lives.value());
-            scoreText.setText('Score: ' + score);
+            scoreText.setText('Score: ' + score.value());
 
             this.timeUp();
 

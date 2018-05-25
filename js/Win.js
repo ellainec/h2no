@@ -1,4 +1,4 @@
-var daily;
+var weekly;
 var monthly;
 var alltime;
 
@@ -19,14 +19,24 @@ Game.Win.prototype = {
 				function () {
 						this.state.start('DailyLeaderboard');
 				});
-		completeTotalScore = (life * 100) + score + (timeLimit * 10);
-		
-		finalLifeText = game.add.text(400, 225, life, {
+
+        completeTotalScore = (function() {
+            var totalScore = (lives.value() * 100) + score.value() + (timeLimit * 10);
+            function a() {
+            }
+            return {
+                value: function() {
+                    return totalScore;
+                }
+            };
+        })();
+
+		finalLifeText = game.add.text(400, 225, lives.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
 		});
-		finalScoreText = game.add.text(400, 250, score, {
+		finalScoreText = game.add.text(400, 250, score.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -36,18 +46,34 @@ Game.Win.prototype = {
 				fill: "#fff",
 				align: "center"
 		});
-		completeTotalScoreText = game.add.text(400, 300, completeTotalScore, {
+		completeTotalScoreText = game.add.text(400, 300, completeTotalScore.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
 		});
-        postScores();
+        (function() {
+            console.log("ajax");
+            $.ajax({
+                url: "db/postScore.php",
+                dataType: "json",
+                data: {name: playerName, score: completeTotalScore.value(), period:1},
+                type: "POST",
+                success: function(data) {
+                    weekly = data[0];
+                    monthly = data[1];
+                    alltime = data[2];
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.statusText);
+                }
+            });
+        })();
     },
     update:function(){
-		finalLifeText.setText('Lives Left: ' + life + ' x 100');
-		finalScoreText.setText('Score: ' + score);
+		finalLifeText.setText('Lives Left: ' + lives.value() + ' x 100');
+		finalScoreText.setText('Score: ' + score.value());
 		finalTimeText.setText('Time Life: ' + timeLimit + ' x 10');
-		completeTotalScoreText.setText('You Scored: ' + completeTotalScore);
+		completeTotalScoreText.setText('You Scored: ' + completeTotalScore.value());
 
     },
     createButton:function(game, string, x, y, w, h, callBack) {
@@ -65,21 +91,4 @@ Game.Win.prototype = {
 
         txt.anchor.setTo(0.5, 0.5);
     },
-}
-
-function postScores() {
-    $.ajax({
-        url: "db/postScore.php",
-        dataType: "json",
-        data: {name: playerName, score: completeTotalScore, period:1},
-        type: "POST",
-        success: function(data) {
-            daily = data[0];
-            monthly = data[1];
-            alltime = data[2];
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.statusText);
-        }
-    });
 };

@@ -27,7 +27,7 @@ Game.MonthlyLeaderboard.prototype = {
             }
         }
 
-       this.createButton(game, "Daily",
+       this.createButton(game, "Weekly",
             100, 80,
             140, 25,
             function () {

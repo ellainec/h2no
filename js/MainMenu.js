@@ -9,7 +9,21 @@ Game.MainMenu = function(game) {
 
 Game.MainMenu.prototype = {
     preload:function(){
-       postScores();
+        (function() {
+            $.ajax({
+                url: "db/postScore.php",
+                dataType: "json",
+                type: "POST",
+                success: function(data) {
+                    weekly = data[0];
+                    monthly = data[1];
+                    alltime = data[2];
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.statusText);
+                }
+            });
+        })();
         if (!game.device.desktop) {
             mobileDevice = true;
         }

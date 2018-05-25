@@ -133,7 +133,7 @@ Game.BossState.prototype = {
 			align: "center"
 		});
 		lifeText.fixedToCamera = true;
-		scoreText = game.add.text(300, 40, score, {
+		scoreText = game.add.text(300, 40, score.value(), {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -406,7 +406,7 @@ Game.BossState.prototype = {
 
         timeText.setText('Time: ' + timeLimit);
 		lifeText.setText('Lives: ' + lives.value());
-		scoreText.setText('Score: ' + score);
+		scoreText.setText('Score: ' + score.value());
 		this.timeUp();
 		
 		// ========================================================================
