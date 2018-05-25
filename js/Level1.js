@@ -454,6 +454,15 @@ Game.Level1.prototype = {
 
         this.world.bringToTop(sprinklersGroup);
 
+        //RESET SPRINKLERS FOR GAME OVER 
+        sprinklerHit1 = [false, false, false, false, false, false, false];
+        currentSprinkler1 = 0;
+
+        sprinklerHit1b = [false, false, false];
+        currentSprinkler1b = 0;
+
+        sprinklerHit2 = [false, false, false, false, false, false, false, false];
+        currentSprinkler2 = 0;
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
