@@ -47,13 +47,13 @@ Game.AllTimeLeaderboard.prototype = {
                 this.state.start("AllTimeLeaderboard");
             });
 		    if (gameover) {
-					this.createMainButton(game, "Play Again", 
-															 700, 25, 180, 50,
-															 function() {this.state.start('Level1');});
+				this.createMainButton(game, "Play Again",
+									  700, 25, 180, 50, 
+									  function() {this.state.start('Level1');});
 				} else {
-					this.createMainButton(game, "Main menu", 
-																700, 25, 180, 50,	
-																function () {this.state.start('MainMenu');});
+					this.createMainButton(game, "Main menu",
+										  700, 25, 180, 50,
+										  function () {this.state.start('MainMenu');});
 				}
 		
 
