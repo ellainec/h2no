@@ -293,9 +293,10 @@ var clockAdd = 10;
 var easterEggReward;
 
 // SOUND EFFECTS
-var jumpSound = null;
-var robotDeath = null;
-var buttonStomp = null;
+var jumpSound;
+var robotDeath;
+var buttonStomp;
+var clockGetSound;
 
 //TEST SPRINKLERS//
 var sprinklerX = [557, 1588];
@@ -389,27 +390,27 @@ Game.Level1.prototype = {
         npcGroup = game.add.group();
 
         //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
-        createNPC(game, 7855, 800, 'chris', 200,
+        createNPC(game, 5536, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 200, 880, 'npc_b1', 200,
+        createNPC(game, 242, 878, 'npc_b1', 200,
             "Why don't you make yourself useful and turn off some sprinklers huh?");
 
-        createNPC(game, 3745, 550, 'npc_b2', 200,
+        createNPC(game, 3040, 814, 'npc_b2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 5555, 880, 'npc_b3', 300,
+        createNPC(game, 3424, 558, 'npc_b3', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 700, 880, 'npc_g1', 200,
+        createNPC(game, 4448, 814, 'npc_g1', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 900, 900, 'npc_g2', 200,
+        createNPC(game, 5920, 398, 'npc_g2', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 1000, 900, 'npc_g3', 200,
+        createNPC(game, 6304, 814, 'npc_g3', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         // NPC END //=========================================================================================================================================
@@ -567,18 +568,20 @@ Game.Level1.prototype = {
 		// CLOCKS //
 		clocks = game.add.group();
 		clocks.enableBody = true;
-		this.createClock(300, 300);
-		this.createClock(500, 300);
-		this.createClock(900, 300);
+		this.createClock(3584, 416);
+		this.createClock(4896, 352);
+		this.createClock(6272, 352);
+		this.createClock(6432, 480);
+		this.createClock(7488, 512);
 
         // =======================================================================================================================================
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		cat1 = new Cat(3, game, 11150, 174);
+		cat1 = new Cat(3, game, 8032, 590);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 7830, 814);
+		cat2 = new Cat(3, game, 5510, 814);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -600,6 +603,9 @@ Game.Level1.prototype = {
 
         // AUDIO STUFF
         jumpSound = this.add.audio('jump');
+        robotDeath = this.add.audio('robotDeath');
+        buttonStomp = this.add.audio('buttonStomp');
+        clockGetSound = this.add.audio('clockGet');
 
     },
 
@@ -611,7 +617,7 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, mainLayer);
         //this.physics.arcade.collide(npcGroup, mainLayer);
         //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
-        //this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -671,6 +677,7 @@ Game.Level1.prototype = {
                 if ('emitter2' in sprinkler) {
                     sprinkler.emitter2.on = false;
                 }
+                buttonStomp.play();
                 sprinkler.animations.frame = 1;
                 sprinkler.body.setSize(16, 8, 25, 18);
                 sprinkler.sprinklerCollision.kill();
@@ -824,7 +831,7 @@ Game.Level1.prototype = {
 
     },
 	resetPlayer: function() {
-
+        robotDeath.play();
         player.reset(respawnX, respawnY);
         life--;
         console.log("died");
@@ -918,7 +925,7 @@ function jumpNow() {
         if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed / 2)) {
             player.body.velocity.y -= Jump2;
         } else {
-            player.body.velocity.y -= Jump1;
+            player.body.velocity.y -= Jump2;
         }
         jumpTimer = game.time.now + 500;
     }
@@ -958,7 +965,8 @@ function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler
 }
 
 function collectClock(player, clock) {
-    timeLimit += 5;
+    clockGetSound.play();
+    timeLimit += 15;
     clock.kill();
 }
 
@@ -967,7 +975,7 @@ function findCat() {
         tweenCatFound.start();
         easterEggReward = true;
         npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y, 340,
-            "Thanks for finding my cat! I am also a cat lover. But I'm also a Java Developer. And I'm a bearded man! Isn't polymorphism COOL?" +
+            "Thanks for finding my cat! I am a cat lover, but I'm also a Java Developer, and I'm a bearded man! Isn't polymorphism COOL?" +
             "I love beards.. I think you would look GREAT with one. Here, have this!");
     }
 }
