@@ -54,7 +54,7 @@ Game.Win.prototype = {
         (function() {
             console.log("ajax");
             $.ajax({
-                url: "db/postScore.php",
+                url: "../db/postScore.php",
                 dataType: "json",
                 data: {name: playerName, score: completeTotalScore.value(), period:1},
                 type: "POST",
