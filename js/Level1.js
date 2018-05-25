@@ -365,8 +365,6 @@ Game.Level1.prototype = {
 		this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
 		this.joystick = this.gamepad.addJoystick(100, 325, 1, 'gamepad');
 		this.button = this.gamepad.addButton(700, 325, 0.8, 'gamepad');
-
-
 		}
 
         // =======================================================================================================================================

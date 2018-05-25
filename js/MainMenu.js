@@ -1,4 +1,5 @@
 var gameover;
+var mobileDevice = false;
 Game.MainMenu = function(game) {
     
     
@@ -9,6 +10,9 @@ Game.MainMenu = function(game) {
 Game.MainMenu.prototype = {
     preload:function(){
        postScores();
+        if (!game.device.desktop) {
+            mobileDevice = true;
+        }
     },
 	create:function(game) {
 
@@ -17,13 +21,25 @@ Game.MainMenu.prototype = {
 											game.world.centerY - 175,
 											180, 50,
 											function() {this.state.start('DailyLeaderboard');});
-
-		this.createPlayButton(game, "Play", 
+		if (mobileDevice) {
+            this.createPlayButton(game, "Play",
+                game.world.centerX,
+                game.world.centerY,
+                300, 100,
+                function() {this.state.start('DailyLeaderboard');});
+		} else {
+            this.createPlayButton(game, "Play",
+                game.world.centerX,
+                game.world.centerY,
+                300, 100,
+                function() {this.state.start('Level1');});
+		}
+		/*this.createPlayButton(game, "Play",
 											game.world.centerX, 
 											game.world.centerY, 
 											300, 100, 
 											function() {this.state.start('Level1');});
-
+*/
 		//titleScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'titleScreen');
 		//titleScreen.anchor.setTo(0.5, 0.5);
 		gameover = false;
