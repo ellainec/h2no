@@ -316,9 +316,6 @@ Game.Level1.prototype = {
 		console.log(easterEggReward);
         game.time.advancedTiming = true;
 
-        //ellaine - RESET SPRINKLERS (THIS IS BASICALLY NEEDED AFTER GAME OVER OR CONGRATS STATE)
-        currentSprinkler1 = 0;
-        currentSprinkler2 = 0;
 
         
         // =======================================================================================================================================
