@@ -316,6 +316,10 @@ Game.Level1.prototype = {
 		console.log(easterEggReward);
         game.time.advancedTiming = true;
 
+        //ellaine - RESET SPRINKLERS (THIS IS BASICALLY NEEDED AFTER GAME OVER OR CONGRATS STATE)
+        currentSprinkler1 = 0;
+        currentSprinkler2 = 0;
+
         
         // =======================================================================================================================================
         //                                   MAP VARIABLES START
@@ -790,7 +794,7 @@ Game.Level1.prototype = {
 		// UNCOMMENT TO SHOW FPS
         //game.debug.text(game.time.fps, 10, 10, "#000000");
 		// UNCOMMENT TO SHOW PLAYER INFO
-		game.debug.spriteInfo(player, 32, 48);
+		// game.debug.spriteInfo(player, 32, 48);
 
     },
 
@@ -804,7 +808,7 @@ Game.Level1.prototype = {
             game.state.start('Gameover');
         }
 
-        //ellaine - RESET SPRINKLERS
+        //ellaine - RESET SPRINKLERS (keep this)
         currentSprinkler1 = 0;
         currentSprinkler2 = 0;
 
