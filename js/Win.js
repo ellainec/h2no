@@ -52,11 +52,12 @@ Game.Win.prototype = {
 				align: "center"
 		});
         (function() {
+            var tempScore = completeTotalScore.value()
             console.log("ajax");
             $.ajax({
                 url: "../db/postScore.php",
                 dataType: "json",
-                data: {name: playerName, score: completeTotalScore.value(), period:1},
+                data: {name: playerName, score: tempScore, period:1},
                 type: "POST",
                 success: function(data) {
                     weekly = data[0];
