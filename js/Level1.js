@@ -303,6 +303,13 @@ var sprinklerY = [904 + 12, 840 + 12];
 var currentSprinklerPosition = 0;
 var currentSprinkler;
 
+// CHECKPOINT
+var checkPoint;
+var checkPointX;
+var checkPointY;
+var activatedCP;
+var activateCount;
+
 // ==================================
 // CREATE FUNCTION BELOW
 // ==================================
@@ -405,7 +412,18 @@ Game.Level1.prototype = {
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         // NPC END //=========================================================================================================================================
-
+		
+		// checkpoint
+		checkPointX = 7775;
+		checkPointY = 848;
+		checkPoint = this.add.sprite(checkPointX, checkPointY,'checkPoint');
+		checkPoint.anchor.setTo(0.5, 0.5);
+		checkPoint.scale.setTo(0.5, 0.5);
+		activatedCP = false;
+		activateCount = 0;
+		
+		checkPoint.animations.add('sleep', [1], 10);
+		checkPoint.animations.add('activate', [1, 2, 3, 4, 5, 6, 7, 8], 10, false);
 
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES START
@@ -427,6 +445,9 @@ Game.Level1.prototype = {
         player.animations.add('idle', [4], 10, true);
         player.animations.add('left', [0, 1, 2, 3], 10, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
+		
+		respawnX = 100; //(until checkpoint)
+		respawnY = 900; //(until checkpoint)
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES END
         //====================================================================================================================================
@@ -538,8 +559,8 @@ Game.Level1.prototype = {
 									   600, 350, 100, 50,
 									   function () {player.x = 7855
 													player.y = 800;});
-		*/
 		
+		*/
 		// =========================================
 
 		// CLOCKS //
@@ -782,6 +803,14 @@ Game.Level1.prototype = {
 		if (player.y >= 1050) {
 			this.resetPlayer();
 		}
+		
+		if (player.x >= checkPointX && activateCount == 0) {
+			this.activateCheckPoint(7840, 800);
+			if (activatedCP && activateCount == 0) {
+				checkPoint.animations.play('activate');
+				activateCount = 1;
+			}
+		}
 
     },
 
@@ -793,8 +822,6 @@ Game.Level1.prototype = {
 		//game.debug.spriteInfo(player, 32, 48);
 
     },
-
-    
 	resetPlayer: function() {
 
         player.reset(respawnX, respawnY);
@@ -815,7 +842,12 @@ Game.Level1.prototype = {
         sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
     },
     // for checkpoint create checkx/y
-
+	activateCheckPoint: function(x, y) {
+		respawnX = x;
+		respawnY = y;
+		
+		activatedCP = true;
+	},
     // creating buttons
     createButton: function (game, imgString, x, y, w, h, callBack) {
         var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
@@ -824,9 +856,6 @@ Game.Level1.prototype = {
         button1.height = h;
 
     },
-	
-    // for checkpoint create checkx/y
-
     countdown: function () {
         timeLimit--;
     },
