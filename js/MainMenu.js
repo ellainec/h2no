@@ -32,7 +32,7 @@ Game.MainMenu.prototype = {
                 game.world.centerX,
                 game.world.centerY,
                 300, 100,
-                function() {this.state.start('BossState');});
+                function() {this.state.start('Level1');});
 		}
 		/*this.createPlayButton(game, "Play",
 											game.world.centerX, 
