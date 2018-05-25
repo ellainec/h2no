@@ -50,7 +50,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('spring', '../assets/spring.png', 64, 64);
 
 		this.load.spritesheet('dude', '../assets/img/dude.png', 32, 48);
-		this.load.spritesheet('faucet', '../assets/faucet.png', 320, 320);
+		this.load.spritesheet('faucet', '../assets/faucet.PNG', 320, 320);
 		this.load.image('tileSheet', '../assets/tiles/h2no_boss.png');
 		this.load.tilemap('boss_map', '../assets/tilemaps/maps/level1_boss_v4.json', null, Phaser.Tilemap.TILED_JSON);
 

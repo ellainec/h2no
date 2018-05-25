@@ -24,7 +24,7 @@
 		<script text= "text/javascript" src="../js/AllTimeLeaderboard.js"></script>
 
 		<script text= "text/javascript" src="../js/phaser-plugin-virtual-gamepad.js"></script>
-  </head>
+    </head>
     
 	<body>
 		<div id="top">
@@ -47,24 +47,21 @@
 				<script text= "text/javascript" src="../js/SetUp.js"></script>
 			</div>
 		</div>
-	<script>
+		<script>
+			var submitButton = document.getElementById("submitButton");
 
-		var submitButton = document.getElementById("submitButton");
-
-		submitButton.onclick = function() {
-			var nameInput = document.getElementById("name").value.trim();
-			var resetText = document.getElementById("myForm");
-			if (nameInput === "") {
+			submitButton.onclick = function() {
+				var nameInput = document.getElementById("name").value.trim();
+				var resetText = document.getElementById("myForm");
+				if (nameInput === "") {
 					alert("Please Enter Your Name");
 					resetText.reset();
 				} else {
 					sessionStorage.setItem("playerName", nameInput);
 					document.getElementById("coverup").classList.add("hide");
 				}
-		}
-
-
-	</script>
+			}
+		</script>
     
 		<script>
 			$(document).ready(resize());
