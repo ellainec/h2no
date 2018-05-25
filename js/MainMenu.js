@@ -26,7 +26,7 @@ Game.MainMenu.prototype = {
                 game.world.centerX,
                 game.world.centerY,
                 300, 100,
-                function() {this.state.start('DailyLeaderboard');});
+                function() {this.state.start('Level1mobile');});
 		} else {
             this.createPlayButton(game, "Play",
                 game.world.centerX,

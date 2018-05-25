@@ -110,80 +110,6 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.outOfBoundsKill = true;
 
 };
-createSprinkler3 = function (index, game, x, y) {
-    var thisSprinkler3 = sprinklersGroup.create(x, y, 'sprinkler');
-
-    game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
-
-    //hit
-    thisSprinkler3.hit = false;
-    thisSprinkler3.name = index.toString();
-    thisSprinkler3.anchor.setTo(0.5, 0.6);
-    thisSprinkler3.scale.setTo(0.5, 0.5);
-    thisSprinkler3.body.immovable = true;
-    thisSprinkler3.body.allowGravity = false;
-    thisSprinkler3.body.collideWorldBounds = true;
-
-    // Sets the Collision Size
-    thisSprinkler3.body.setSize(16, 8, 25, 6);
-    // Sprinkler Sprite Animation
-    thisSprinkler3.animations.add([0], 1, true);
-    var box = boxGroup.create(x, y+5, 'sprinklerCollision');
-    thisSprinkler3.sprinklerCollision = box;
-
-    // Emitter
-    thisSprinkler3.emitter = game.add.emitter(x, y);
-    thisSprinkler3.emitter2 = game.add.emitter(x, y);
-
-    thisSprinkler3.emitter.makeParticles('water', 0, 190, true);
-    thisSprinkler3.emitter.start(false, 10, 10);
-
-    thisSprinkler3.emitter2.makeParticles('water', 0, 190, true);
-    thisSprinkler3.emitter2.start(false, 10, 10);
-
-    thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter.minParticleScale = 0.3;
-    thisSprinkler3.emitter.maxParticleScale = 0.5;
-    thisSprinkler3.emitter.lifespan = 3200;
-
-    thisSprinkler3.emitter2.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter2.minParticleScale = 0.3;
-    thisSprinkler3.emitter2.maxParticleScale = 0.5;
-    thisSprinkler3.emitter2.lifespan = 3200;
-
-    thisSprinkler3.emitter.setYSpeed(-575, -565);
-    thisSprinkler3.emitter.gravity = 1800;
-    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 350;
-
-    thisSprinkler3.emitter2.setYSpeed(-575, -565);
-    thisSprinkler3.emitter2.gravity = 1800;
-    thisSprinkler3.emitter2.emitX = thisSprinkler3.x - 100;
-
-
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
-
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 350 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
-
-
-    thisSprinkler3.emitter.name = index.toString();
-
-    // Sprinkler Collision Physics
-    game.physics.arcade.enable(thisSprinkler3.sprinklerCollision, Phaser.Physics.ARCADE);
-    thisSprinkler3.sprinklerCollision.name = index.toString();
-    thisSprinkler3.sprinklerCollision.anchor.setTo(0.5, 0.4);
-    thisSprinkler3.sprinklerCollision.scale.setTo(0.45, 0.4);
-    thisSprinkler3.sprinklerCollision.body.immovable = true;
-    thisSprinkler3.sprinklerCollision.body.allowGravity = false;
-    thisSprinkler3.sprinklerCollision.body.collideWorldBounds = true;
-
-    //Sets the Sprinkler Boundary to invisible
-    thisSprinkler3.sprinklerCollision.alpha = 0;
-
-    thisSprinkler3.emitter.checkWorldBounce = true;
-    thisSprinkler3.emitter.outOfBoundsKill = true;
-
-
-};
 
 
 // =======================================================================================================================================
@@ -235,7 +161,7 @@ var currentSprinkler2 = 0;
 
 
 
-Game.Level1 = function (game) {
+Game.Level1mobile = function (game) {
 
 };
 
@@ -307,7 +233,7 @@ var currentSprinkler;
 // CREATE FUNCTION BELOW
 // ==================================
 
-Game.Level1.prototype = {
+Game.Level1mobile.prototype = {
 
     create: function (game) {
         //DEBUG
@@ -446,13 +372,12 @@ Game.Level1.prototype = {
         createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
         sprinkler2 = sprinklersGroup.children[2];
 
-        createSprinkler3(1, game, 4950, 840 + 12);
-		
-        createSprinkler3(1, game, 14140, 840 + 12);
 
     
 
         this.world.bringToTop(sprinklersGroup);
+        //this.world.bringToTop(sprinklersGroup2);
+        //this.world.bringToTop(sprinklersGroup3);
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
@@ -598,9 +523,6 @@ Game.Level1.prototype = {
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
             var sprinkler = sprinklersGroup.children[i];
             this.physics.arcade.overlap(player, sprinkler.emitter, this.resetPlayer);
-            if ('emitter2' in sprinkler) {
-                this.physics.arcade.overlap(player, sprinkler.emitter2, this.resetPlayer);
-            }
         }
 
         /////////////////////
@@ -609,15 +531,6 @@ Game.Level1.prototype = {
         for (var i = 0; i < npcGroup.children.length; i++) {
             npcGroup.children[i].body.velocity.x = 0;
         }
-
-        /* ellaine
-        for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
-            var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-            this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
-        }
-        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
@@ -642,9 +555,6 @@ Game.Level1.prototype = {
                 sprinkler.hit = true;
                 sprinkler.emitter.on = false;
                 score += sprinklerAdd;
-                if ('emitter2' in sprinkler) {
-                    sprinkler.emitter2.on = false;
-                }
                 sprinkler.animations.frame = 1;
                 sprinkler.body.setSize(16, 8, 25, 18);
                 sprinkler.sprinklerCollision.kill();
