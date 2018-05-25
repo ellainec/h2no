@@ -106,8 +106,6 @@ Game.BossState.prototype = {
 		// ========================================================================
 		
 		jumpSound = this.add.audio('jump');
-        smallJumpSound = this.add.audio('jumpSmall');
-        bigJumpSound = this.add.audio('jumpBig');
         robotDeath = this.add.audio('robotDeath');
         buttonStomp = this.add.audio('buttonStomp');
         springSound = this.add.audio('spring');
@@ -239,9 +237,11 @@ Game.BossState.prototype = {
 		bossHP = 3;
 
 		// Spring
-        spring = this.add.sprite(1616, 200, 'spring');
+        spring = this.add.sprite(1608, 100, 'spring');
         this.physics.arcade.enable(spring, Phaser.Physics.ARCADE);
-        spring.body.immovable = true;
+		spring.body.immovable = true;
+		spring.width = 48;
+		spring.height = 48;
 
 		// Water Floor
         waterFloor = this.add.sprite(1070, 480, 'cyan');
@@ -286,11 +286,13 @@ Game.BossState.prototype = {
 
 		bossAnimationTween = this.add.tween(boss).to({frame: 0}, 1000, Phaser.Easing.Linear.In, false, 1000);
 
-        springTweenA = this.add.tween(spring).to({y: waterFloor.world.y + 14}, 2000, Phaser.Easing.Bounce.Out, false, 2000);
+		springAnimationTween = this.add.tween(spring).to({frame: 0}, 1000, Phaser.Easing.Linear.In, false, 1000);
+
+        springTweenA = this.add.tween(spring).to({y: waterFloor.world.y - 2}, 2000, Phaser.Easing.Bounce.Out, false, 2000);
 		
-        springTweenB = this.add.tween(spring).to({y: waterFloor.world.y + 114}, 2000, Phaser.Easing.Linear.In, false, 500);
+        springTweenB = this.add.tween(spring).to({y: waterFloor.world.y + 98}, 2000, Phaser.Easing.Linear.In, false, 500);
 		
-        springTweenC = this.add.tween(spring).to({y: waterFloor.world.y + 264 + 300}, 3000, Phaser.Easing.Linear.In, false, 500);
+        springTweenC = this.add.tween(spring).to({y: waterFloor.world.y + 264 + 286}, 3000, Phaser.Easing.Linear.In, false, 500);
 		
 		cameraLockTween = this.add.tween(this.camera).to({x: 1056, y: 300}, 1000, Phaser.Easing.Linear.In, false, 0);
 
@@ -366,10 +368,10 @@ Game.BossState.prototype = {
 					jumpSound.play();
 				} else if (Math.abs(player.body.velocity.x) == 175) {
 					player.body.velocity.y = -300;
-					bigJumpSound.play();
+					jumpSound.play();
 				} else {
 					player.body.velocity.y = -250;
-					smallJumpSound.play();
+					jumpSound.play();
 				}
             }
 			if (this.joystick.properties.left 
@@ -468,10 +470,10 @@ Game.BossState.prototype = {
 					jumpSound.play();
 				} else if (Math.abs(player.body.velocity.x) == 175) {
 					player.body.velocity.y = -300;
-					bigJumpSound.play();
+					jumpSound.play();
 				} else {
 					player.body.velocity.y = -250;
-					smallJumpSound.play();
+					jumpSound.play();
 				}
 			}
 		}
@@ -530,6 +532,7 @@ Game.BossState.prototype = {
     resetPlayer: function () {
 		let resetX = 1080;
 		let resetY = 360;
+		robotDeath.play();
         player.reset(resetX, resetY);
 		life--;
 	    console.log("died");
@@ -619,9 +622,11 @@ Game.BossState.prototype = {
 
     onSpring: function () {
         if (onSpring) {
+			springSound.play();
+			spring.frame = 1;
             player.body.velocity.x = 500;
             player.body.velocity.y = -800;
-            springSound.play();
+			springAnimationTween.start();
         }
     },
 
