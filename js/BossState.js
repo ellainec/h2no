@@ -33,10 +33,10 @@ var springTweenC;
 var bossPlayerSpawnX;
 var bossPlayerSpawnY;
 
-var bossAdd = 1000;
+//var bossAdd = 1000;
 var bossAlive;
 
-var finalBossScore;
+//var finalBossScore;
 
 var emitter;
 var emitter2;
@@ -582,7 +582,8 @@ Game.BossState.prototype = {
 			}
 			if (bossHP === 2) {
 				this.lowerWaterA();
-				score += bossAdd;
+				//score += bossAdd;
+				score.bossAdd();
 
 				emitter1.on = true;
 				emitter2.on = true;
@@ -591,8 +592,11 @@ Game.BossState.prototype = {
 
 			} else if (bossHP === 1) {
 				this.lowerWaterB();
-				score += bossAdd;
-				finalBossScore = score;
+				//score += bossAdd;
+                //finalBossScore = score;
+
+				score.bossAdd();
+				//finalBossScore = score.value();
 
 				emitter1.on = false;
 				emitter2.on = false;
@@ -602,8 +606,8 @@ Game.BossState.prototype = {
 
 			} else if (bossHP === 0) {
 				this.lowerWaterC();
-				score = finalBossScore + bossAdd;
-
+				//score = finalBossScore + bossAdd;
+                score.bossAdd();
 				emitter3.on = false;
 
 				faucetTweenC.start();

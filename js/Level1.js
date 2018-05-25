@@ -533,6 +533,9 @@ Game.Level1.prototype = {
                 },
                 value: function() {
                     return score;
+                },
+                bossAdd: function() {
+                    add(1000);
                 }
             };
         })();
