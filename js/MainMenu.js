@@ -48,14 +48,6 @@ Game.MainMenu.prototype = {
                 300, 100,
                 function() {this.state.start('Level1');});
 		}
-		/*this.createPlayButton(game, "Play",
-											game.world.centerX, 
-											game.world.centerY, 
-											300, 100, 
-											function() {this.state.start('Level1');});
-*/
-		//titleScreen = game.add.sprite(game.world.centerX, game.world.centerY, 'titleScreen');
-		//titleScreen.anchor.setTo(0.5, 0.5);
 		gameover = false;
 
 	}, 

@@ -376,8 +376,6 @@ Game.Level1mobile.prototype = {
     
 
         this.world.bringToTop(sprinklersGroup);
-        //this.world.bringToTop(sprinklersGroup2);
-        //this.world.bringToTop(sprinklersGroup3);
 
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
@@ -435,48 +433,6 @@ Game.Level1mobile.prototype = {
         //=========================================================================================================================================
 
 
-		
-		// =====================================
-		
-		
-		// THIS BOSS BUTTON IS FOR TESTING PURPOSES -- 
-		// WILL BE REMOVED FROM OFFICIAL GAME
-		
-		
-		// =======================================
-		
-		/*
-	    bossButton = this.createButton(game, "Boss", 
-									   400, 350, 100, 50,
-									   function () {this.state.start('BossState');});
-		*/
-		
-		// =========================================
-		
-		// =====================================
-		
-		
-		// THIS EASTEREGG BUTTON IS FOR TESTING PURPOSES -- 
-		// WILL BE REMOVED FROM OFFICIAL GAME
-		
-		
-		// =======================================
-		
-		/*
-	    easterButton = this.createButton(game, "Cat", 
-									   200, 350, 100, 50,
-									   function () {player.x = 11000;
-												    player.y = 0;});
-		*/
-		
-		/*
-		chrisButton = this.createButton(game, "Owner", 
-									   600, 350, 100, 50,
-									   function () {player.x = 7855
-													player.y = 800;});
-		*/
-		
-		// =========================================
 
 		// CLOCKS //
 		clocks = game.add.group();
@@ -523,10 +479,6 @@ Game.Level1mobile.prototype = {
 
     update: function () {
         this.physics.arcade.collide(player, mainLayer);
-        //this.physics.arcade.collide(npcGroup, mainLayer);
-        //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
-        //this.physics.arcade.overlap(player, clocks, collectClock, null, this);
-
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
         //=========================================================================================================================================
