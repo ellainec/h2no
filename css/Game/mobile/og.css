@@ -22,6 +22,7 @@ body
 }
 
 #top {
+	height: 50px;
 	width: 90vw;
 	margin: auto;
 }
@@ -67,6 +68,7 @@ a:hover {
 
 #container {
     position: relative;
+	
 }
 
 .hide {
