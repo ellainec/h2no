@@ -11,7 +11,7 @@ Game.MainMenu.prototype = {
     preload:function(){
         (function() {
             $.ajax({
-                url: "../db/postScore.php",
+                url: "/db/postScore.php",
                 dataType: "json",
                 type: "POST",
                 success: function(data) {
