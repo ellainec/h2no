@@ -110,80 +110,6 @@ createSprinkler2 = function (index, game, x, y) {
     thisSprinkler2.emitter.outOfBoundsKill = true;
 
 };
-createSprinkler3 = function (index, game, x, y) {
-    var thisSprinkler3 = sprinklersGroup.create(x, y, 'sprinkler');
-
-    game.physics.enable(thisSprinkler3, Phaser.Physics.ARCADE);
-
-    //hit
-    thisSprinkler3.hit = false;
-    thisSprinkler3.name = index.toString();
-    thisSprinkler3.anchor.setTo(0.5, 0.6);
-    thisSprinkler3.scale.setTo(0.5, 0.5);
-    thisSprinkler3.body.immovable = true;
-    thisSprinkler3.body.allowGravity = false;
-    thisSprinkler3.body.collideWorldBounds = true;
-
-    // Sets the Collision Size
-    thisSprinkler3.body.setSize(16, 8, 25, 6);
-    // Sprinkler Sprite Animation
-    thisSprinkler3.animations.add([0], 1, true);
-    var box = boxGroup.create(x, y+5, 'sprinklerCollision');
-    thisSprinkler3.sprinklerCollision = box;
-
-    // Emitter
-    thisSprinkler3.emitter = game.add.emitter(x, y);
-    thisSprinkler3.emitter2 = game.add.emitter(x, y);
-
-    thisSprinkler3.emitter.makeParticles('water', 0, 190, true);
-    thisSprinkler3.emitter.start(false, 10, 10);
-
-    thisSprinkler3.emitter2.makeParticles('water', 0, 190, true);
-    thisSprinkler3.emitter2.start(false, 10, 10);
-
-    thisSprinkler3.emitter.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter.minParticleScale = 0.3;
-    thisSprinkler3.emitter.maxParticleScale = 0.5;
-    thisSprinkler3.emitter.lifespan = 3200;
-
-    thisSprinkler3.emitter2.y = thisSprinkler3.y + 7;
-    thisSprinkler3.emitter2.minParticleScale = 0.3;
-    thisSprinkler3.emitter2.maxParticleScale = 0.5;
-    thisSprinkler3.emitter2.lifespan = 3200;
-
-    thisSprinkler3.emitter.setYSpeed(-575, -565);
-    thisSprinkler3.emitter.gravity = 1800;
-    thisSprinkler3.emitter.emitX = thisSprinkler3.x - 350;
-
-    thisSprinkler3.emitter2.setYSpeed(-575, -565);
-    thisSprinkler3.emitter2.gravity = 1800;
-    thisSprinkler3.emitter2.emitX = thisSprinkler3.x - 100;
-
-
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter).to( { emitX: thisSprinkler3.x - 100 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
-
-    thisSprinkler3.game.add.tween(thisSprinkler3.emitter2).to( { emitX: thisSprinkler3.x - 350 }, 1450, Phaser.Easing.Back.InOut, true, 0, Number.MAX_VALUE, true);
-
-
-    thisSprinkler3.emitter.name = index.toString();
-
-    // Sprinkler Collision Physics
-    game.physics.arcade.enable(thisSprinkler3.sprinklerCollision, Phaser.Physics.ARCADE);
-    thisSprinkler3.sprinklerCollision.name = index.toString();
-    thisSprinkler3.sprinklerCollision.anchor.setTo(0.5, 0.4);
-    thisSprinkler3.sprinklerCollision.scale.setTo(0.45, 0.4);
-    thisSprinkler3.sprinklerCollision.body.immovable = true;
-    thisSprinkler3.sprinklerCollision.body.allowGravity = false;
-    thisSprinkler3.sprinklerCollision.body.collideWorldBounds = true;
-
-    //Sets the Sprinkler Boundary to invisible
-    thisSprinkler3.sprinklerCollision.alpha = 0;
-
-    thisSprinkler3.emitter.checkWorldBounce = true;
-    thisSprinkler3.emitter.outOfBoundsKill = true;
-
-
-};
 
 
 // =======================================================================================================================================
@@ -216,26 +142,26 @@ var npcGroup;
 
 //LAI FUN
 var sprinkler1;
-var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 10650, 13253];
-var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
-var sprinklerHit1 = [false, false, false, false, false, false, false, false];
+var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 13253];
+var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852];
+var sprinklerHit1 = [false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
 
 var sprinkler1b;
-var sprinklerX1b = [1588, 3855, 9137, 12665];
-var sprinklerY1b = [852, 436, 852, 852];
-var sprinklerHit1b = [false, false, false, false];
+var sprinklerX1b = [1588, 3855, 9137];
+var sprinklerY1b = [852, 436, 852];
+var sprinklerHit1b = [false, false, false];
 var currentSprinkler1b = 0;
 
 var sprinkler2;
-var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 11465, 13584, 15124];
-var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 852, 596];
-var sprinklerHit2 = [false, false, false, false, false, false, false, false, false];
+var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
+var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
+var sprinklerHit2 = [false, false, false, false, false, false, false, false];
 var currentSprinkler2 = 0;
 
 
 
-Game.Level1 = function (game) {
+Game.Level1mobile = function (game) {
 
 };
 
@@ -277,26 +203,25 @@ var easterButton;
 var chrisButton;
 
 //TIMER//
-//var initTime = 600;
+var initTime = 300;
 var timer;
 var timeLimit;
 var timeText;
 
 // SCORE//
-// var sprinklerAdd = 100;
+var sprinklerAdd = 10;
 var score;
 var scoreText;
 
 //CLOCKS FOR EXTRA TIME
 var clocks;
-var clockAdd = 30;
+var clockAdd = 10;
 var easterEggReward;
 
 // SOUND EFFECTS
-var jumpSound;
-var robotDeath;
-var buttonStomp;
-var clockGetSound;
+var jumpSound = null;
+var robotDeath = null;
+var buttonStomp = null;
 
 //TEST SPRINKLERS//
 var sprinklerX = [557, 1588];
@@ -304,18 +229,11 @@ var sprinklerY = [904 + 12, 840 + 12];
 var currentSprinklerPosition = 0;
 var currentSprinkler;
 
-// CHECKPOINT
-var checkPoint;
-var checkPointX;
-var checkPointY;
-var activatedCP;
-var activateCount;
-
 // ==================================
 // CREATE FUNCTION BELOW
 // ==================================
 
-Game.Level1.prototype = {
+Game.Level1mobile.prototype = {
 
     create: function (game) {
         //DEBUG
@@ -323,7 +241,6 @@ Game.Level1.prototype = {
 		
 		console.log(easterEggReward);
         game.time.advancedTiming = true;
-
 
         
         // =======================================================================================================================================
@@ -388,42 +305,31 @@ Game.Level1.prototype = {
         npcGroup = game.add.group();
 
         //!!!!!!!!!!!CHRIS NEEDS TO BE THE FIRST NPC CREATED!!!!!!!!!!!!!
-        createNPC(game, 5536, 800, 'chris', 200,
+        createNPC(game, 7855, 800, 'chris', 200,
             "Have you seen my cat?");
 
-        createNPC(game, 242, 878, 'npc_b1', 200,
+        createNPC(game, 200, 880, 'npc_b1', 200,
             "Why don't you make yourself useful and turn off some sprinklers huh?");
 
-        createNPC(game, 3040, 814, 'npc_b2', 200,
+        createNPC(game, 3745, 550, 'npc_b2', 200,
             "Gotcha H2NO, I’ll turn off the tap while I’m brushing my teeth!");
 
-        createNPC(game, 3424, 558, 'npc_b3', 300,
+        createNPC(game, 5555, 880, 'npc_b3', 300,
             "Really? Standard shower heads use 2.5 gallons of water per minute?! " +
             "I guess I should really take shorter showers, I’ll tell all my friends too. Thanks H2NO!");
 
-        createNPC(game, 4448, 814, 'npc_g1', 200,
+        createNPC(game, 700, 880, 'npc_g1', 200,
             "Turn off the tap while I’m scrubbing my hands with soap? That’s not a bad idea, thanks H2NO!");
 
-        createNPC(game, 5920, 398, 'npc_g2', 200,
+        createNPC(game, 900, 900, 'npc_g2', 200,
             "He tried to run the dishwasher with only half a load, can you believe it? " +
             "I almost lost it H2NO, what a water waster!");
 
-        createNPC(game, 6304, 814, 'npc_g3', 200,
+        createNPC(game, 1000, 900, 'npc_g3', 200,
             "Sorry H2NO, I’ll only water my lawn in the early morning instead of the afternoon from now on…");
         // =======================================================================================================================================
         // NPC END //=========================================================================================================================================
-		
-		// checkpoint
-		checkPointX = 7775;
-		checkPointY = 848;
-		checkPoint = this.add.sprite(checkPointX, checkPointY,'checkPoint');
-		checkPoint.anchor.setTo(0.5, 0.5);
-		checkPoint.scale.setTo(0.5, 0.5);
-		activatedCP = false;
-		activateCount = 0;
-		
-		checkPoint.animations.add('sleep', [1], 10);
-		checkPoint.animations.add('activate', [1, 2, 3, 4, 5, 6, 7, 8], 10, false);
+
 
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES START
@@ -445,9 +351,6 @@ Game.Level1.prototype = {
         player.animations.add('idle', [4], 10, true);
         player.animations.add('left', [0, 1, 2, 3], 10, true);
         player.animations.add('right', [5, 6, 7, 8], 10, true);
-		
-		respawnX = 100; //(until checkpoint)
-		respawnY = 900; //(until checkpoint)
         // =======================================================================================================================================
         //                                   PLAYER VARIABLES END
         //====================================================================================================================================
@@ -469,22 +372,13 @@ Game.Level1.prototype = {
         createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
         sprinkler2 = sprinklersGroup.children[2];
 
-        createSprinkler3(1, game, 4950, 840 + 12);
 
-        createSprinkler3(1, game, 14235, 840 + 12);
     
 
         this.world.bringToTop(sprinklersGroup);
+        //this.world.bringToTop(sprinklersGroup2);
+        //this.world.bringToTop(sprinklersGroup3);
 
-        //RESET SPRINKLERS FOR GAME OVER
-        sprinklerHit1 = [false, false, false, false, false, false, false];
-        currentSprinkler1 = 0;
-
-        sprinklerHit1b = [false, false, false];
-        currentSprinkler1b = 0;
-
-        sprinklerHit2 = [false, false, false, false, false, false, false, false];
-        currentSprinkler2 = 0;
         // =======================================================================================================================================
         //                                   SPRINKLER CREATE END
         //=========================================================================================================================================
@@ -497,25 +391,8 @@ Game.Level1.prototype = {
 		timer = game.time.create(false);
 		timer.loop(1000, this.countdown, this);
 		timer.start();
-        timeLimit = (function() {
-            var time = 600;
-            function tickTock(second) {
-                time -= second;
-            }
-            return {
-                decrement: function() {
-                    tickTock(1);
-                },
-                increment: function() {
-                    //clocks
-                    tickTock(-30);
-                },
-                value: function() {
-                    return time;
-                }
-            };
-        })();
-		timeText = game.add.text(610, 40, timeLimit.value(), {
+		timeLimit = initTime;
+		timeText = game.add.text(610, 40, timeLimit, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -523,17 +400,18 @@ Game.Level1.prototype = {
 		timeText.fixedToCamera = true;
 
 		// LIFE // -- Die a certain amount of times before the game over screen pops up
-		lives = (function() {
-		    var life = 10;
-		    function decrease(val) {
-		        life -= val;
+        // LIFE // -- Die a certain amount of times before the game over screen pops up
+        lives = (function() {
+            var life = 10;
+            function decrease(val) {
+                life -= val;
             }
             return {
-		        decrement: function() {
+                decrement: function() {
                     decrease(1);
                 },
                 value: function() {
-		            return life;
+                    return life;
                 }
             };
         })();
@@ -545,25 +423,8 @@ Game.Level1.prototype = {
 		});
 		lifeText.fixedToCamera = true;
 		
-		score = (function() {
-            var score = 0;
-            function add(val) {
-                score += val;
-            }
-            return {
-                increment: function() {
-                    add(100);
-                },
-                value: function() {
-                    return score;
-                },
-                bossAdd: function() {
-                    add(1000);
-                }
-            };
-        })();
-
-		scoreText = game.add.text(300, 40, score.value(), {
+		score = 0;
+		scoreText = game.add.text(300, 40, score, {
 				font: "12pt press_start_2pregular",
 				fill: "#fff",
 				align: "center"
@@ -613,27 +474,25 @@ Game.Level1.prototype = {
 									   600, 350, 100, 50,
 									   function () {player.x = 7855
 													player.y = 800;});
-		
 		*/
+		
 		// =========================================
 
 		// CLOCKS //
 		clocks = game.add.group();
 		clocks.enableBody = true;
-		this.createClock(3584, 416);
-		this.createClock(4896, 352);
-		this.createClock(6272, 352);
-		this.createClock(6432, 480);
-		this.createClock(7488, 512);
+		this.createClock(300, 300);
+		this.createClock(500, 300);
+		this.createClock(900, 300);
 
         // =======================================================================================================================================
         //                                   LOLOLOL THIS EASTER EGG DOE
         //=========================================================================================================================================
 
-		cat1 = new Cat(3, game, 8032, 590);
+		cat1 = new Cat(3, game, 11150, 174);
 		cat1.cat.scale.setTo(0.1, 0.1);
 
-		cat2 = new Cat(3, game, 5510, 814);
+		cat2 = new Cat(3, game, 7830, 814);
 		cat2.cat.scale.setTo(0.1, 0.1);
 		cat2.cat.alpha = 0;
 
@@ -655,9 +514,6 @@ Game.Level1.prototype = {
 
         // AUDIO STUFF
         jumpSound = this.add.audio('jump');
-        robotDeath = this.add.audio('robotDeath');
-        buttonStomp = this.add.audio('buttonStomp');
-        clockGetSound = this.add.audio('clockGet');
 
     },
 
@@ -669,7 +525,7 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, mainLayer);
         //this.physics.arcade.collide(npcGroup, mainLayer);
         //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.overlap(player, clocks, this.collectClock, null, this);
+        //this.physics.arcade.overlap(player, clocks, collectClock, null, this);
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -682,9 +538,6 @@ Game.Level1.prototype = {
         for (var i = 0, len = sprinklersGroup.children.length; i < len; i++) {
             var sprinkler = sprinklersGroup.children[i];
             this.physics.arcade.overlap(player, sprinkler.emitter, this.resetPlayer);
-            if ('emitter2' in sprinkler) {
-                this.physics.arcade.overlap(player, sprinkler.emitter2, this.resetPlayer);
-            }
         }
 
         /////////////////////
@@ -693,15 +546,6 @@ Game.Level1.prototype = {
         for (var i = 0; i < npcGroup.children.length; i++) {
             npcGroup.children[i].body.velocity.x = 0;
         }
-
-        /* ellaine
-        for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
-            var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-            this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
-        }
-        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
@@ -725,11 +569,7 @@ Game.Level1.prototype = {
             if (!sprinkler.hit) {
                 sprinkler.hit = true;
                 sprinkler.emitter.on = false;
-                score.increment();
-                if ('emitter2' in sprinkler) {
-                    sprinkler.emitter2.on = false;
-                }
-                buttonStomp.play();
+                score += sprinklerAdd;
                 sprinkler.animations.frame = 1;
                 sprinkler.body.setSize(16, 8, 25, 18);
                 sprinkler.sprinklerCollision.kill();
@@ -842,9 +682,9 @@ Game.Level1.prototype = {
         }
 
 
-            timeText.setText('Time: ' + timeLimit.value());
+            timeText.setText('Time: ' + timeLimit);
             lifeText.setText('Lives: ' + lives.value());
-            scoreText.setText('Score: ' + score.value());
+            scoreText.setText('Score: ' + score);
 
             this.timeUp();
 
@@ -863,14 +703,6 @@ Game.Level1.prototype = {
 		if (player.y >= 1050) {
 			this.resetPlayer();
 		}
-		
-		if (player.x >= checkPointX && activateCount == 0) {
-			this.activateCheckPoint(7840, 800);
-			if (activatedCP && activateCount == 0) {
-				checkPoint.animations.play('activate');
-				activateCount = 1;
-			}
-		}
 
     },
 
@@ -879,11 +711,13 @@ Game.Level1.prototype = {
 		// UNCOMMENT TO SHOW FPS
         //game.debug.text(game.time.fps, 10, 10, "#000000");
 		// UNCOMMENT TO SHOW PLAYER INFO
-		// game.debug.spriteInfo(player, 32, 48);
+		//game.debug.spriteInfo(player, 32, 48);
 
     },
+
+    
 	resetPlayer: function() {
-        robotDeath.play();
+
         player.reset(respawnX, respawnY);
         lives.decrement();
         console.log("died");
@@ -891,7 +725,7 @@ Game.Level1.prototype = {
             game.state.start('Gameover');
         }
 
-        //ellaine - RESET SPRINKLERS (keep this)
+        //ellaine - RESET SPRINKLERS
         currentSprinkler1 = 0;
         currentSprinkler2 = 0;
 
@@ -902,12 +736,7 @@ Game.Level1.prototype = {
         sprinklerOn(sprinkler2, sprinklerHit2, currentSprinkler2);
     },
     // for checkpoint create checkx/y
-	activateCheckPoint: function(x, y) {
-		respawnX = x;
-		respawnY = y;
-		
-		activatedCP = true;
-	},
+
     // creating buttons
     createButton: function (game, imgString, x, y, w, h, callBack) {
         var button1 = game.add.button(x, y, imgString, callBack, this, 2, 1, 0);
@@ -916,12 +745,15 @@ Game.Level1.prototype = {
         button1.height = h;
 
     },
+	
+    // for checkpoint create checkx/y
+
     countdown: function () {
-        timeLimit.decrement();
+        timeLimit--;
     },
 
     timeUp: function () {
-        if (timeLimit.value() == 0 || timeLimit.value() < 0) {
+        if (timeLimit == 0 || timeLimit < 0) {
             timer.stop();
 			game.state.start('Gameover');
         }
@@ -948,12 +780,7 @@ Game.Level1.prototype = {
     createClock: function (x, y) {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
-    },
-	collectClock: function (player, clock) {
-    clockGetSound.play();
-    timeLimit.increment();
-    clock.kill();
-	}
+    }
 
 };
 
@@ -982,7 +809,7 @@ function jumpNow() {
         if (Math.abs(player.body.velocity.x) >= (playerMaxSpeed / 2)) {
             player.body.velocity.y -= Jump2;
         } else {
-            player.body.velocity.y -= Jump2;
+            player.body.velocity.y -= Jump1;
         }
         jumpTimer = game.time.now + 500;
     }
@@ -1021,12 +848,17 @@ function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler
     sprinkler.emitter.y = sprinklerY[currentSprinkler];
 }
 
+function collectClock(player, clock) {
+    timeLimit += 5;
+    clock.kill();
+}
+
 function findCat() {
     if (checkOverlap(player, cat1.cat)) {
         tweenCatFound.start();
         easterEggReward = true;
         npcGroup.children[0].SpeechBubble = new SpeechBubble(game, npcGroup.children[0].x + 45, npcGroup.children[0].y, 340,
-            "Thanks for finding my cat! I am a cat lover, but I'm also a Java Developer, and I'm a bearded man! Isn't polymorphism COOL?" +
+            "Thanks for finding my cat! I am also a cat lover. But I'm also a Java Developer. And I'm a bearded man! Isn't polymorphism COOL?" +
             "I love beards.. I think you would look GREAT with one. Here, have this!");
     }
 }

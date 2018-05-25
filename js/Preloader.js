@@ -35,6 +35,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('sprinkler', 'assets/sprinklerSprite.png', 64, 64);
 		this.load.image('sprinklerCollision', 'assets/sprinkler_on.PNG', 64, 64);
 		this.load.image('clock', 'assets/clock.png');
+		this.load.spritesheet('checkPoint', 'assets/flower.png', 64, 64);
 
 	  
 	    // ==========================
@@ -45,16 +46,15 @@ Game.Preloader.prototype = {
 		this.load.image('cyan', 'assets/img/cyan.png');
 		this.load.image('grey', 'assets/img/grey.png');
 		this.load.image('raft', 'assets/img/raft.png');
-		this.load.image('spring', 'assets/img/spring_v2.png');
+		this.load.spritesheet('spring', 'assets/spring.png', 64, 64);
 
 		this.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
 		this.load.spritesheet('faucet', 'assets/faucet.png', 320, 320);
 		this.load.image('tileSheet', 'assets/tiles/h2no_boss.png');
 		this.load.tilemap('boss_map', 'assets/tilemaps/maps/level1_boss_v4.json', null, Phaser.Tilemap.TILED_JSON);
 
-		this.load.audio('jumpSmall', 'assets/audio/effects/jump_small.wav');
+		this.load.audio('clockGet', 'assets/audio/effects/clock_get.wav');
 		this.load.audio('jump', 'assets/audio/effects/jump.wav');
-		this.load.audio('jumpBig', 'assets/audio/effects/jump_big.wav');
 		this.load.audio('robotDeath', 'assets/audio/effects/robot_death.wav');
 		this.load.audio('buttonStomp', 'assets/audio/effects/button_stomp.wav');
 		this.load.audio('spring', 'assets/audio/effects/spring.wav');
