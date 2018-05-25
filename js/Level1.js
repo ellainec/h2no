@@ -216,20 +216,20 @@ var npcGroup;
 
 //LAI FUN
 var sprinkler1;
-var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 13253];
-var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852];
+var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 10650, 13253];
+var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
 var sprinklerHit1 = [false, false, false, false, false, false, false];
 var currentSprinkler1 = 0;
 
 var sprinkler1b;
-var sprinklerX1b = [1588, 3855, 9137];
-var sprinklerY1b = [852, 436, 852];
+var sprinklerX1b = [1588, 3855, 9137, 12665];
+var sprinklerY1b = [852, 436, 852, 852];
 var sprinklerHit1b = [false, false, false];
 var currentSprinkler1b = 0;
 
 var sprinkler2;
-var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 13584, 15124];
-var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 596];
+var sprinklerX2 = [2835, 3600, 5257, 6145, 8393, 9673, 11465, 13584, 15124];
+var sprinklerY2 = [596, 852, 852, 852, 852, 852, 852, 852, 596];
 var sprinklerHit2 = [false, false, false, false, false, false, false, false];
 var currentSprinkler2 = 0;
 
@@ -448,9 +448,9 @@ Game.Level1.prototype = {
         createSprinkler2(1, game, sprinklerX2[currentSprinkler2], sprinklerY2[currentSprinkler2]);
         sprinkler2 = sprinklersGroup.children[2];
 
-        //createSprinkler3(1, game, 4950, 840 + 12);
+        createSprinkler3(1, game, 4950, 840 + 12);
 		
-        //createSprinkler3(1, game, 14140, 840 + 12);
+        createSprinkler3(1, game, 14235, 840 + 12);
 
     
 
@@ -790,7 +790,7 @@ Game.Level1.prototype = {
 		// UNCOMMENT TO SHOW FPS
         //game.debug.text(game.time.fps, 10, 10, "#000000");
 		// UNCOMMENT TO SHOW PLAYER INFO
-		//game.debug.spriteInfo(player, 32, 48);
+		game.debug.spriteInfo(player, 32, 48);
 
     },
 
