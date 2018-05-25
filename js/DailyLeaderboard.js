@@ -11,24 +11,24 @@ Game.DailyLeaderboard.prototype = {
         scoreText= game.add.text(600, 80, "Score", { fontSize: '12px', fill: '#FFFFFF' });
         var count = 0;
 
-        if(!jQuery.isEmptyObject(daily)) {
+        if(!jQuery.isEmptyObject(weekly)) {
             console.log("not empty!");
-            count = Object.keys(daily).length;
+            count = Object.keys(weekly).length;
         } else {
             console.log("empty!");
         }
             for (var i = 0, y = 110; i < 10; i++, y += 25) {
                 scoreText = game.add.text(250, y, i + 1, {fontSize: '12px', fill: '#FFFFFF'});
                 if (i <= count - 1) {
-                    scoreText = game.add.text(350, y, daily[i]['name'], {fontSize: '12px', fill: '#FFFFFF'});
-                    scoreText = game.add.text(600, y, daily[i]['score'], {fontSize: '12px', fill: '#FFFFFF'});
+                    scoreText = game.add.text(350, y, weekly[i]['name'], {fontSize: '12px', fill: '#FFFFFF'});
+                    scoreText = game.add.text(600, y, weekly[i]['score'], {fontSize: '12px', fill: '#FFFFFF'});
                 } else {
                     scoreText = game.add.text(350, y, 'empty', {fontSize: '12px', fill: '#FFFFFF'});
                     scoreText = game.add.text(600, y, '--', {fontSize: '12px', fill: '#FFFFFF'});
                 }
         }
 
-        this.createButton(game, "Daily",
+        this.createButton(game, "Weekly",
             100, 80,
             140, 25,
             function () {
