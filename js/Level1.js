@@ -669,7 +669,7 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player, mainLayer);
         //this.physics.arcade.collide(npcGroup, mainLayer);
         //ellaine - leave comment ps - this.physics.arcade.collide(npcGroup, backgroundLayer);
-        this.physics.arcade.overlap(player, clocks, collectClock, null, this);
+        this.physics.arcade.overlap(player, clocks, this.collectClock, null, this);
 
         // =======================================================================================================================================
         //                                   SPRINKLER UPDATE START
@@ -948,7 +948,12 @@ Game.Level1.prototype = {
     createClock: function (x, y) {
         var clock = clocks.create(x, y, 'clock');
         clock.body.gravity = false;
-    }
+    },
+	collectClock: function (player, clock) {
+    clockGetSound.play();
+    timeLimit.increment();
+    clock.kill();
+	}
 
 };
 
@@ -1014,12 +1019,6 @@ function repositionSprinkler(sprinkler, sprinklerX, sprinklerY, currentSprinkler
     sprinkler.y = sprinklerY[currentSprinkler];
     sprinkler.emitter.x = sprinklerX[currentSprinkler];
     sprinkler.emitter.y = sprinklerY[currentSprinkler];
-}
-
-function collectClock(player, clock) {
-    clockGetSound.play();
-    timeLimit.increment();
-    clock.kill();
 }
 
 function findCat() {
