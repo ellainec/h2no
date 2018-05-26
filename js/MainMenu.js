@@ -14,7 +14,7 @@ Game.MainMenu.prototype = {
             $.ajax({
                 url: "../db/postScore.php",
                 dataType: "json",
-                data: {name: playerName, score: 10, period:1},
+                data: {name: 'Test', score: 10, period:1},
                 type: "POST",
                 success: function(data) {
                     weekly = data[0];
