@@ -36,7 +36,7 @@ Game.Preloader.prototype = {
 		this.load.spritesheet('sprinkler', '../assets/sprinklerSprite.png', 64, 64);
 		this.load.image('sprinklerCollision', '../assets/sprinkler_on.PNG', 64, 64);
 		this.load.image('clock', '../assets/clock.png');
-		this.load.spritesheet('checkPoint', '../assets/flower.png', 64, 64);
+		this.load.spritesheet('checkPoint', '../assets/Flower.png', 64, 64);
 
 	  
 	    // ==========================
