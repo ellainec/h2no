@@ -1,7 +1,3 @@
-var weekly;
-var monthly;
-var alltime;
-
 var completeTotalScore;
 var completeTotalScoreText;
 var finalLifeText;
