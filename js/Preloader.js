@@ -6,7 +6,7 @@ Game.Preloader = function(game) {
 
 Game.Preloader.prototype = {
     preload:function() {
-        
+        //HELLO
         //LOAD ALL ASSETS
 
         this.load.image('blueButton', "../assets/buttons/blue_button.png");
