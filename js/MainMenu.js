@@ -10,6 +10,7 @@ Game.MainMenu = function(game) {
 Game.MainMenu.prototype = {
     preload:function(){
         (function() {
+            console.log("mainmenu");
             $.ajax({
                 url: "../db/postScore.php",
                 dataType: "json",
