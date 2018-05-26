@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "h2no4thewin";
     $dbname = "h2no";
 
     $methodType = $_SERVER['REQUEST_METHOD'];
