@@ -12,7 +12,7 @@ Game.MainMenu.prototype = {
         (function() {
             console.log("mainmenu");
             $.ajax({
-                url: "../db/postScore.php",
+                url: "db/postScore.php",
                 dataType: "json",
                 data: {name: 'Test', score: 10, period:1},
                 type: "POST",
