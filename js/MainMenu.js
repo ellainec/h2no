@@ -20,6 +20,7 @@ Game.MainMenu.prototype = {
                     weekly = data[0];
                     monthly = data[1];
                     alltime = data[2];
+                    console.log(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.statusText);

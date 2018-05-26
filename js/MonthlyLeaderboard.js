@@ -14,6 +14,9 @@ Game.MonthlyLeaderboard.prototype = {
 
         if(!jQuery.isEmptyObject(monthly)) {
             count = Object.keys(monthly).length;
+            console.log("not empty!");
+        } else {
+            console.log("empty!");
         }
 
         for (var i = 0, y = 110; i < 10; i++, y += 25) {
