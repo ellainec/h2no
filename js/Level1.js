@@ -215,6 +215,7 @@ var boxGroup;
 var npcGroup;
 
 //LAI FUN
+//UPDATE MAY 25, 2018 for website
 var sprinkler1;
 var sprinklerX1 = [575, 2190, 3400, 6436, 7455, 8785, 10650, 13253];
 var sprinklerY1 = [916, 724, 596, 596, 852, 852, 852, 852];
