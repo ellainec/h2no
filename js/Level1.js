@@ -574,50 +574,6 @@ Game.Level1.prototype = {
         //                                   GAME UI END
         //=========================================================================================================================================
 
-
-		
-		// =====================================
-		
-		
-		// THIS BOSS BUTTON IS FOR TESTING PURPOSES -- 
-		// WILL BE REMOVED FROM OFFICIAL GAME
-		
-		
-		// =======================================
-		
-		/*
-	    bossButton = this.createButton(game, "Boss", 
-									   400, 350, 100, 50,
-									   function () {this.state.start('BossState');});
-		*/
-		
-		// =========================================
-		
-		// =====================================
-		
-		
-		// THIS EASTEREGG BUTTON IS FOR TESTING PURPOSES -- 
-		// WILL BE REMOVED FROM OFFICIAL GAME
-		
-		
-		// =======================================
-		
-		/*
-	    easterButton = this.createButton(game, "Cat", 
-									   200, 350, 100, 50,
-									   function () {player.x = 11000;
-												    player.y = 0;});
-		*/
-		
-		/*
-		chrisButton = this.createButton(game, "Owner", 
-									   600, 350, 100, 50,
-									   function () {player.x = 7855
-													player.y = 800;});
-		
-		*/
-		// =========================================
-
 		// CLOCKS //
 		clocks = game.add.group();
 		clocks.enableBody = true;
@@ -695,14 +651,6 @@ Game.Level1.prototype = {
             npcGroup.children[i].body.velocity.x = 0;
         }
 
-        /* ellaine
-        for (var i = 0, len = sprinklersGroup3.children.length; i < len; i++) {
-            var sprinklerEmitter = sprinklersGroup3.children[i].emitter;
-            var sprinklerEmitter2 = sprinklersGroup3.children[i].emitter2;
-            this.physics.arcade.overlap(player, sprinklerEmitter, this.resetPlayer);
-            this.physics.arcade.overlap(player, sprinklerEmitter2, this.resetPlayer);
-        }
-        */
 
         for (var i = 0; i < npcGroup.children.length; i++) {
             if (checkOverlap(player, npcGroup.children[i])) {
