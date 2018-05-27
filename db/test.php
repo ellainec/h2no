@@ -25,8 +25,10 @@
 
     catch(PDOException $e)
         {
-        echo "failed ". $e->getMessage();
+        print "Error!: " . $e->getMessage() . "<br/>";
+                    die();
         }
+        
 ?>
 </body>
 </html>
