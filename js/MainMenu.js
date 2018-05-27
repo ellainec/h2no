@@ -17,7 +17,7 @@ Game.MainMenu.prototype = {
         }
     },
 	create:function(game) {
-        postScores();
+        //postScores();
 		this.createLeaderButton(game, "Leaderboard", 
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
