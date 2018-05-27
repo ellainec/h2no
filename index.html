@@ -55,10 +55,10 @@
             success: function(data) {
                 console.log(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.statusText);
+            error: (jQXHR, textStatus, errorThrown) {
+            alert("An error occurred whilst trying to contact the server: " + jQXHR.status + " " + textStatus + " " + errorThrown);
+        }
             }
-        });
     };
 </script>
     
