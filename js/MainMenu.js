@@ -78,11 +78,11 @@ Game.MainMenu.prototype = {
         txt.anchor.setTo(0.5, 0.5);
     }
 };
+/*
     function postScores() {
         console.log("mainmenu");
         $.ajax({
             url: "../db/postScore.php",
-            data: {name: playerName, score: completeTotalScore.value()},
             dataType: "json",
             type: "POST",
             success: function(data) {
@@ -96,4 +96,4 @@ Game.MainMenu.prototype = {
             }
         });
     };
-
+*/
