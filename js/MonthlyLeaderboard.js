@@ -16,7 +16,7 @@ Game.MonthlyLeaderboard.prototype = {
             count = Object.keys(monthly).length;
             console.log("not empty!");
         } else {
-            console.log("empty!");
+            console.log(" monthly empty!");
         }
 
         for (var i = 0, y = 110; i < 10; i++, y += 25) {
