@@ -6,7 +6,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "h2no4thewin";
     $dbname = "h2no";
 
 
@@ -19,7 +19,7 @@
         $sql2="SELECT * FROM alltime ORDER BY score DESC";
         $statement2 = $conn->query($sql2);
         $data =  $statement2->fetchAll(PDO::FETCH_ASSOC));
-                echo $data;
+        echo $data;
 
      }
 
