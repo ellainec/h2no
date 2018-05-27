@@ -82,6 +82,7 @@ Game.MainMenu.prototype = {
         console.log("mainmenu");
         $.ajax({
             url: "../db/postScore.php",
+            data: {name: playerName, score: completeTotalScore.value()}
             dataType: "json",
             type: "POST",
             success: function(data) {
