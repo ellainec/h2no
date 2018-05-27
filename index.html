@@ -49,16 +49,16 @@
 
     function postScores() {
         $.ajax({
-            url: "../db/getScore.php",
+            url: "db/getScore.php",
             dataType: "json",
             type: "GET",
             success: function(data) {
                 console.log(data);
             },
-            error: (jQXHR, textStatus, errorThrown) {
-            alert("An error occurred whilst trying to contact the server: " + jQXHR.status + " " + textStatus + " " + errorThrown);
-        }
+            error: function (jqXHR, textStatus, errorThrown) {
+            alert("An error occurred whilst trying to contact the server: " + jqXHR.status + " " + textStatus + " " + errorThrown);
             }
+        })
     };
 </script>
     
