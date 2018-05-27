@@ -50,7 +50,6 @@
     function postScores() {
         $.ajax({
             url: "db/getScore.php",
-            dataType: "json",
             type: "GET",
             success: function(data) {
                 console.log(data);
