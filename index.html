@@ -43,6 +43,22 @@
     <div class=descriptions>
         <a href="index.html" id=savevancouver>Save Vancouver!</a>
     </div>
+<script>
+    postScores();
+    function postScores() {
+        $.ajax({
+            url: "../db/getScore.php",
+            dataType: "json",
+            type: "GET",
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.statusText);
+            }
+        });
+    };
+</script>
     
 </body>
 

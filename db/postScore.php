@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "h2no4thewin";
     $dbname = "h2no";
 
     $methodType = $_SERVER['REQUEST_METHOD'];
@@ -69,3 +69,4 @@
         echo "failed ". $e->getMessage();
         }
     echo json_encode($data, JSON_FORCE_OBJECT);
+
