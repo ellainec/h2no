@@ -1,3 +1,8 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
 <?php
     $servername = "localhost";
     $username = "root";
@@ -23,3 +28,5 @@
         echo "failed ". $e->getMessage();
         }
 ?>
+</body>
+</html>
