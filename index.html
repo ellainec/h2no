@@ -56,7 +56,7 @@
                 console.log(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-            alert("An error occurred whilst trying to contact the server: " + jqXHR.status + " " + textStatus + " " + errorThrown);
+            console.log("An error occurred whilst trying to contact the server: " + jqXHR.status + " " + textStatus + " " + errorThrown);
             }
         })
     };
