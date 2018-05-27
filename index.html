@@ -43,8 +43,10 @@
     <div class=descriptions>
         <a href="index.html" id=savevancouver>Save Vancouver!</a>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
     postScores();
+
     function postScores() {
         $.ajax({
             url: "../db/getScore.php",
