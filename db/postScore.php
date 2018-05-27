@@ -62,6 +62,7 @@
         $statement2 = $conn->query($sql2);
         array_push($data, $statement2->fetchAll(PDO::FETCH_ASSOC));
 
+
      }
 
     catch(PDOException $e)

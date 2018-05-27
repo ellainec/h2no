@@ -81,7 +81,7 @@ Game.MainMenu.prototype = {
     function postScores() {
         console.log("mainmenu");
         $.ajax({
-            url: "../db/getScore.php",
+            url: "../db/postScore.php",
             dataType: "json",
             type: "GET",
             success: function(data) {
