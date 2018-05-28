@@ -42,6 +42,7 @@ Game.MainMenu.prototype = {
                 dataType: "json",
                 type: "GET",
                 success: function(data) {
+                    console.log(data);
                     weekly = data[0];
                     monthly = data[1];
                     alltime = data[2];
