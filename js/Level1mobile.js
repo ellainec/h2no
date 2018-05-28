@@ -238,7 +238,7 @@ var activateCount;
 // CREATE FUNCTION BELOW
 // ==================================
 
-Game.Level1.prototype = {
+Game.Level1mobile.prototype = {
 
     create: function (game) {
         //DEBUG
