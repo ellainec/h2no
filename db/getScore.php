@@ -14,7 +14,8 @@
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         //grab weekly, monthly, and all time highscores
-        $sql2 = "SELECT * FROM weekly WHERE date(datePlayed) > date_add(CURDATE(), interval 1-dayofweek(curdate()) day) ORDER BY score DESC";
+        //$sql2 = "SELECT * FROM weekly WHERE date(datePlayed) > date_add(CURDATE(), interval 1-dayofweek(curdate()) day) ORDER BY score DESC";
+        $sql2 = "SELECT * FROM weekly";
         $statement2 = $conn->query($sql2);
         array_push($data, $statement2->fetchAll(PDO::FETCH_ASSOC));
 
