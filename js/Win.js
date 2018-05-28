@@ -8,7 +8,6 @@ Game.Win = function(game) {};
 
 Game.Win.prototype = {
     create:function() {
-        postScores();
 		gameover = true;
 		this.createButton(game, "CONGRATULATIONS!", 400, 100,
 				500, 80,
