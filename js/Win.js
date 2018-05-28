@@ -48,11 +48,10 @@ Game.Win.prototype = {
 				align: "center"
 		});
         (function() {
-            //console.log("ajax");
             $.ajax({
                 url: "../db/postScore.php",
                 dataType: "json",
-                data: {name: playerName, score: 10, period:1},
+                data: {name: playerName, score: completeTotalScore.value()},
                 type: "POST",
                 success: function(data) {
                     weekly = data[0];
@@ -87,23 +86,4 @@ Game.Win.prototype = {
 
         txt.anchor.setTo(0.5, 0.5);
     },
-};
-
-function postScores() {
-    console.log("mainmenu");
-    $.ajax({
-        url: "../db/postScore.php",
-        data: {name: playerName, score: completeTotalScore.value()},
-        dataType: "json",
-        type: "POST",
-        success: function(data) {
-            weekly = data[0];
-            monthly = data[1];
-            alltime = data[2];
-            console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.statusText);
-        }
-    });
 };

@@ -17,7 +17,6 @@ Game.MainMenu.prototype = {
         }
     },
 	create:function(game) {
-        //postScores();
 		this.createLeaderButton(game, "Leaderboard", 
 											game.world.centerX + 300, 
 											game.world.centerY - 175,
@@ -37,6 +36,21 @@ Game.MainMenu.prototype = {
                 function() {this.state.start('Level1');});
 		}
 		gameover = false;
+        (function() {
+            $.ajax({
+                url: "../db/getScore.php",
+                dataType: "json",
+                type: "GET",
+                success: function(data) {
+                    weekly = data[0];
+                    monthly = data[1];
+                    alltime = data[2];
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.statusText);
+                }
+            });
+        })();
 
 	}, 
 	update:function(game) {
