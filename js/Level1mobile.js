@@ -158,7 +158,7 @@ var currentSprinkler2 = 0;
 
 
 
-Game.Level1 = function (game) {
+Game.Level1mobile = function (game) {
 
 };
 
